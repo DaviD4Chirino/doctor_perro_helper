@@ -20,6 +20,8 @@ flutter:
   uses-material-design: true
   assets:
     - lib/assets/logos/logo_background.jpg
+    - lib/assets/logos/logo_border_transparent.png
+    - lib/assets/logos/logo_transparent.png
 
 flutter_launcher_icons:
   android: "launcher_icon"

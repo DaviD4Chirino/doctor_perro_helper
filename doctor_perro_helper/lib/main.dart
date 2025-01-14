@@ -15,8 +15,17 @@ class MainApp extends StatelessWidget {
       theme: lightTheme,
       darkTheme: darkTheme,
       title: "Dr.Perro Helper",
-      home: const Scaffold(
-        body: Center(child: Text("Hello")),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Center(
+            child: Image(
+              image: AssetImage("lib/assets/logos/logo_border_transparent.png"),
+              width: 65.0,
+              height: 65.0,
+            ),
+          ),
+        ),
+        body: const Center(child: Text("Hello")),
       ),
     );
   }

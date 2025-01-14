@@ -1,6 +1,7 @@
 import 'package:doctor_perro_helper/config/themes/shared_theme_data.dart';
 import 'package:flutter/material.dart';
 
+// TODO: Fix the mistaching Light color Scheme
 const ColorScheme lightColorScheme = ColorScheme(
   brightness: Brightness.light,
   primary: Color(0xFFEDB8F5),
