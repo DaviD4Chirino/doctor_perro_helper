@@ -14,10 +14,9 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       theme: lightTheme,
       darkTheme: darkTheme,
+      title: "Dr.Perro Helper",
       home: const Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
+        body: Center(child: Text("Hello")),
       ),
     );
   }
