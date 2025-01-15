@@ -105,10 +105,12 @@ class TodaysEarnings extends StatelessWidget {
               )
             ],
           ),
-          const Text(
+          Text(
             "Ganancias de hoy",
             style: TextStyle(
               fontSize: 12.0,
+              color: Theme.of(context).colorScheme.onSurface.withAlpha(100),
+              fontWeight: FontWeight.bold,
             ),
           ),
         ],

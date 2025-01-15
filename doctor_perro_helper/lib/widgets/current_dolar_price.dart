@@ -16,21 +16,33 @@ class CurrentDolarPrice extends StatelessWidget {
             borderRadius: BorderRadius.circular(Sizes().roundedSmall),
             color: Theme.of(context).colorScheme.surfaceContainerHighest,
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
+          child: Column(
             children: [
-              Text(
-                "60",
-                style: TextStyle(
-                  fontSize: 60.0,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
+                children: [
+                  Text(
+                    "60",
+                    style: TextStyle(
+                      fontSize: 60.0,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  const Text(
+                    "Bs",
+                    style: TextStyle(
+                      fontSize: 20.0,
+                    ),
+                  ),
+                ],
               ),
-              const Text(
-                "Bs",
+              Text(
+                "Precio del dolar",
                 style: TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 12.0,
+                  color: Theme.of(context).colorScheme.onSurface.withAlpha(100),
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ],
