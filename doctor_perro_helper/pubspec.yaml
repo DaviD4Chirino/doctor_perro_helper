@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_launcher_icons: ^0.14.2
+  intl: ^0.20.1
 
 dev_dependencies:
   flutter_test:
