@@ -17,7 +17,7 @@ class MainApp extends StatelessWidget {
       darkTheme: darkTheme,
       title: "Dr.Perro Helper",
       initialRoute: "/",
-      routes: {"/": (BuildContext context) => Home()},
+      routes: {"/": (BuildContext context) => const Home()},
     );
   }
 }

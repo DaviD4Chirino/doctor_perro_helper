@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Home extends StatelessWidget {
-  Home({
+  const Home({
     super.key,
   });
 
@@ -53,6 +53,7 @@ class Home extends StatelessWidget {
 class CurrentDate extends StatelessWidget {
   CurrentDate({super.key});
 
+  // final DateTime now = DateTime.now();
   final String fullYear = DateFormat.MMMMd("es_ES").format(DateTime.now());
   final String week =
       DateFormat.EEEE("es_ES").format(DateTime.now()).capitalize();
