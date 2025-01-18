@@ -1,31 +1,107 @@
+import 'dart:ffi';
+
 import 'package:doctor_perro_helper/config/border_size.dart';
+import 'package:doctor_perro_helper/utils/extensions/string_capitalize.dart';
 import 'package:doctor_perro_helper/widgets/current_dolar_price.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Home extends StatelessWidget {
-  const Home({
+  Home({
     super.key,
   });
+
+  final List<Plate> plates = [
+    Plate(
+      code: "R1",
+      title: "Perro Normal",
+      ingredients: [
+        "Ensalada",
+        "Papas",
+        "Queso de año",
+        "Salsa de ajo",
+        "Salsa de Tomate",
+      ],
+      price: 2.0,
+    ),
+    Plate(
+      code: "R2",
+      title: "Perro Especial",
+      ingredients: [
+        "Queso Kraft",
+        "Tocino",
+        "Ensalada",
+        "Papas",
+        "Queso de año",
+        "Salsa de ajo",
+        "Salsa de Tomate",
+      ],
+      price: 3.0,
+    ),
+    Plate(
+      code: "R3",
+      title: "Hamburguesa",
+      ingredients: [
+        "Carne",
+        "Salsa de la casa",
+        "Tocino",
+        "Queso Kraft",
+      ],
+      price: 3.5,
+    ),
+    Plate(
+      code: "R4",
+      title: "Hamburguesa Doble",
+      ingredients: [
+        "Doble Carne",
+        "Salsa de la casa",
+        "Tocino",
+        "Queso Kraft",
+      ],
+      price: 6.0,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CurrentDate(),
-            SizedBox(
-              height: Sizes().xxl,
-            ),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [TodaysEarnings(), CurrentDolarPrice()],
-            )
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CurrentDate(),
+              SizedBox(
+                height: Sizes().xxl,
+              ),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TodaysEarnings(),
+                  CurrentDolarPrice(),
+                ],
+              ),
+              SizedBox(
+                height: Sizes().xxxl * 2,
+              ),
+              const Text(
+                "Menú",
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: Sizes().xl,
+              ),
+              ListView.builder(
+                itemBuilder: (context, index) => Text("item Builder $index"),
+                itemCount: 100,
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -46,6 +122,74 @@ class Home extends StatelessWidget {
           child: const Icon(Icons.search),
         ),
       ],
+    );
+  }
+}
+
+class Plate {
+  Plate({
+    required this.code,
+    required this.title,
+    required this.ingredients,
+    required this.price,
+  });
+
+  String code;
+  String title;
+  List<String> ingredients;
+  double price;
+}
+
+class MenuListItem extends StatelessWidget {
+  const MenuListItem({
+    super.key,
+    required this.plate,
+  });
+  final Plate plate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(Sizes().roundedSmall),
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+      ),
+      child: ListTile(
+        title: Row(
+          children: [
+            Text(
+              "$plate.code:",
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(
+              width: 5.0,
+            ),
+            Text(
+              // "Perro Normal",
+              plate.title,
+              style: const TextStyle(
+                fontSize: 10.0,
+                letterSpacing: 3.0,
+              ),
+            ),
+          ],
+        ),
+        subtitle: Text(
+          plate.ingredients.join(", "),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+          ),
+        ),
+        // This will become a checkmark when the user taps on it
+        leading: const Icon(Icons.fastfood),
+        trailing: Text(
+          "$plate.price\$",
+          style: TextStyle(
+              fontSize: 18.0, color: Theme.of(context).colorScheme.primary),
+        ),
+      ),
     );
   }
 }
@@ -110,18 +254,12 @@ class TodaysEarnings extends StatelessWidget {
             "Ganancias de hoy",
             style: TextStyle(
               fontSize: 12.0,
-              color: Theme.of(context).colorScheme.onSurface.withAlpha(100),
+              color: Theme.of(context).colorScheme.onSurface.withAlpha(170),
               fontWeight: FontWeight.bold,
             ),
           ),
         ],
       ),
     );
-  }
-}
-
-extension StringExtension on String {
-  String capitalize() {
-    return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
   }
 }

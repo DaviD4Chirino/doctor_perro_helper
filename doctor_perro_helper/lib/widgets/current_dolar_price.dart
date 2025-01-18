@@ -41,7 +41,7 @@ class CurrentDolarPrice extends StatelessWidget {
                 "Precio del dolar",
                 style: TextStyle(
                   fontSize: 12.0,
-                  color: Theme.of(context).colorScheme.onSurface.withAlpha(100),
+                  color: Theme.of(context).colorScheme.onSurface.withAlpha(170),
                   fontWeight: FontWeight.bold,
                 ),
               ),
