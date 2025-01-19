@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:flutter/material.dart';
 
@@ -52,11 +54,22 @@ class CurrentDolarPrice extends StatelessWidget {
           top: Sizes().medium,
           left: Sizes().medium,
           child: Icon(
-            Icons.monetization_on,
+            Icons.calculate,
             size: Sizes().xxxl,
             color: Theme.of(context).colorScheme.onSurface.withAlpha(100),
           ),
-        )
+        ),
+        Positioned.fill(
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              splashColor:
+                  Theme.of(context).colorScheme.onSurfaceVariant.withAlpha(70),
+              onTap: () => log("Tapped"),
+              borderRadius: BorderRadius.circular(Sizes().roundedSmall),
+            ),
+          ),
+        ),
       ],
     );
   }
