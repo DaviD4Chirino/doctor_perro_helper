@@ -3,6 +3,7 @@ import 'package:doctor_perro_helper/config/themes/light_theme.dart';
 import 'package:doctor_perro_helper/screens/pages/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:toastification/toastification.dart';
 
 void main() {
   initializeDateFormatting('es_ES').then((_) => runApp(const MainApp()));
@@ -10,14 +11,17 @@ void main() {
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      title: "Dr.Perro Helper",
-      initialRoute: "/",
-      routes: {"/": (BuildContext context) => Home()},
+    return ToastificationWrapper(
+      child: MaterialApp(
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        title: "Dr.Perro Helper",
+        initialRoute: "/",
+        routes: {"/": (BuildContext context) => Home()},
+      ),
     );
   }
 }

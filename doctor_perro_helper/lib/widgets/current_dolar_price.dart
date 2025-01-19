@@ -1,7 +1,10 @@
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:toastification/toastification.dart';
 
 class CurrentDolarPrice extends StatelessWidget {
   const CurrentDolarPrice({
@@ -81,26 +84,84 @@ class CurrentDolarPrice extends StatelessWidget {
 }
 
 class PriceCalculatorDialog extends StatefulWidget {
-  const PriceCalculatorDialog({
+  PriceCalculatorDialog({
     super.key,
   });
+  // fetch the price in the config, when we have it, for now:
+  final double dolarPrice = 60.0;
 
   @override
   State<PriceCalculatorDialog> createState() => _PriceCalculatorDialogState();
 }
 
 class _PriceCalculatorDialogState extends State<PriceCalculatorDialog> {
+  String fieldValue = "0";
+  bool isInvalid = true;
+
+  double amount = 0.0;
+
+  double calculatedAmount() => amount * widget.dolarPrice;
+
+  String get textFieldValue {
+    return fieldValue;
+  }
+
+  set textFieldValue(String currentTextFieldValue) {
+    isInvalid = !RegExp(r"^[0-9]+(\.[0-9]+)?$").hasMatch(currentTextFieldValue);
+    fieldValue = currentTextFieldValue;
+    amount = currentTextFieldValue.isEmpty || isInvalid
+        ? 0.0
+        : double.parse(fieldValue);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const AlertDialog(
-      title: Text("Calcular precio"),
+    return AlertDialog(
+      title: const Text("Calcular precio"),
       content: ListTile(
         dense: true,
-        title: Text(""),
+        title: Text(
+          isInvalid
+              ? "Resultado"
+              : "${(calculatedAmount()).toStringAsFixed(2)}bs",
+        ),
         subtitle: TextField(
           keyboardType: TextInputType.number,
+          /* inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp(r"^[0-9]*\.?[0-9]*$")),
+          ], */
+
+          decoration: InputDecoration(
+            errorText: isInvalid ? "Monto inválido" : null,
+            helperText: !isInvalid
+                ? "${(calculatedAmount()).toStringAsFixed(2)}bs"
+                : null,
+          ),
+          autofocus: true,
+          onChanged: (String value) {
+            setState(() {
+              textFieldValue = value;
+            });
+          },
         ),
       ),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Clipboard.setData(ClipboardData(
+                  text: "${(calculatedAmount()).toStringAsFixed(2)}bs"));
+              toastification.show(
+                title: const Text("Monto copiado"),
+                autoCloseDuration: const Duration(seconds: 2),
+                type: ToastificationType.success,
+                style: ToastificationStyle.fillColored,
+                primaryColor: Theme.of(context).colorScheme.secondary,
+                foregroundColor: Theme.of(context).colorScheme.onSecondary,
+                showProgressBar: false,
+              );
+            },
+            child: const Text("Copiar"))
+      ],
     );
   }
 }
