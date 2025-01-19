@@ -65,12 +65,42 @@ class CurrentDolarPrice extends StatelessWidget {
             child: InkWell(
               splashColor:
                   Theme.of(context).colorScheme.onSurfaceVariant.withAlpha(70),
-              onTap: () => log("Tapped"),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => PriceCalculatorDialog(),
+                );
+              },
               borderRadius: BorderRadius.circular(Sizes().roundedSmall),
             ),
           ),
         ),
       ],
+    );
+  }
+}
+
+class PriceCalculatorDialog extends StatefulWidget {
+  const PriceCalculatorDialog({
+    super.key,
+  });
+
+  @override
+  State<PriceCalculatorDialog> createState() => _PriceCalculatorDialogState();
+}
+
+class _PriceCalculatorDialogState extends State<PriceCalculatorDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return const AlertDialog(
+      title: Text("Calcular precio"),
+      content: ListTile(
+        dense: true,
+        title: Text(""),
+        subtitle: TextField(
+          keyboardType: TextInputType.number,
+        ),
+      ),
     );
   }
 }
