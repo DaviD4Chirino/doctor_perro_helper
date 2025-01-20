@@ -1,13 +1,95 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
+import 'package:doctor_perro_helper/screens/pages/calculator/calculator.dart';
 import 'package:doctor_perro_helper/widgets/current_date.dart';
 import 'package:doctor_perro_helper/widgets/current_dolar_price.dart';
 import 'package:doctor_perro_helper/widgets/menu_list_item.dart';
 import 'package:doctor_perro_helper/widgets/todays_earnings.dart';
 import 'package:flutter/material.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   Home({
+    super.key,
+  });
+
+  final List<Widget> screens = [
+    DashBoard(),
+    const DolarCalculator(),
+  ];
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  late PageController _pageController;
+
+  int currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: appBar(),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (int index) => setState(() {
+          currentIndex = index;
+        }),
+        children: widget.screens,
+      ),
+      bottomNavigationBar: NavigationBar(
+        elevation: 15.0,
+        selectedIndex: currentIndex,
+        onDestinationSelected: (int targetIndex) {
+          setState(() {
+            currentIndex = targetIndex;
+            _pageController.animateToPage(targetIndex,
+                duration: const Duration(milliseconds: 150),
+                curve: Curves.easeOut);
+          });
+        },
+        destinations: const [
+          NavigationDestination(icon: Icon(Icons.home), label: "Principio"),
+          NavigationDestination(
+              icon: Icon(Icons.calculate), label: "Calculadora"),
+        ],
+      ),
+    );
+  }
+
+  AppBar appBar() {
+    return AppBar(
+      title: const Image(
+        image: AssetImage("lib/assets/logos/logo_border_transparent.png"),
+        width: 60.0,
+        height: 60.0,
+      ),
+      centerTitle: true,
+      leading: const Icon(Icons.menu),
+      actions: [
+        Padding(
+          padding: EdgeInsets.only(right: Sizes().xxl),
+          child: const Icon(Icons.search),
+        ),
+      ],
+    );
+  }
+}
+
+class DashBoard extends StatelessWidget {
+  DashBoard({
     super.key,
   });
 
@@ -83,62 +165,41 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBar(),
-      body: ListView(
-        padding: const EdgeInsets.all(8.0),
-        physics: const BouncingScrollPhysics(),
-        children: [
-          CurrentDateText(),
-          SizedBox(
-            height: Sizes().xxl,
+    return ListView(
+      padding: const EdgeInsets.all(8.0),
+      physics: const BouncingScrollPhysics(),
+      children: [
+        CurrentDateText(),
+        SizedBox(
+          height: Sizes().xxl,
+        ),
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            TodaysEarnings(),
+            CurrentDolarPrice(),
+          ],
+        ),
+        SizedBox(
+          height: Sizes().xxxl * 2,
+        ),
+        const Text(
+          "Menú",
+          style: TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
           ),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              TodaysEarnings(),
-              CurrentDolarPrice(),
-            ],
-          ),
-          SizedBox(
-            height: Sizes().xxxl * 2,
-          ),
-          const Text(
-            "Menú",
-            style: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
+        ),
+        SizedBox(
+          height: Sizes().xl,
+        ),
+        ...plates.map(
+          (plate) => Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: MenuListItem(
+              plate: plate,
             ),
           ),
-          SizedBox(
-            height: Sizes().xl,
-          ),
-          ...plates.map(
-            (plate) => Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: MenuListItem(
-                plate: plate,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  AppBar appBar() {
-    return AppBar(
-      title: const Image(
-        image: AssetImage("lib/assets/logos/logo_border_transparent.png"),
-        width: 60.0,
-        height: 60.0,
-      ),
-      centerTitle: true,
-      leading: const Icon(Icons.menu),
-      actions: [
-        Padding(
-          padding: EdgeInsets.only(right: Sizes().xxl),
-          child: const Icon(Icons.search),
         ),
       ],
     );
