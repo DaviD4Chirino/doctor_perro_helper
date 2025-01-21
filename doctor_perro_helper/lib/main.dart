@@ -3,6 +3,7 @@ import 'package:doctor_perro_helper/config/themes/light_theme.dart';
 import 'package:doctor_perro_helper/screens/pages/calculator/calculator.dart';
 import 'package:doctor_perro_helper/screens/pages/home/home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:toastification/toastification.dart';
 
@@ -15,6 +16,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return ToastificationWrapper(
       child: MaterialApp(
         theme: lightTheme,
@@ -23,7 +28,7 @@ class MainApp extends StatelessWidget {
         initialRoute: "/",
         routes: {
           "/": (BuildContext context) => Home(),
-          "/calculator": (BuildContext context) => const DolarCalculator(),
+          "/calculator": (BuildContext context) => DolarCalculator(),
         },
       ),
     );

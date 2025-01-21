@@ -14,7 +14,7 @@ class Home extends StatefulWidget {
 
   final List<Widget> screens = [
     DashBoard(),
-    const DolarCalculator(),
+    DolarCalculator(),
   ];
 
   @override
@@ -49,23 +49,33 @@ class _HomeState extends State<Home> {
         }),
         children: widget.screens,
       ),
-      bottomNavigationBar: NavigationBar(
-        elevation: 15.0,
-        selectedIndex: currentIndex,
-        onDestinationSelected: (int targetIndex) {
-          setState(() {
-            currentIndex = targetIndex;
-            _pageController.animateToPage(targetIndex,
-                duration: const Duration(milliseconds: 150),
-                curve: Curves.easeOut);
-          });
-        },
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.home), label: "Principio"),
-          NavigationDestination(
-              icon: Icon(Icons.calculate), label: "Calculadora"),
-        ],
-      ),
+      bottomNavigationBar: navBar(),
+    );
+  }
+
+  NavigationBar navBar() {
+    return NavigationBar(
+      selectedIndex: currentIndex,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+      onDestinationSelected: (int targetIndex) {
+        setState(() {
+          currentIndex = targetIndex;
+          _pageController.animateToPage(targetIndex,
+              duration: const Duration(milliseconds: 150),
+              curve: Curves.easeOut);
+        });
+      },
+      height: 60.0,
+      destinations: const [
+        NavigationDestination(
+          icon: Icon(Icons.home),
+          label: "Principio",
+        ),
+        NavigationDestination(
+          icon: Icon(Icons.calculate),
+          label: "Calculadora",
+        ),
+      ],
     );
   }
 
@@ -77,7 +87,6 @@ class _HomeState extends State<Home> {
         height: 60.0,
       ),
       centerTitle: true,
-      leading: const Icon(Icons.menu),
       actions: [
         Padding(
           padding: EdgeInsets.only(right: Sizes().xxl),
