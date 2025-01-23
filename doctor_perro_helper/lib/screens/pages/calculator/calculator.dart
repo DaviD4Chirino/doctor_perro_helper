@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:flutter/material.dart';
+import 'package:math_expressions/math_expressions.dart';
 
 class DolarCalculator extends StatefulWidget {
   const DolarCalculator({super.key});
@@ -12,19 +13,52 @@ class DolarCalculator extends StatefulWidget {
 
 class _DolarCalculatorState extends State<DolarCalculator> {
   String questionString = "";
-  String answerString = "51";
+  String answerString = "0";
 
   String get question {
     return questionString;
   }
 
   set question(String newValue) {
+    if (newValue.contains("e")) {
+      if (questionString.isEmpty) {
+        return;
+      }
+      questionString = newValue.substring(0, questionString.length - 1);
+      if (questionString.isEmpty) {
+        answerString = "0";
+        questionString = "";
+        return;
+      }
+      updateAnswerString();
+      return;
+    }
+
+    if (newValue.contains("CE")) {
+      questionString = "";
+      answerString = "0";
+      return;
+    }
+
     bool multipleDecimals = hasMultipleDecimals(newValue);
     if (multipleDecimals) {
       return;
     }
     questionString = replaceDuplicatedSymbols(newValue);
     questionString = addZeroBeforeDot(questionString);
+
+    updateAnswerString();
+  }
+
+  void updateAnswerString() {
+    String calculatedExpression = calculateExpression(questionString);
+
+    if (calculatedExpression.isEmpty) {
+      // if its empty, usually a invalid operation, we want to NOT update the answer
+      return;
+    }
+
+    answerString = calculateExpression(questionString);
   }
 
   @override
@@ -53,9 +87,12 @@ class _DolarCalculatorState extends State<DolarCalculator> {
                     answerString,
                     style: TextStyle(
                       fontSize:
-                          Theme.of(context).textTheme.displayLarge?.fontSize,
+                          Theme.of(context).textTheme.displaySmall?.fontSize,
                     ),
                   ),
+                  SizedBox(
+                    height: 24.0,
+                  )
                 ],
               ),
             ),
@@ -82,6 +119,7 @@ class _DolarCalculatorState extends State<DolarCalculator> {
       CalculatorButtonData(
         color: Colors.redAccent,
         text: "CE",
+        value: "CLEAR",
         textColor: specialButtonTextColor,
       ),
       CalculatorButtonData(
@@ -209,6 +247,26 @@ class _DolarCalculatorState extends State<DolarCalculator> {
   }
 }
 
+String calculateExpression(String expression) {
+  String finalExpression = expression.replaceAll("x", "*");
+  finalExpression = finalExpression.replaceAll("—", "-");
+
+  if (!isValidMathExpression(finalExpression)) {
+    return "";
+  }
+
+  if (hasDivisionByZero(finalExpression)) {
+    return "División entre cero";
+  }
+
+  Parser p = Parser();
+  Expression exp = p.parse(finalExpression);
+  ContextModel cm = ContextModel();
+  double eval = exp.evaluate(EvaluationType.REAL, cm);
+
+  return eval.toString();
+}
+
 bool isValidExpression(String expression) {
   // Regular expression to detect two or more consecutive symbols
   RegExp regex = RegExp(r'([+\-—*x/%]{2,})');
@@ -223,6 +281,18 @@ bool isValidCommaExpression(String expression) {
 
   // Check if the expression matches the regex
   return !regex.hasMatch(expression);
+}
+
+bool isValidMathExpression(String expression) {
+  RegExp regex =
+      RegExp(r'^\s*-?\d+(\.\d+)?\s*([+\-%—x*/]\s*-?\d+(\.\d+)?\s*)*$');
+  return regex.hasMatch(expression);
+}
+
+// Function to check if there is any division by zero in the expression
+bool hasDivisionByZero(String expression) {
+  RegExp divisionByZero = RegExp(r'/\s*0+(\.0+)?\s*');
+  return divisionByZero.hasMatch(expression);
 }
 
 String replaceDuplicatedSymbols(String expression) {
@@ -265,12 +335,14 @@ class CalculatorButtonData {
       {required this.color,
       required this.text,
       required this.textColor,
+      this.value,
       this.icon});
   Color color;
   Color textColor;
   String text;
 
   IconData? icon;
+  String? value;
 }
 
 class CalculatorButton extends StatelessWidget {
