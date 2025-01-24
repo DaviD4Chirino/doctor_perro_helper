@@ -1,7 +1,5 @@
-import 'dart:developer';
-import 'dart:ffi';
-
 import 'package:doctor_perro_helper/config/border_size.dart';
+import 'package:doctor_perro_helper/utils/copy_clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:toastification/toastification.dart';
@@ -84,7 +82,7 @@ class CurrentDolarPrice extends StatelessWidget {
 }
 
 class PriceCalculatorDialog extends StatefulWidget {
-  PriceCalculatorDialog({
+  const PriceCalculatorDialog({
     super.key,
   });
   // fetch the price in the config, when we have it, for now:
@@ -117,14 +115,10 @@ class _PriceCalculatorDialogState extends State<PriceCalculatorDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Calcular precio"),
+      title: const Text("Calculadora Rápida"),
       content: ListTile(
         dense: true,
-        title: Text(
-          isInvalid
-              ? "Resultado"
-              : "${(calculatedAmount()).toStringAsFixed(2)}bs",
-        ),
+        title: const Text("Resultado"),
         subtitle: TextField(
           keyboardType: TextInputType.number,
           /* inputFormatters: [
@@ -148,8 +142,8 @@ class _PriceCalculatorDialogState extends State<PriceCalculatorDialog> {
       actions: [
         TextButton(
             onPressed: () {
-              Clipboard.setData(ClipboardData(
-                  text: "${(calculatedAmount()).toStringAsFixed(2)}bs"));
+              copy("${(calculatedAmount()).toStringAsFixed(2)}bs");
+
               toastification.show(
                 title: const Text("Monto copiado"),
                 autoCloseDuration: const Duration(seconds: 2),

@@ -1,10 +1,9 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/calculator_button_data.dart';
+import 'package:doctor_perro_helper/utils/copy_clipboard.dart';
 import 'package:doctor_perro_helper/utils/string_math.dart';
 import 'package:doctor_perro_helper/widgets/calculator_button.dart';
 import 'package:flutter/material.dart';
-import 'package:haptic_feedback/haptic_feedback.dart';
-import 'package:math_expressions/math_expressions.dart';
 import 'package:flutter/services.dart';
 import 'package:toastification/toastification.dart';
 
@@ -44,7 +43,7 @@ class _DolarCalculatorState extends State<DolarCalculator> {
       return;
     }
     if (newValue.contains("copy")) {
-      Clipboard.setData(ClipboardData(text: answerString));
+      copy(answerString);
 
       toastification.show(
         title: const Text("Monto copiado"),
