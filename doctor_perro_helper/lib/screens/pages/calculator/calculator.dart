@@ -1,8 +1,10 @@
-import 'dart:developer';
-
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:flutter/material.dart';
+import 'package:haptic_feedback/haptic_feedback.dart';
 import 'package:math_expressions/math_expressions.dart';
+import 'package:flutter/services.dart';
+import 'package:native_toast/native_toast.dart';
+import 'package:toastification/toastification.dart';
 
 class DolarCalculator extends StatefulWidget {
   const DolarCalculator({super.key});
@@ -37,6 +39,21 @@ class _DolarCalculatorState extends State<DolarCalculator> {
     if (newValue.contains("CE")) {
       questionString = "";
       answerString = "0";
+      return;
+    }
+    if (newValue.contains("copy")) {
+      Clipboard.setData(ClipboardData(text: answerString));
+
+      toastification.show(
+        title: const Text("Monto copiado"),
+        autoCloseDuration: const Duration(seconds: 2),
+        type: ToastificationType.success,
+        style: ToastificationStyle.fillColored,
+        primaryColor: Theme.of(context).colorScheme.secondary,
+        foregroundColor: Theme.of(context).colorScheme.onSecondary,
+        showProgressBar: false,
+        alignment: Alignment.bottomCenter,
+      );
       return;
     }
 
@@ -90,7 +107,7 @@ class _DolarCalculatorState extends State<DolarCalculator> {
                           Theme.of(context).textTheme.displaySmall?.fontSize,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 24.0,
                   )
                 ],
@@ -222,6 +239,10 @@ class _DolarCalculatorState extends State<DolarCalculator> {
       ),
     ];
 
+    Future<void> vibrate() async {
+      await Haptics.vibrate(HapticsType.medium);
+    }
+
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4,
@@ -240,6 +261,7 @@ class _DolarCalculatorState extends State<DolarCalculator> {
         onTap: () {
           setState(() {
             question += buttons[index].text;
+            HapticFeedback.lightImpact();
           });
         },
       ),
@@ -376,37 +398,6 @@ class CalculatorButton extends StatelessWidget {
                             Theme.of(context).textTheme.headlineSmall?.fontSize,
                       ),
                     )),
-        ),
-      ),
-    );
-  }
-}
-
-class CalculatorButtonIcon extends StatelessWidget {
-  const CalculatorButtonIcon({
-    super.key,
-    required this.buttonData,
-    required this.onTap,
-    required this.icon,
-  });
-
-  final CalculatorButtonData buttonData;
-  final IconData icon;
-  final void Function() onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(Sizes().roundedSmall),
-        child: Container(
-          color: buttonData.color,
-          child: Center(
-            child: Icon(icon,
-                size: Theme.of(context).textTheme.headlineSmall?.fontSize,
-                color: buttonData.textColor),
-          ),
         ),
       ),
     );
