@@ -1,7 +1,9 @@
 import 'package:doctor_perro_helper/config/themes/dark_theme.dart';
 import 'package:doctor_perro_helper/config/themes/light_theme.dart';
+import 'package:doctor_perro_helper/screens/pages/calculator/calculator.dart';
 import 'package:doctor_perro_helper/screens/pages/home/home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:toastification/toastification.dart';
 
@@ -14,14 +16,47 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return ToastificationWrapper(
       child: MaterialApp(
         theme: lightTheme,
         darkTheme: darkTheme,
         title: "Dr.Perro Helper",
         initialRoute: "/",
-        routes: {"/": (BuildContext context) => Home()},
+        routes: {
+          "/": (BuildContext context) => Home(),
+          "/calculator": (BuildContext context) => DolarCalculator(),
+        },
       ),
     );
   }
 }
+
+// class NavBar extends StatefulWidget {
+//   const NavBar({super.key});
+
+//   @override
+//   // ignore: library_private_types_in_public_api
+//   _NavBarState createState() => _NavBarState();
+// }
+
+// class _NavBarState extends State<NavBar> {
+//   int currentIndex = 0;
+
+//   List routes = [
+//     "/",
+//     "/calculator"
+//   ];
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return NavigationBar(
+
+//       selectedIndex: currentIndex,
+//       onDestinationSelected: (int index) => Navigate.,
+//     );
+//   }
+// }
