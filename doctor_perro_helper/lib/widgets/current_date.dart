@@ -21,8 +21,8 @@ class CurrentDateText extends StatelessWidget {
       padding: EdgeInsets.only(top: Sizes().xxl),
       child: Text(
         "$week, $fullYear",
-        style: const TextStyle(
-          fontSize: 24.0,
+        style: TextStyle(
+          fontSize: Theme.of(context).textTheme.headlineMedium?.fontSize,
           fontWeight: FontWeight.bold,
         ),
       ),

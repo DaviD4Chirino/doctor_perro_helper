@@ -1,6 +1,5 @@
 import 'package:doctor_perro_helper/config/themes/dark_theme.dart';
 import 'package:doctor_perro_helper/config/themes/light_theme.dart';
-import 'package:doctor_perro_helper/screens/pages/calculator/calculator.dart';
 import 'package:doctor_perro_helper/screens/pages/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,7 +27,6 @@ class MainApp extends StatelessWidget {
         initialRoute: "/",
         routes: {
           "/": (BuildContext context) => Home(),
-          "/calculator": (BuildContext context) => DolarCalculator(),
         },
       ),
     );
