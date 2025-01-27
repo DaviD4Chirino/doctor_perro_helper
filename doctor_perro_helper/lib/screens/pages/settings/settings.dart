@@ -22,14 +22,14 @@ class SettingsPage extends StatelessWidget {
             ),
           ),
           SettingButton(
-            child: ListTile(
+            child: const ListTile(
               title: Text("Precio del dolar"),
               leading: Icon(Icons.attach_money),
             ),
             onTap: () {
               showDialog(
                 context: context,
-                builder: (BuildContext context) => ChangeDolarPrice(),
+                builder: (BuildContext context) => const ChangeDolarPrice(),
               );
             },
           ),
@@ -40,7 +40,7 @@ class SettingsPage extends StatelessWidget {
 }
 
 class SettingButton extends StatelessWidget {
-  SettingButton({super.key, required this.child, required this.onTap});
+  const SettingButton({super.key, required this.child, required this.onTap});
 
   final Widget child;
 

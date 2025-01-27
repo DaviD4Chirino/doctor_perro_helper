@@ -69,7 +69,8 @@ class CurrentDolarPrice extends StatelessWidget {
               onTap: () {
                 showDialog(
                   context: context,
-                  builder: (BuildContext context) => PriceCalculatorDialog(),
+                  builder: (BuildContext context) =>
+                      const PriceCalculatorDialog(),
                 );
               },
               borderRadius: BorderRadius.circular(Sizes().roundedSmall),

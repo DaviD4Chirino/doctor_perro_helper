@@ -1,13 +1,32 @@
 import 'package:doctor_perro_helper/config/themes/dark_theme.dart';
 import 'package:doctor_perro_helper/config/themes/light_theme.dart';
+import 'package:doctor_perro_helper/models/providers/settings.dart';
+import 'package:doctor_perro_helper/models/use_shared_preferences.dart';
 import 'package:doctor_perro_helper/screens/pages/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 
-void main() {
-  initializeDateFormatting('es_ES').then((_) => runApp(const MainApp()));
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await UseSharedPreferences.init();
+  SettingsModel().init();
+
+  initializeDateFormatting('es_ES').then((_) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
+    return runApp(
+      ChangeNotifierProvider(
+        create: (context) => SettingsModel(),
+        child: const MainApp(),
+      ),
+    );
+  });
 }
 
 class MainApp extends StatelessWidget {
@@ -15,10 +34,6 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
     return ToastificationWrapper(
       child: MaterialApp(
         theme: lightTheme,
