@@ -5,31 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsModel extends ChangeNotifier {
-  double _dolarPrice = 0.0;
-
-  get dolarPrice =>
+  double get dolarPrice =>
       UseSharedPreferences.preferences.getDouble("dolar_price") ?? 60.0;
-
-  /* Future<double> get dolarPrice async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    double price = preferences.getDouble("dolar_price") ?? 0.0;
-    return price;
-  } */
+  set dolarPrice(double value) {
+    dolarPrice = value;
+  }
 
   void changeDolarPrice(double amount) async {
     UseSharedPreferences.preferences.setDouble("dolar_price", amount);
-    _dolarPrice = amount;
-    log("changeDolarPrice - ${UseSharedPreferences.preferences.getDouble("dolar_price")}");
-    log("changeDolarPrice - ${UseSharedPreferences.preferences.getDouble("dolar_price")}");
+    dolarPrice = amount;
     notifyListeners();
   }
 
   Future<void> fetchDolarPrice() async {
-    _dolarPrice =
+    dolarPrice =
         UseSharedPreferences.preferences.getDouble("dolar_price") ?? 0.0;
-    log("fetchDolarPrice - ${UseSharedPreferences.preferences.getDouble("dolar_price")}");
-    log("fetchDolarPrice - dolarPrice: $dolarPrice");
-
     notifyListeners();
   }
 

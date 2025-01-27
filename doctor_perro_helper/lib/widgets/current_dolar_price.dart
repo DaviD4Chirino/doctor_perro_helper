@@ -70,7 +70,7 @@ class CurrentDolarPrice extends StatelessWidget {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) =>
-                      const PriceCalculatorDialog(),
+                      const QuickDolarCalculator(),
                 );
               },
               borderRadius: BorderRadius.circular(Sizes().roundedSmall),
@@ -82,18 +82,18 @@ class CurrentDolarPrice extends StatelessWidget {
   }
 }
 
-class PriceCalculatorDialog extends StatefulWidget {
-  const PriceCalculatorDialog({
+class QuickDolarCalculator extends StatefulWidget {
+  const QuickDolarCalculator({
     super.key,
   });
   // fetch the price in the config, when we have it, for now:
   final double dolarPrice = 60.0;
 
   @override
-  State<PriceCalculatorDialog> createState() => _PriceCalculatorDialogState();
+  State<QuickDolarCalculator> createState() => _QuickDolarCalculatorState();
 }
 
-class _PriceCalculatorDialogState extends State<PriceCalculatorDialog> {
+class _QuickDolarCalculatorState extends State<QuickDolarCalculator> {
   String fieldValue = "0";
   bool isInvalid = true;
 

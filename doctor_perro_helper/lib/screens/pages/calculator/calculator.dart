@@ -175,6 +175,7 @@ class _DolarCalculatorState extends State<DolarCalculator> {
       CalculatorButtonData(
         color: specialButtonColor,
         text: "/",
+        // icon: Icons.divide,
         textColor: specialButtonTextColor,
       ),
       CalculatorButtonData(
@@ -238,6 +239,7 @@ class _DolarCalculatorState extends State<DolarCalculator> {
         color: specialButtonColor,
         text: "+",
         textColor: specialButtonTextColor,
+        icon: Icons.add,
       ),
     ];
 

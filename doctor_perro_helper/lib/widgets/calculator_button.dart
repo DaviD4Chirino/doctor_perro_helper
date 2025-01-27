@@ -22,30 +22,26 @@ class CalculatorButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<SettingsModel>(builder: (context, settings, child) {
-      return InkWell(
-        onTap: () => onTap(text),
-        splashColor:
-            Theme.of(context).colorScheme.onSurfaceVariant.withAlpha(70),
-        child: ClipRRect(
+      return Container(
+        decoration: BoxDecoration(
+          color: buttonData.color,
           borderRadius: BorderRadius.circular(Sizes().roundedSmall),
-          child: Container(
-            color: buttonData.color,
-            child: Center(
-                child: buttonData.icon != null
-                    ? Icon(buttonData.icon,
-                        size:
-                            Theme.of(context).textTheme.headlineSmall?.fontSize,
-                        color: buttonData.textColor)
-                    : Text(
-                        text,
-                        style: TextStyle(
-                          color: buttonData.textColor,
-                          fontSize: Theme.of(context)
-                              .textTheme
-                              .headlineSmall
-                              ?.fontSize,
-                        ),
-                      )),
+        ),
+        child: TextButton(
+          onPressed: () => onTap(text),
+          child: Center(
+            child: buttonData.icon != null
+                ? Icon(buttonData.icon,
+                    size: Theme.of(context).textTheme.headlineSmall?.fontSize,
+                    color: buttonData.textColor)
+                : Text(
+                    text,
+                    style: TextStyle(
+                      color: buttonData.textColor,
+                      fontSize:
+                          Theme.of(context).textTheme.headlineSmall?.fontSize,
+                    ),
+                  ),
           ),
         ),
       );
