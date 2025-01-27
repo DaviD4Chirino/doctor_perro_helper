@@ -82,3 +82,8 @@ String addZeroBeforeDot(String expression) {
     return '${match.group(1)}0${match.group(2)}';
   });
 }
+
+String removePaddingZero(String expression) {
+  final RegExp regex = RegExp(r'([.]*0)(?!.*\d)');
+  return expression.replaceAll(regex, "");
+}

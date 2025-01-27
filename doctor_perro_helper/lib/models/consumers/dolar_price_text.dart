@@ -1,9 +1,11 @@
 import 'package:doctor_perro_helper/models/providers/settings.dart';
+import 'package:doctor_perro_helper/utils/string_math.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class DolarPriceText extends StatelessWidget {
-  const DolarPriceText({super.key, this.style});
+  DolarPriceText({super.key, this.style});
+  final RegExp regex = RegExp(r'([.]*0)(?!.*\d)');
 
   final TextStyle? style;
 
@@ -11,7 +13,7 @@ class DolarPriceText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<SettingsModel>(builder: (context, settings, child) {
       return Text(
-        settings.dolarPrice,
+        removePaddingZero(settings.dolarPrice.toString()),
         style: style,
       );
     });

@@ -1,4 +1,5 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
+import 'package:doctor_perro_helper/models/consumers/dolar_price_text.dart';
 import 'package:doctor_perro_helper/utils/copy_clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,8 +26,7 @@ class CurrentDolarPrice extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.baseline,
                 textBaseline: TextBaseline.alphabetic,
                 children: [
-                  Text(
-                    "60",
+                  DolarPriceText(
                     style: TextStyle(
                       fontSize: 60.0,
                       color: Theme.of(context).colorScheme.primary,

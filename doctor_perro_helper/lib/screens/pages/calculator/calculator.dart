@@ -221,6 +221,7 @@ class _DolarCalculatorState extends State<DolarCalculator> {
         color: specialButtonColor,
         // Change to the dolar price
         text: "x60",
+        dolarPriceMultiplier: true,
         textColor: specialButtonTextColor,
       ),
       CalculatorButtonData(
@@ -255,10 +256,10 @@ class _DolarCalculatorState extends State<DolarCalculator> {
       itemCount: buttons.length,
       itemBuilder: (BuildContext context, int index) => CalculatorButton(
         buttonData: buttons[index],
-        onTap: () {
+        onTap: (buttonValue) {
+          HapticFeedback.lightImpact();
           setState(() {
-            question += buttons[index].text;
-            HapticFeedback.lightImpact();
+            question += buttonValue;
           });
         },
       ),
