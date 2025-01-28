@@ -1,5 +1,6 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
+import 'package:doctor_perro_helper/utils/string_math.dart';
 import 'package:flutter/material.dart';
 
 class MenuListItem extends StatelessWidget {
@@ -47,7 +48,7 @@ class MenuListItem extends StatelessWidget {
         // This will become a checkmark when the user taps on it
         leading: const Icon(Icons.fastfood),
         trailing: Text(
-          "${plate.price}\$",
+          "${removePaddingZero(plate.price.toString())}\$",
           style: TextStyle(
               fontSize: 18.0, color: Theme.of(context).colorScheme.primary),
         ),

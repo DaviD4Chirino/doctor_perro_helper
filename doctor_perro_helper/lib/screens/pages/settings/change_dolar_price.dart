@@ -4,35 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ChangeDolarPrice extends StatelessWidget {
   const ChangeDolarPrice({super.key});
-  /*  String validateValue(String expression, String defaultValue) {
-    if (!isValidCommaExpression(expression)) {
-      return defaultValue;
-    }
-    return expression;
-  } */
 
-  // late double dolarPrice = 0.0;
-
-  /* late SharedPreferences prefs;
-
-  Future<void> getPrefs() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    if (!_prefs.containsKey("dolar_price")) {
-      _prefs.setDouble("dolar_price", 60.0);
-      return;
-    }
-
-    setState(() {
-      prefs = _prefs;
-      dolarPrice = _prefs.getDouble("dolar_price") ?? 0.0;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getPrefs();
-  } */
   @override
   Widget build(BuildContext context) {
     return const AlertDialog(
@@ -51,25 +23,35 @@ class ChangePriceTextField extends ConsumerStatefulWidget {
 }
 
 class _ChangePriceTextFieldState extends ConsumerState<ChangePriceTextField> {
+  String fieldValue = "0";
+  bool isInvalid = true;
+
+  set textFieldValue(String currentTextFieldValue) {
+    isInvalid = !RegExp(r"^[0-9]+(\.[0-9]+)?$").hasMatch(currentTextFieldValue);
+    fieldValue = currentTextFieldValue;
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextField(
       autofocus: true,
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
-          suffixText: "${ref.watch(dolarPriceNotifierProvider)}bs"),
+        suffixText: "${ref.watch(dolarPriceNotifierProvider)}bs",
+        errorText: isInvalid ? "Monto inválido" : null,
+      ),
       onSubmitted: (String value) {
+        if (isInvalid) {
+          Navigator.pop(context);
+          return;
+        }
+
         double parsed = double.tryParse(value) ?? 0.0;
         ref.read(dolarPriceNotifierProvider.notifier).changePrice(parsed);
         Navigator.pop(context);
       },
-      /* onChanged: (String value) {
-          double parsed = double.parse(value);
-          settings.changeDolarPrice(parsed);
-          setState(() {
-            dolarPrice = parsed;
-          });
-        }, */
+      onChanged: (String value) => setState(
+          () => isInvalid = !RegExp(r"^[0-9]+(\.[0-9]+)?$").hasMatch(value)),
     );
   }
 }
