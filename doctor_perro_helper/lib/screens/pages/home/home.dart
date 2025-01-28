@@ -93,12 +93,6 @@ class _HomeState extends State<Home> {
         height: 60.0,
       ),
       centerTitle: true,
-      actions: [
-        Padding(
-          padding: EdgeInsets.only(right: Sizes().xxl),
-          child: const Icon(Icons.search),
-        ),
-      ],
     );
   }
 }

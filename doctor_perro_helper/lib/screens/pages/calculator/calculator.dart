@@ -94,18 +94,28 @@ class _DolarCalculatorState extends State<DolarCalculator> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(
-                    questionString,
-                    style: TextStyle(
-                      fontSize:
-                          Theme.of(context).textTheme.titleMedium?.fontSize,
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    reverse: true,
+                    padding: EdgeInsets.symmetric(horizontal: Sizes().xl),
+                    child: Text(
+                      questionString,
+                      style: TextStyle(
+                        fontSize:
+                            Theme.of(context).textTheme.titleMedium?.fontSize,
+                      ),
                     ),
                   ),
-                  Text(
-                    answerString,
-                    style: TextStyle(
-                      fontSize:
-                          Theme.of(context).textTheme.displaySmall?.fontSize,
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.symmetric(horizontal: Sizes().xl),
+                    reverse: true,
+                    child: Text(
+                      answerString,
+                      style: TextStyle(
+                        fontSize:
+                            Theme.of(context).textTheme.displaySmall?.fontSize,
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -250,9 +260,8 @@ class _DolarCalculatorState extends State<DolarCalculator> {
         crossAxisSpacing: Sizes().large,
         mainAxisSpacing: Sizes().large,
       ),
-      padding: EdgeInsets.only(
-        left: Sizes().xl,
-        right: Sizes().xl,
+      padding: EdgeInsets.symmetric(
+        horizontal: Sizes().xl,
       ),
       physics: const NeverScrollableScrollPhysics(),
       itemCount: buttons.length,

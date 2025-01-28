@@ -3,9 +3,9 @@ import 'package:doctor_perro_helper/models/calculator_button_data.dart';
 import 'package:doctor_perro_helper/models/providers/settings.dart';
 import 'package:doctor_perro_helper/utils/string_math.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CalculatorButton extends StatelessWidget {
+class CalculatorButton extends ConsumerWidget {
   const CalculatorButton({
     super.key,
     required this.buttonData,
@@ -15,36 +15,33 @@ class CalculatorButton extends StatelessWidget {
   final CalculatorButtonData buttonData;
   final void Function(String buttonValue) onTap;
 
-  get text => buttonData.dolarPriceMultiplier
-      ? "x${removePaddingZero(SettingsModel().dolarPrice.toString())}"
-      : buttonData.text;
-
   @override
-  Widget build(BuildContext context) {
-    return Consumer<SettingsModel>(builder: (context, settings, child) {
-      return Container(
-        decoration: BoxDecoration(
-          color: buttonData.color,
-          borderRadius: BorderRadius.circular(Sizes().roundedSmall),
-        ),
-        child: TextButton(
-          onPressed: () => onTap(text),
-          child: Center(
-            child: buttonData.icon != null
-                ? Icon(buttonData.icon,
-                    size: Theme.of(context).textTheme.headlineSmall?.fontSize,
-                    color: buttonData.textColor)
-                : Text(
-                    text,
-                    style: TextStyle(
-                      color: buttonData.textColor,
-                      fontSize:
-                          Theme.of(context).textTheme.headlineSmall?.fontSize,
-                    ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    String text = buttonData.dolarPriceMultiplier
+        ? "x${removePaddingZero(ref.watch(dolarPriceNotifierProvider).toString())}"
+        : buttonData.text;
+    return Container(
+      decoration: BoxDecoration(
+        color: buttonData.color,
+        borderRadius: BorderRadius.circular(Sizes().roundedSmall),
+      ),
+      child: TextButton(
+        onPressed: () => onTap(text),
+        child: Center(
+          child: buttonData.icon != null
+              ? Icon(buttonData.icon,
+                  size: Theme.of(context).textTheme.headlineSmall?.fontSize,
+                  color: buttonData.textColor)
+              : Text(
+                  text,
+                  style: TextStyle(
+                    color: buttonData.textColor,
+                    fontSize:
+                        Theme.of(context).textTheme.headlineSmall?.fontSize,
                   ),
-          ),
+                ),
         ),
-      );
-    });
+      ),
+    );
   }
 }

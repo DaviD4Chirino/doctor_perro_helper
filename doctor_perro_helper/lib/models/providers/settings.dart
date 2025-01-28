@@ -1,29 +1,17 @@
-import 'dart:developer';
-
 import 'package:doctor_perro_helper/models/use_shared_preferences.dart';
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class SettingsModel extends ChangeNotifier {
-  double get dolarPrice =>
-      UseSharedPreferences.preferences.getDouble("dolar_price") ?? 60.0;
-  set dolarPrice(double value) {
-    dolarPrice = value;
+part "settings.g.dart";
+
+@riverpod
+class DolarPriceNotifier extends _$DolarPriceNotifier {
+  @override
+  double build() {
+    return UseSharedPreferences.preferences.getDouble("dolar_price") ?? 60.0;
   }
 
-  void changeDolarPrice(double amount) async {
+  void changePrice(double amount) {
+    state = amount;
     UseSharedPreferences.preferences.setDouble("dolar_price", amount);
-    dolarPrice = amount;
-    notifyListeners();
-  }
-
-  Future<void> fetchDolarPrice() async {
-    dolarPrice =
-        UseSharedPreferences.preferences.getDouble("dolar_price") ?? 0.0;
-    notifyListeners();
-  }
-
-  void init() {
-    fetchDolarPrice();
   }
 }

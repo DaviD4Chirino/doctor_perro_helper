@@ -1,8 +1,9 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/consumers/dolar_price_text.dart';
+import 'package:doctor_perro_helper/models/providers/settings.dart';
 import 'package:doctor_perro_helper/utils/copy_clipboard.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toastification/toastification.dart';
 
 class CurrentDolarPrice extends StatelessWidget {
@@ -82,24 +83,21 @@ class CurrentDolarPrice extends StatelessWidget {
   }
 }
 
-class QuickDolarCalculator extends StatefulWidget {
-  const QuickDolarCalculator({
-    super.key,
-  });
-  // fetch the price in the config, when we have it, for now:
-  final double dolarPrice = 60.0;
+class QuickDolarCalculator extends ConsumerStatefulWidget {
+  const QuickDolarCalculator({super.key});
 
   @override
-  State<QuickDolarCalculator> createState() => _QuickDolarCalculatorState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _QuickDolarCalculatorState();
 }
 
-class _QuickDolarCalculatorState extends State<QuickDolarCalculator> {
+class _QuickDolarCalculatorState extends ConsumerState<QuickDolarCalculator> {
   String fieldValue = "0";
   bool isInvalid = true;
 
   double amount = 0.0;
 
-  double calculatedAmount() => amount * widget.dolarPrice;
+  double calculatedAmount() => amount * ref.watch(dolarPriceNotifierProvider);
 
   String get textFieldValue {
     return fieldValue;
