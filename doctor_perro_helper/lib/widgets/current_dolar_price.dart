@@ -97,7 +97,7 @@ class _QuickDolarCalculatorState extends ConsumerState<QuickDolarCalculator> {
 
   double amount = 0.0;
 
-  double calculatedAmount() => amount;
+  double calculatedAmount() => amount * ref.watch(dolarPriceNotifierProvider);
 
   String get textFieldValue {
     return fieldValue;
@@ -114,7 +114,7 @@ class _QuickDolarCalculatorState extends ConsumerState<QuickDolarCalculator> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(ref.watch(dolarPriceProvider).toString()),
+      title: const Text("Calculadora Rápida"),
       content: ListTile(
         dense: true,
         title: const Text("Resultado"),

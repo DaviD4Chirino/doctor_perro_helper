@@ -7,14 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await UseSharedPreferences.init();
   await initializeDateFormatting('es_ES');
-  SettingsModel().init();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

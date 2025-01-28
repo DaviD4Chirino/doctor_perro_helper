@@ -11,7 +11,7 @@ class DolarPriceText extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Text(
-      removePaddingZero(ref.watch(dolarPriceProvider).toString()),
+      removePaddingZero(ref.watch(dolarPriceNotifierProvider).toString()),
       style: style,
     );
   }
