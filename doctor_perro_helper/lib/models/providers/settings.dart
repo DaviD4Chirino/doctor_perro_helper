@@ -1,8 +1,17 @@
-import 'dart:developer';
-
 import 'package:doctor_perro_helper/models/use_shared_preferences.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class DolarPriceNotifier extends Notifier<double> {
+  @override
+  double build() {
+    return 60.0;
+  }
+}
+
+final dolarPriceProvider = NotifierProvider<DolarPriceNotifier, double>(() {
+  return DolarPriceNotifier();
+});
 
 class SettingsModel extends ChangeNotifier {
   double get dolarPrice =>

@@ -5,6 +5,7 @@ import 'package:doctor_perro_helper/models/use_shared_preferences.dart';
 import 'package:doctor_perro_helper/screens/pages/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
@@ -12,21 +13,18 @@ import 'package:toastification/toastification.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await UseSharedPreferences.init();
+  await initializeDateFormatting('es_ES');
   SettingsModel().init();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
-  initializeDateFormatting('es_ES').then((_) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-
-    return runApp(
-      ChangeNotifierProvider(
-        create: (context) => SettingsModel(),
-        child: const MainApp(),
-      ),
-    );
-  });
+  return runApp(
+    const ProviderScope(
+      child: MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {

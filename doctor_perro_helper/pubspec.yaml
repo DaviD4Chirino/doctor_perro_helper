@@ -10,11 +10,13 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_launcher_icons: ^0.14.2
+  flutter_riverpod: ^2.6.1
   haptic_feedback: ^0.5.1+1
   intl: ^0.20.1
   math_expressions: ^2.6.0
   native_toast: ^0.0.2
   provider: ^6.1.2
+  riverpod_annotation: ^2.6.1
   shared_preferences: ^2.4.0
   toastification: ^2.3.0
 
@@ -22,6 +24,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+  riverpod_generator: ^2.6.4
+  build_runner: ^2.4.14
+  custom_lint: ^0.7.1
+  riverpod_lint: ^2.6.4
 
 flutter:
   uses-material-design: true
