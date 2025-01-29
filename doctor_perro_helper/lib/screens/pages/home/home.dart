@@ -8,6 +8,76 @@ import 'package:doctor_perro_helper/widgets/menu_list_item.dart';
 import 'package:doctor_perro_helper/widgets/todays_earnings.dart';
 import 'package:flutter/material.dart';
 
+final List<Plate> plates = [
+  Plate(
+    code: "R1",
+    title: "Perro Normal",
+    ingredients: [
+      "Ensalada",
+      "Papas",
+      "Queso de año",
+      "Salsa de ajo",
+      "Salsa de Tomate",
+    ],
+    price: 2.0,
+  ),
+  Plate(
+    code: "R2",
+    title: "Perro Especial",
+    ingredients: [
+      "Queso Kraft",
+      "Tocino",
+      "Ensalada",
+      "Papas",
+      "Queso de año",
+      "Salsa de ajo",
+      "Salsa de Tomate",
+    ],
+    price: 3.0,
+  ),
+  Plate(
+    code: "R3",
+    title: "Hamburguesa",
+    ingredients: [
+      "Carne",
+      "Salsa de la casa",
+      "Tocino",
+      "Queso Kraft",
+    ],
+    price: 3.5,
+  ),
+  Plate(
+    code: "R4",
+    title: "Hamburguesa Doble",
+    ingredients: [
+      "Doble Carne",
+      "Salsa de la casa",
+      "Tocino",
+      "Queso Kraft",
+    ],
+    price: 6.0,
+  ),
+  Plate(
+    code: "R5",
+    title: "Salchipapas",
+    ingredients: [
+      "Papas Fritas",
+      "Salchicha",
+      "Tocino",
+      "Maíz",
+      "Queso de res",
+      "Queso de Año",
+    ],
+    price: 3.0,
+  ),
+  Plate(
+    code: "R6",
+    title: "Servicio de Papas",
+    ingredients: ["Papas Fritas", "Salsa de Tomate"],
+    price: 3.0,
+  ),
+];
+
 class Home extends StatefulWidget {
   Home({
     super.key,
@@ -98,79 +168,9 @@ class _HomeState extends State<Home> {
 }
 
 class DashBoard extends StatelessWidget {
-  DashBoard({
+  const DashBoard({
     super.key,
   });
-
-  final List<Plate> plates = [
-    Plate(
-      code: "R1",
-      title: "Perro Normal",
-      ingredients: [
-        "Ensalada",
-        "Papas",
-        "Queso de año",
-        "Salsa de ajo",
-        "Salsa de Tomate",
-      ],
-      price: 2.0,
-    ),
-    Plate(
-      code: "R2",
-      title: "Perro Especial",
-      ingredients: [
-        "Queso Kraft",
-        "Tocino",
-        "Ensalada",
-        "Papas",
-        "Queso de año",
-        "Salsa de ajo",
-        "Salsa de Tomate",
-      ],
-      price: 3.0,
-    ),
-    Plate(
-      code: "R3",
-      title: "Hamburguesa",
-      ingredients: [
-        "Carne",
-        "Salsa de la casa",
-        "Tocino",
-        "Queso Kraft",
-      ],
-      price: 3.5,
-    ),
-    Plate(
-      code: "R4",
-      title: "Hamburguesa Doble",
-      ingredients: [
-        "Doble Carne",
-        "Salsa de la casa",
-        "Tocino",
-        "Queso Kraft",
-      ],
-      price: 6.0,
-    ),
-    Plate(
-      code: "R5",
-      title: "Salchipapas",
-      ingredients: [
-        "Papas Fritas",
-        "Salchicha",
-        "Tocino",
-        "Maíz",
-        "Queso de res",
-        "Queso de Año",
-      ],
-      price: 3.0,
-    ),
-    Plate(
-      code: "R6",
-      title: "Servicio de Papas",
-      ingredients: ["Papas Fritas", "Salsa de Tomate"],
-      price: 3.0,
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {

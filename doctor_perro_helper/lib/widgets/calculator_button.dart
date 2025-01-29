@@ -32,12 +32,15 @@ class CalculatorButton extends ConsumerWidget {
               ? Icon(buttonData.icon,
                   size: Theme.of(context).textTheme.headlineSmall?.fontSize,
                   color: buttonData.textColor)
-              : Text(
-                  text,
-                  style: TextStyle(
-                    color: buttonData.textColor,
-                    fontSize:
-                        Theme.of(context).textTheme.headlineSmall?.fontSize,
+              : FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    text,
+                    style: TextStyle(
+                      color: buttonData.textColor,
+                      fontSize:
+                          Theme.of(context).textTheme.headlineSmall?.fontSize,
+                    ),
                   ),
                 ),
         ),
