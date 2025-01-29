@@ -32,7 +32,7 @@ class MainApp extends StatelessWidget {
     return ToastificationWrapper(
       child: MaterialApp(
         theme: lightTheme,
-        // darkTheme: darkTheme,
+        darkTheme: darkTheme,
         title: "Dr.Perro Helper",
         initialRoute: "/",
         routes: {
