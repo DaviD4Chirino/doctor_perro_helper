@@ -1,30 +1,29 @@
 import 'package:doctor_perro_helper/config/themes/shared_theme_data.dart';
 import 'package:flutter/material.dart';
 
-// TODO: Fix the mistaching Light color Scheme
 const ColorScheme lightColorScheme = ColorScheme(
   brightness: Brightness.light,
-  primary: Color(0xFFEDB8F5),
-  onPrimary: Color(0xFFFFFFFF),
-  primaryContainer: Color(0xFFCBC0E6),
+  primary: Color(0xFFFD9D43),
+  onPrimary: Color(0xFF140F0F),
+  primaryContainer: Color(0xFFFFCC7E),
   onPrimaryContainer: Color(0xFF201933),
-  secondary: Color(0xFF514097),
-  onSecondary: Color(0xFFFFFFFF),
-  secondaryContainer: Color(0xFFDCD8E6),
-  onSecondaryContainer: Color(0xFF2C2933),
-  tertiary: Color(0xFF61B0C9),
-  onTertiary: Color(0xFFFFFFFF),
+  secondary: Color(0xFFFFBD80),
+  onSecondary: Color(0xFF140F0F),
+  secondaryContainer: Color(0xFFFFA958),
+  onSecondaryContainer: Color(0xFF140F0F),
+  tertiary: Color(0xFFEE4845),
+  onTertiary: Color(0xFFF2F0E8),
   tertiaryContainer: Color(0xFFE6CDD5),
   onTertiaryContainer: Color(0xFF332227),
   error: Color(0xFFB3261E),
-  onError: Color(0xFFFFFFFF),
+  onError: Color(0xFF4C100D),
   errorContainer: Color(0xFFE6ACA9),
   onErrorContainer: Color(0xFF330B09),
-  surface: Color(0xFFFFFFFF),
-  onSurface: Color(0xFF323233),
-  surfaceContainerHighest: Color(0xFFe0dee6),
-  onSurfaceVariant: Color(0xFF5e5c66),
-  outline: Color(0xFF8e8999),
+  surface: Color(0xFFE9ECEF),
+  onSurface: Color(0xFF212529),
+  surfaceContainerHighest: Color(0xFFFEFDFF),
+  onSurfaceVariant: Color(0xFF212529),
+  outline: Color(0xFF212529),
 );
 
 final sharedThemeData = SharedThemeData();
