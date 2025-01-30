@@ -15,10 +15,33 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        padding: EdgeInsets.symmetric(
-          vertical: Sizes().xxl,
-          horizontal: Sizes().large,
+      body: SafeArea(
+        child: ListView(
+          padding: EdgeInsets.symmetric(
+            vertical: Sizes().xxl,
+            horizontal: Sizes().large,
+          ),
+          children: [
+            Text(
+              "Ajustes",
+              style: TextStyle(
+                fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SettingButton(
+              child: const ListTile(
+                title: Text("Precio del dolar"),
+                leading: Icon(Icons.attach_money),
+              ),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => const ChangeDolarPrice(),
+                );
+              },
+            ),
+          ],
         ),
         children: [
           Text(

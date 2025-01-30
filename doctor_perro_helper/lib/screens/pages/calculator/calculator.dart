@@ -80,7 +80,7 @@ class _DolarCalculatorState extends State<DolarCalculator> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.end,

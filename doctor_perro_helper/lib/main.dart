@@ -83,29 +83,3 @@ class _MainAppState extends ConsumerState<MainApp> {
     );
   }
 }
-
-// class NavBar extends StatefulWidget {
-//   const NavBar({super.key});
-
-//   @override
-//   // ignore: library_private_types_in_public_api
-//   _NavBarState createState() => _NavBarState();
-// }
-
-// class _NavBarState extends State<NavBar> {
-//   int currentIndex = 0;
-
-//   List routes = [
-//     "/",
-//     "/calculator"
-//   ];
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return NavigationBar(
-
-//       selectedIndex: currentIndex,
-//       onDestinationSelected: (int index) => Navigate.,
-//     );
-//   }
-// }
