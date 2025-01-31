@@ -18,6 +18,7 @@ class MenuListItem extends StatelessWidget {
         color: Theme.of(context).colorScheme.surfaceContainerHighest,
       ),
       child: ListTile(
+        dense: true,
         title: Row(
           children: [
             Text(
