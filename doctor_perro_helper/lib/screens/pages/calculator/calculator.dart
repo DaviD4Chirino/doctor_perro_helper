@@ -114,20 +114,25 @@ class _DolarCalculatorState extends State<DolarCalculator> {
                       ),
                     ),
                   ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.symmetric(horizontal: Sizes().xl),
-                    reverse: true,
-                    child: Text(
-                      answerString,
-                      style: TextStyle(
-                        fontSize:
-                            Theme.of(context).textTheme.displaySmall?.fontSize,
+                  InkWell(
+                    onLongPress: () => setState(() => question += "copy"),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.symmetric(horizontal: Sizes().xl),
+                      reverse: true,
+                      child: Text(
+                        answerString,
+                        style: TextStyle(
+                          fontSize: Theme.of(context)
+                              .textTheme
+                              .displaySmall
+                              ?.fontSize,
+                        ),
                       ),
                     ),
                   ),
                   const SizedBox(
-                    height: 24.0,
+                    height: 16.0,
                   )
                 ],
               ),
@@ -161,13 +166,13 @@ class _DolarCalculatorState extends State<DolarCalculator> {
 
     final List<CalculatorButtonData> buttons = [
       CalculatorButtonData(
-        color: Colors.redAccent,
+        color: Theme.of(context).colorScheme.tertiary,
         text: "CE",
         value: "CLEAR",
         textColor: specialButtonTextColor,
       ),
       CalculatorButtonData(
-        color: specialButtonColor,
+        color: Theme.of(context).colorScheme.primary,
         text: "x60",
         textColor: specialButtonTextColor,
         dolarPriceMultiplier: true,
@@ -262,7 +267,7 @@ class _DolarCalculatorState extends State<DolarCalculator> {
         icon: Icons.backspace_outlined,
       ),
       CalculatorButtonData(
-        color: specialButtonColor,
+        color: Colors.greenAccent,
         text: "=",
         textColor: specialButtonTextColor,
       ),
@@ -273,38 +278,18 @@ class _DolarCalculatorState extends State<DolarCalculator> {
       columnGap: Sizes().large,
       rowGap: Sizes().large,
       children: [
-        ...buttons.map((button) => CalculatorButton(
+        ...buttons.map(
+          (button) => CalculatorButton(
             buttonData: button,
             onTap: (String value) {
               HapticFeedback.lightImpact();
               setState(() {
                 question += value;
               });
-            }))
+            },
+          ),
+        )
       ],
     );
-    /* return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-        childAspectRatio: 1.1,
-        crossAxisSpacing: Sizes().large,
-        mainAxisSpacing: Sizes().large,
-      ),
-      padding: EdgeInsets.symmetric(
-        horizontal: Sizes().xl,
-      ),
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: buttons.length,
-      itemBuilder: (BuildContext context, int index) => CalculatorButton(
-        buttonData: buttons[index],
-        onTap: (buttonValue) {
-          HapticFeedback.lightImpact();
-          setState(() {
-            question += buttonValue;
-          });
-        },
-      ),
-    );
-  } */
   }
 }

@@ -10,10 +10,12 @@ class CalculatorButton extends ConsumerWidget {
     super.key,
     required this.buttonData,
     required this.onTap,
+    this.onLongPress,
   });
 
   final CalculatorButtonData buttonData;
   final void Function(String buttonValue) onTap;
+  final void Function(String buttonValue)? onLongPress;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,6 +29,7 @@ class CalculatorButton extends ConsumerWidget {
       ),
       child: TextButton(
         onPressed: () => onTap(text),
+        onLongPress: () => onLongPress!(text),
         child: Center(
           child: buttonData.icon != null
               ? Icon(buttonData.icon,
