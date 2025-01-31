@@ -267,7 +267,7 @@ class _DolarCalculatorState extends State<DolarCalculator> {
         icon: Icons.backspace_outlined,
       ),
       CalculatorButtonData(
-        color: Colors.greenAccent,
+        color: specialButtonColor,
         text: "=",
         textColor: specialButtonTextColor,
       ),
