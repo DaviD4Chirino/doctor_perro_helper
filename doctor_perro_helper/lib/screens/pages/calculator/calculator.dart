@@ -5,6 +5,7 @@ import 'package:doctor_perro_helper/utils/string_math.dart';
 import 'package:doctor_perro_helper/widgets/calculator_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:toastification/toastification.dart';
 
 class DolarCalculator extends StatefulWidget {
@@ -124,9 +125,17 @@ class _DolarCalculatorState extends State<DolarCalculator> {
                 ],
               ),
             ),
+            // GridButtons
             Expanded(
               flex: 3,
-              child: gridButtons(),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: Sizes().large,
+                  right: Sizes().large,
+                  bottom: Sizes().large,
+                ),
+                child: gridButtons(),
+              ),
             ),
           ],
         ),
@@ -134,7 +143,7 @@ class _DolarCalculatorState extends State<DolarCalculator> {
     );
   }
 
-  GridView gridButtons() {
+  LayoutGrid gridButtons() {
     final Color specialButtonColor = Theme.of(context).colorScheme.secondary;
     final Color specialButtonTextColor =
         Theme.of(context).colorScheme.onSecondary;
@@ -252,8 +261,23 @@ class _DolarCalculatorState extends State<DolarCalculator> {
         icon: Icons.add,
       ),
     ];
-
-    return GridView.builder(
+    return LayoutGrid(
+      columnSizes: [1.fr, 1.fr, 1.fr, 1.fr],
+      rowSizes: [1.fr, 1.fr, 1.fr, 1.fr, 1.fr],
+      columnGap: Sizes().large,
+      rowGap: Sizes().large,
+      children: [
+        ...buttons.map((button) => CalculatorButton(
+            buttonData: button,
+            onTap: (String value) {
+              HapticFeedback.lightImpact();
+              setState(() {
+                question += value;
+              });
+            }))
+      ],
+    );
+    /* return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4,
         childAspectRatio: 1.1,
@@ -275,5 +299,6 @@ class _DolarCalculatorState extends State<DolarCalculator> {
         },
       ),
     );
+  } */
   }
 }
