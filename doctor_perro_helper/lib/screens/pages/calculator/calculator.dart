@@ -43,6 +43,7 @@ class _DolarCalculatorState extends State<DolarCalculator> {
       answerString = "0";
       return;
     }
+
     if (newValue.contains("copy")) {
       copy(answerString);
 
@@ -65,6 +66,12 @@ class _DolarCalculatorState extends State<DolarCalculator> {
     }
     questionString = replaceDuplicatedSymbols(newValue);
     questionString = addZeroBeforeDot(questionString);
+
+    if (newValue.contains("=")) {
+      updateAnswerString();
+      questionString = answerString;
+      return;
+    }
 
     updateAnswerString();
   }
@@ -161,19 +168,19 @@ class _DolarCalculatorState extends State<DolarCalculator> {
       ),
       CalculatorButtonData(
         color: specialButtonColor,
-        text: "copy",
+        text: "x60",
         textColor: specialButtonTextColor,
-        icon: Icons.copy,
-      ),
-      CalculatorButtonData(
-        color: specialButtonColor,
-        text: "e",
-        textColor: specialButtonTextColor,
-        icon: Icons.backspace_outlined,
+        dolarPriceMultiplier: true,
       ),
       CalculatorButtonData(
         color: specialButtonColor,
         text: "%",
+        textColor: specialButtonTextColor,
+      ),
+      CalculatorButtonData(
+        color: specialButtonColor,
+        text: "/",
+        // icon: Icons.divide,
         textColor: specialButtonTextColor,
       ),
       CalculatorButtonData(
@@ -193,8 +200,7 @@ class _DolarCalculatorState extends State<DolarCalculator> {
       ),
       CalculatorButtonData(
         color: specialButtonColor,
-        text: "/",
-        // icon: Icons.divide,
+        text: "x",
         textColor: specialButtonTextColor,
       ),
       CalculatorButtonData(
@@ -214,7 +220,7 @@ class _DolarCalculatorState extends State<DolarCalculator> {
       ),
       CalculatorButtonData(
         color: specialButtonColor,
-        text: "x",
+        text: "—",
         textColor: specialButtonTextColor,
       ),
       CalculatorButtonData(
@@ -234,15 +240,15 @@ class _DolarCalculatorState extends State<DolarCalculator> {
       ),
       CalculatorButtonData(
         color: specialButtonColor,
-        text: "—",
+        text: "+",
         textColor: specialButtonTextColor,
+        icon: Icons.add,
       ),
       CalculatorButtonData(
-        color: specialButtonColor,
+        color: normalButtonColor,
         // Change to the dolar price
-        text: "x60",
-        dolarPriceMultiplier: true,
-        textColor: specialButtonTextColor,
+        text: ".",
+        textColor: normalButtonTextColor,
       ),
       CalculatorButtonData(
         color: normalButtonColor,
@@ -251,14 +257,14 @@ class _DolarCalculatorState extends State<DolarCalculator> {
       ),
       CalculatorButtonData(
         color: normalButtonColor,
-        text: ".",
+        text: "e",
         textColor: normalButtonTextColor,
+        icon: Icons.backspace_outlined,
       ),
       CalculatorButtonData(
         color: specialButtonColor,
-        text: "+",
+        text: "=",
         textColor: specialButtonTextColor,
-        icon: Icons.add,
       ),
     ];
     return LayoutGrid(

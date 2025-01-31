@@ -50,7 +50,7 @@ bool hasDivisionByZero(String expression) {
 
 String replaceDuplicatedSymbols(String expression) {
   // Regular expression to detect two or more consecutive symbols
-  RegExp regex = RegExp(r'([+\-—*x/%]{2,})');
+  RegExp regex = RegExp(r'([+\-—*x=/%]{2,})');
 
   // Replace the duplicated symbols using replaceAllMapped
   return expression.replaceAllMapped(regex, (match) {
