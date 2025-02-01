@@ -76,7 +76,7 @@ class _MainAppState extends ConsumerState<MainApp> {
         darkTheme: AppTheme.dark,
         themeMode: themeMode,
         title: "Dr.Perro Helper",
-        initialRoute: "",
+        initialRoute: Paths.home,
         routes: {
           Paths.home: (BuildContext context) => Home(),
           Paths.placeOrder: (BuildContext context) => const PlaceOrder(),

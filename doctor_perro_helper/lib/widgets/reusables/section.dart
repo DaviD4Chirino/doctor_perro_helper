@@ -32,7 +32,7 @@ class Section extends StatelessWidget {
                 Expanded(
                   child: title as Widget,
                 ),
-              ...actions as List<Widget>
+              ...?actions,
             ],
           ),
           child,
