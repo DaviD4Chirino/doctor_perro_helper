@@ -16,7 +16,7 @@ class CurrentDolarPrice extends StatelessWidget {
           padding: EdgeInsets.all(Sizes().xxl),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Sizes().roundedSmall),
-            color: Theme.of(context).colorScheme.surfaceContainerLow,
+            color: Theme.of(context).colorScheme.surfaceContainer,
           ),
           child: Column(
             children: [

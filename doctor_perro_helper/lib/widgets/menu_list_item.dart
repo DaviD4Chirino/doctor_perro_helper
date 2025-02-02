@@ -15,7 +15,7 @@ class MenuListItem extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Sizes().roundedSmall),
-        color: Theme.of(context).colorScheme.surfaceContainerLow,
+        color: Theme.of(context).colorScheme.surfaceContainer,
       ),
       child: ListTile(
         dense: true,

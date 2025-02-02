@@ -150,7 +150,8 @@ class _DolarCalculatorState extends State<DolarCalculator> {
     final Color specialButtonTextColor =
         Theme.of(context).colorScheme.onPrimary;
 
-    final Color normalButtonColor = Theme.of(context).colorScheme.surfaceDim;
+    final Color normalButtonColor =
+        Theme.of(context).colorScheme.surfaceContainer;
     final Color normalButtonTextColor = Theme.of(context).colorScheme.onSurface;
 
     final List<CalculatorButtonData> buttons = [
