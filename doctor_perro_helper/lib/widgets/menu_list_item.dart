@@ -15,7 +15,7 @@ class MenuListItem extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Sizes().roundedSmall),
-        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
       ),
       child: ListTile(
         dense: true,
@@ -51,7 +51,9 @@ class MenuListItem extends StatelessWidget {
         trailing: Text(
           "${removePaddingZero(plate.price.toString())}\$",
           style: TextStyle(
-              fontSize: 18.0, color: Theme.of(context).colorScheme.primary),
+            fontSize: 18.0,
+            color: Theme.of(context).colorScheme.primary,
+          ),
         ),
       ),
     );

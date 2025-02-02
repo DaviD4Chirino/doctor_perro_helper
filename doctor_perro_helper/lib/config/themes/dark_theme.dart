@@ -32,4 +32,11 @@ ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   colorScheme: darkColorScheme,
   appBarTheme: sharedThemeData.appBarTheme(darkColorScheme),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+      ),
+    ),
+  ),
 );

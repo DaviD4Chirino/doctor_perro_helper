@@ -148,10 +148,9 @@ class _DolarCalculatorState extends State<DolarCalculator> {
   LayoutGrid gridButtons() {
     final Color specialButtonColor = Theme.of(context).colorScheme.secondary;
     final Color specialButtonTextColor =
-        Theme.of(context).colorScheme.onSecondary;
+        Theme.of(context).colorScheme.onPrimary;
 
-    final Color normalButtonColor =
-        Theme.of(context).colorScheme.surfaceContainerHighest;
+    final Color normalButtonColor = Theme.of(context).colorScheme.surfaceDim;
     final Color normalButtonTextColor = Theme.of(context).colorScheme.onSurface;
 
     final List<CalculatorButtonData> buttons = [
@@ -159,7 +158,7 @@ class _DolarCalculatorState extends State<DolarCalculator> {
         color: Theme.of(context).colorScheme.tertiary,
         text: "CE",
         value: "CLEAR",
-        textColor: specialButtonTextColor,
+        textColor: Theme.of(context).colorScheme.onSecondary,
       ),
       CalculatorButtonData(
         color: Theme.of(context).colorScheme.primary,

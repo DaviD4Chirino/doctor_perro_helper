@@ -76,7 +76,7 @@ class _ExpansibleOrderState extends State<ExpansibleOrder> {
             "Calle Jabonería Casa 11",
             style: TextStyle(
               fontSize: themeContext.textTheme.labelSmall?.fontSize,
-              color: themeContext.colorScheme.onSurface.withAlpha(200),
+              color: themeContext.colorScheme.onSurface.withAlpha(150),
             ),
           ),
         ],
@@ -114,6 +114,7 @@ class _ExpansibleOrderState extends State<ExpansibleOrder> {
                 child: Text("Cancel"),
               ),
             ),
+            const SizedBox(width: 8.0),
             Expanded(
               flex: 2,
               child: FilledButton(
