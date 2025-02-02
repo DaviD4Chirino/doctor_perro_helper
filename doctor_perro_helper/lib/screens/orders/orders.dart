@@ -1,10 +1,9 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/widgets/reusables/Section.dart';
-import 'package:doctor_perro_helper/widgets/reusables/container.dart';
 import 'package:flutter/material.dart';
 
-class PlaceOrder extends StatelessWidget {
-  const PlaceOrder({super.key});
+class Orders extends StatelessWidget {
+  const Orders({super.key});
 
   @override
   Widget build(BuildContext context) {
