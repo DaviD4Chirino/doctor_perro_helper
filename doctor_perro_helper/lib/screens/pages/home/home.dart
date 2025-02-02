@@ -1,6 +1,7 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/routes.dart';
+import 'package:doctor_perro_helper/screens/orders/place_order.dart';
 import 'package:doctor_perro_helper/screens/pages/calculator/calculator.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/settings.dart';
 import 'package:doctor_perro_helper/widgets/current_date.dart';
@@ -86,6 +87,7 @@ class Home extends StatefulWidget {
 
   final List<Widget> screens = [
     const DashBoard(),
+    const PlaceOrder(),
     const DolarCalculator(),
     const SettingsPage(),
   ];
@@ -145,6 +147,10 @@ class _HomeState extends State<Home> {
         NavigationDestination(
           icon: Icon(Icons.home),
           label: "Principio",
+        ),
+        NavigationDestination(
+          icon: Icon(Icons.receipt),
+          label: "Pedidos",
         ),
         NavigationDestination(
           icon: Icon(Icons.calculate),
