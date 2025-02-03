@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/routes.dart';
 import 'package:doctor_perro_helper/widgets/reusables/Section.dart';
