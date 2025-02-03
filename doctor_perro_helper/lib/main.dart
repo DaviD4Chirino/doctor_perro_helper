@@ -5,6 +5,7 @@ import 'package:doctor_perro_helper/config/themes/dark_theme.dart';
 import 'package:doctor_perro_helper/config/themes/light_theme.dart';
 import 'package:doctor_perro_helper/models/routes.dart';
 import 'package:doctor_perro_helper/models/use_shared_preferences.dart';
+import 'package:doctor_perro_helper/screens/orders/new_order.dart';
 import 'package:doctor_perro_helper/screens/orders/orders.dart';
 import 'package:doctor_perro_helper/screens/pages/home/home.dart';
 import 'package:doctor_perro_helper/utils/google/google.dart';
@@ -82,7 +83,7 @@ class _MainAppState extends ConsumerState<MainApp> {
         initialRoute: Paths.home,
         routes: {
           Paths.home: (BuildContext context) => Home(),
-          Paths.newOrder: (BuildContext context) => Home(),
+          Paths.newOrder: (BuildContext context) => NewOrder(),
         },
       ),
     );
