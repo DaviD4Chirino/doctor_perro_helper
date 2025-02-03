@@ -82,7 +82,6 @@ class _MainAppState extends ConsumerState<MainApp> {
         initialRoute: Paths.home,
         routes: {
           Paths.home: (BuildContext context) => Home(),
-          Paths.placeOrder: (BuildContext context) => const Orders(),
         },
       ),
     );

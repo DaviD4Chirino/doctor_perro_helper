@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/widgets/reusables/Section.dart';
 import 'package:flutter/material.dart';
@@ -57,73 +59,73 @@ class _ExpansibleOrderState extends State<ExpansibleOrder> {
   @override
   Widget build(BuildContext context) {
     ThemeData themeContext = Theme.of(context);
-    return ExpansionTile(
-      enableFeedback: true,
-      leading: Text(
-        "12\$",
-        style: TextStyle(
-          fontSize: themeContext.textTheme.titleLarge?.fontSize,
-        ),
-      ),
-      title: const Text("30 minutes ago",
-          style: TextStyle(fontWeight: FontWeight.bold)),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+
+    return GestureDetector(
+      onLongPress: () {
+        log("Long Pressed");
+      },
+      child: Column(
         children: [
-          const Text("4R1 - E1 - 2R3 - 1R4"),
-          Text(
-            "Calle Jabonería Casa 11",
-            style: TextStyle(
-              fontSize: themeContext.textTheme.labelSmall?.fontSize,
-              color: themeContext.colorScheme.onSurface.withAlpha(150),
+          ExpansionTile(
+            enableFeedback: true,
+            expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
+            leading: Text(
+              "12\$",
+              style: TextStyle(
+                fontSize: themeContext.textTheme.titleLarge?.fontSize,
+              ),
             ),
-          ),
-        ],
-      ),
-      children: [
-        ListTile(
-          title: const Text("1R1:"),
-          subtitle: Padding(
-            padding: EdgeInsets.only(left: Sizes().xxxl),
-            child: const Column(
+            title: const Text("30 minutes ago",
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const Text("4R1 - E1 - 2R3 - 1R4"),
                 Text(
-                  "- Poca Mostaza",
-                  style: TextStyle(color: Colors.red),
-                ),
-                Text(
-                  "- Sin Queso",
-                  style: TextStyle(color: Colors.red),
-                ),
-                Text(
-                  "+ 150g de Papas",
-                  style: TextStyle(color: Colors.green),
+                  "Calle Jabonería Casa 11",
+                  style: TextStyle(
+                    fontSize: themeContext.textTheme.labelSmall?.fontSize,
+                    color: themeContext.colorScheme.onSurface.withAlpha(150),
+                  ),
                 ),
               ],
             ),
+            children: [
+              ListTile(
+                title: const Text("1R1:"),
+                subtitle: Padding(
+                  padding: EdgeInsets.only(left: Sizes().xxxl),
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "- Poca Mostaza",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                      Text(
+                        "- Sin Queso",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                      Text(
+                        "+ 150g de Papas",
+                        style: TextStyle(color: Colors.green),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-        ),
-        Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: TextButton(
-                onPressed: () {},
-                child: Text("Cancel"),
-              ),
-            ),
-            const SizedBox(width: 8.0),
-            Expanded(
-              flex: 2,
-              child: FilledButton(
-                onPressed: () {},
-                child: const Text("Completed"),
-              ),
-            )
-          ],
-        )
-      ],
+          FilledButton(
+            onPressed: () {},
+            child: const Text("Completed"),
+          ),
+          OutlinedButton.icon(
+            onPressed: () {},
+            label: Icon(Icons.more_vert),
+          ),
+        ],
+      ),
     );
   }
 }
