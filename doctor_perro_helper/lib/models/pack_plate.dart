@@ -1,30 +1,30 @@
-import 'package:doctor_perro_helper/models/ingredient.dart';
+import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_quantity.dart';
 import 'package:doctor_perro_helper/utils/string_transform.dart';
 
-class Plate {
-  Plate({
+/// This is a Plate Class with other Plates inside
+class PackPlate {
+  PackPlate({
     required this.code,
     required this.title,
-    required this.ingredients,
+    required this.plates,
     required this.price,
     required this.quantity,
     this.prefix = "x",
     this.suffix = "",
   });
 
-  String get ingredientsTitles {
+  get plateTitleList {
     List<String> list = [];
-    for (var ingredient in ingredients) {
+    for (var ingredient in plates) {
       list.add(ingredient.title);
     }
-
     return formatDuplicatedSentences(list.join(", "));
   }
 
   String code;
   String title;
-  List<Ingredient> ingredients;
+  List<Plate> plates;
   double price;
   PlateQuantity quantity;
   String prefix;
