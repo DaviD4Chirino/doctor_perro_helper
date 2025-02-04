@@ -32,4 +32,11 @@ class Sizes {
 
   /// 100.0 px
   final double circular = 100.0;
+
+  final double iconSmall = 12;
+  final double iconMedium = 18;
+  final double iconLarge = 24;
+  final double iconXl = 30;
+  final double iconXXl = 36;
+  final double iconXXXl = 42;
 }

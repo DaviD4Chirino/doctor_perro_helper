@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/widgets/reusables/section.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -60,7 +61,35 @@ class _SwipeablePlateState extends ConsumerState<SwipeablePlate> {
     ThemeData themeContext = Theme.of(context);
     return SwipeableTile.swipeToTrigger(
       direction: SwipeDirection.horizontal,
-      key: Key("value"),
+      key: const Key("value"),
+      borderRadius: Sizes().roundedSmall,
+      backgroundBuilder: (BuildContext context, SwipeDirection direction,
+          AnimationController animationController) {
+        if (direction == SwipeDirection.startToEnd) {
+          return swipeableBackground(
+            Colors.red,
+            Icons.delete_forever,
+            MainAxisAlignment.start,
+          );
+        }
+        return swipeableBackground(
+          Colors.green,
+          Icons.check_circle_sharp,
+          MainAxisAlignment.end,
+        );
+      },
+      color: themeContext.colorScheme.surfaceContainer,
+      onSwiped: (SwipeDirection direction) {
+        if (direction == SwipeDirection.startToEnd) {
+          setState(() {
+            count -= 1;
+          });
+        } else {
+          setState(() {
+            count += 1;
+          });
+        }
+      },
       child: ListTile(
         leading: Text(
           "C1",
@@ -80,29 +109,27 @@ class _SwipeablePlateState extends ConsumerState<SwipeablePlate> {
                 ),
               ),
       ),
-      backgroundBuilder: (BuildContext context, SwipeDirection direction,
-          AnimationController animationController) {
-        if (direction == SwipeDirection.startToEnd) {
-          return Container(
-            color: Colors.red,
-          );
-        }
-        return Container(
-          color: Colors.green,
-        );
-      },
-      color: themeContext.colorScheme.surfaceContainer,
-      onSwiped: (SwipeDirection direction) {
-        if (direction == SwipeDirection.startToEnd) {
-          setState(() {
-            count -= 1;
-          });
-        } else {
-          setState(() {
-            count += 1;
-          });
-        }
-      },
+    );
+  }
+
+  Container swipeableBackground(
+      Color color, IconData icon, MainAxisAlignment alignment) {
+    return Container(
+      decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(Sizes().roundedSmall)),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: Sizes().xl),
+        child: Row(
+          mainAxisAlignment: alignment,
+          children: [
+            Icon(
+              icon,
+              size: Sizes().iconXl,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
