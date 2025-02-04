@@ -33,15 +33,20 @@ class OrdenesPendientes extends StatelessWidget {
   Widget build(BuildContext context) {
     var themeContext = Theme.of(context);
     return SingleChildScrollView(
-      child: Section(
-        title: Text(
-          "Ordenes Pendientes",
-          style: TextStyle(
-            fontSize: themeContext.textTheme.titleLarge?.fontSize,
-            fontWeight: FontWeight.bold,
-          ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: Sizes().xxl,
         ),
-        child: const ExpansibleOrder(),
+        child: Section(
+          title: Text(
+            "Ordenes Pendientes",
+            style: TextStyle(
+              fontSize: themeContext.textTheme.titleLarge?.fontSize,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          child: const ExpansibleOrder(),
+        ),
       ),
     );
   }

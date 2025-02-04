@@ -14,13 +14,12 @@ class Section extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        left: sizes.large,
-        right: sizes.large,
-        top: sizes.xxl,
-      ),
+          // left: sizes.large,
+          // right: sizes.large,
+          top: sizes.xxl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.baseline,
-        mainAxisAlignment: MainAxisAlignment.end,
+        // mainAxisAlignment: MainAxisAlignment.end,
         textBaseline: TextBaseline.alphabetic,
         children: [
           Row(
