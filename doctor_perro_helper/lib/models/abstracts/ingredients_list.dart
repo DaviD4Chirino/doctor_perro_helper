@@ -1,4 +1,6 @@
+import 'package:doctor_perro_helper/models/abstracts/side_dish_list.dart';
 import 'package:doctor_perro_helper/models/ingredient.dart';
+import 'package:doctor_perro_helper/models/plate_quantity.dart';
 
 abstract class IngredientsList {
   static Ingredient sausage = Ingredient(
@@ -13,10 +15,7 @@ abstract class IngredientsList {
     title: "Papas",
     cost: 0.0,
   );
-  static Ingredient frenchFries = Ingredient(
-    title: "Papas fritas",
-    cost: 0.5,
-  );
+
   static Ingredient tomatoSauce = Ingredient(
     title: "Salsa de Tomate",
     cost: 0.0,
@@ -45,7 +44,6 @@ abstract class IngredientsList {
   static List<Ingredient> get list => [
         salad,
         potatoes,
-        frenchFries,
         tomatoSauce,
         garlicSauce,
         burgerSauce,

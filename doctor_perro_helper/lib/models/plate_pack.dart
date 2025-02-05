@@ -3,8 +3,8 @@ import 'package:doctor_perro_helper/models/plate_quantity.dart';
 import 'package:doctor_perro_helper/utils/string_transform.dart';
 
 /// This is a Plate Class with other Plates inside
-class PackPlate {
-  PackPlate({
+class PlatePack {
+  PlatePack({
     required this.code,
     required this.title,
     required this.plates,

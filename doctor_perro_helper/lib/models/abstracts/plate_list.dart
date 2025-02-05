@@ -1,4 +1,6 @@
-import 'package:doctor_perro_helper/models/pack_plate.dart';
+import 'package:doctor_perro_helper/models/abstracts/side_dish_list.dart';
+import 'package:doctor_perro_helper/models/ingredient.dart';
+import 'package:doctor_perro_helper/models/plate_pack.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_quantity.dart';
 import 'package:doctor_perro_helper/models/abstracts/ingredients_list.dart';
@@ -14,7 +16,15 @@ abstract class PlateList {
       IngredientsList.potatoes,
       IngredientsList.tomatoSauce,
       IngredientsList.garlicSauce,
-      IngredientsList.frenchFries,
+    ],
+    /* extras: Plate(
+        code: code,
+        title: title,
+        ingredients: ingredients,
+        price: price,
+        quantity: quantity), */
+    extras: [
+      SideDishList.frenchFries,
     ],
     price: 2.0,
     quantity: PlateQuantity(),
@@ -30,7 +40,9 @@ abstract class PlateList {
       IngredientsList.garlicSauce,
       IngredientsList.bacon,
       IngredientsList.kraftCheese,
-      IngredientsList.frenchFries,
+    ],
+    extras: [
+      SideDishList.frenchFries,
     ],
     price: 3.0,
     quantity: PlateQuantity(),
@@ -43,7 +55,9 @@ abstract class PlateList {
       IngredientsList.burgerSauce,
       IngredientsList.bacon,
       IngredientsList.kraftCheese,
-      IngredientsList.frenchFries,
+    ],
+    extras: [
+      SideDishList.frenchFries,
     ],
     price: 3.5,
     quantity: PlateQuantity(),
@@ -57,21 +71,42 @@ abstract class PlateList {
       IngredientsList.bacon,
       IngredientsList.bacon,
       IngredientsList.kraftCheese,
-      IngredientsList.frenchFries,
+    ],
+    extras: [
+      SideDishList.frenchFries,
     ],
     price: 3.5,
     quantity: PlateQuantity(),
   );
 
-  static PackPlate c1 = PackPlate(
-      code: "C1",
-      title: "Combo de Perros",
-      plates: [
-        r1,
-        r1,
-        r1,
-        r1,
-      ],
-      price: 10,
-      quantity: PlateQuantity());
+  static PlatePack c1 = PlatePack(
+    code: "C1",
+    title: "Combo de Perros",
+    plates: [
+      r1,
+      r1,
+      r1,
+      r1,
+    ],
+    price: 10,
+    quantity: PlateQuantity(),
+  );
+
+  // Extras
+  static Plate e1 = Plate(
+    code: "E3",
+    title: "Servicio de Papas Fritas",
+    ingredients: [
+      // 300g of FrenchFries
+      SideDishList.frenchFries,
+      SideDishList.frenchFries,
+      SideDishList.frenchFries,
+      SideDishList.frenchFries,
+      SideDishList.frenchFries,
+      SideDishList.frenchFries,
+    ],
+    price: 0.0,
+    quantity: PlateQuantity(
+        initialAmount: 300.0, count: 300.0, prefix: "", suffix: "g"),
+  );
 }
