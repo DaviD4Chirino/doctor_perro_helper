@@ -1,5 +1,6 @@
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_quantity.dart';
+import 'package:doctor_perro_helper/models/side_dish.dart';
 import 'package:doctor_perro_helper/utils/string_transform.dart';
 
 /// This is a Plate Class with other Plates inside
@@ -10,6 +11,7 @@ class PlatePack {
     required this.plates,
     required this.price,
     required this.quantity,
+    this.extras,
     this.prefix = "x",
     this.suffix = "",
   });
@@ -29,4 +31,5 @@ class PlatePack {
   PlateQuantity quantity;
   String prefix;
   String suffix;
+  List<SideDish>? extras = [];
 }

@@ -8,7 +8,7 @@ class Plate {
     required this.code,
     required this.title,
     required this.ingredients,
-    required this.price,
+    required this.cost,
     required this.quantity,
     this.extras,
   });
@@ -22,10 +22,20 @@ class Plate {
     return formatDuplicatedSentences(list.join(", "));
   }
 
+  double get price {
+    double amount = 0;
+    amount += cost;
+
+    ingredients.map((ingredient) => amount += ingredient.cost);
+    extras?.map((extra) => amount += extra.cost);
+
+    return amount;
+  }
+
   String code;
   String title;
   List<Ingredient> ingredients;
   List<SideDish>? extras = [];
-  double price;
+  double cost;
   PlateQuantity quantity;
 }

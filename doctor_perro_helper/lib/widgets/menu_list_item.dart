@@ -55,14 +55,14 @@ class MenuListItem extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "${removePaddingZero(plate.price.toString())}\$",
+              "${removePaddingZero(plate.cost.toString())}\$",
               style: TextStyle(
                 fontSize: theme.textTheme.titleMedium?.fontSize,
                 color: Theme.of(context).colorScheme.primary,
               ),
             ),
             Text(
-              "${removePaddingZero(ref.read(dolarPriceNotifierProvider.notifier).calculate(plate.price).toString())}bs",
+              "${removePaddingZero(ref.read(dolarPriceNotifierProvider.notifier).calculate(plate.cost).toString())}bs",
               style: TextStyle(
                 fontSize: theme.textTheme.labelSmall?.fontSize,
               ),

@@ -1,5 +1,4 @@
 import 'package:doctor_perro_helper/models/abstracts/side_dish_list.dart';
-import 'package:doctor_perro_helper/models/ingredient.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_quantity.dart';
@@ -17,16 +16,10 @@ abstract class PlateList {
       IngredientsList.tomatoSauce,
       IngredientsList.garlicSauce,
     ],
-    /* extras: Plate(
-        code: code,
-        title: title,
-        ingredients: ingredients,
-        price: price,
-        quantity: quantity), */
     extras: [
       SideDishList.frenchFries,
     ],
-    price: 2.0,
+    cost: 2.0,
     quantity: PlateQuantity(),
   );
   static Plate r2 = Plate(
@@ -44,7 +37,7 @@ abstract class PlateList {
     extras: [
       SideDishList.frenchFries,
     ],
-    price: 3.0,
+    cost: 3.0,
     quantity: PlateQuantity(),
   );
   static Plate r3 = Plate(
@@ -59,7 +52,7 @@ abstract class PlateList {
     extras: [
       SideDishList.frenchFries,
     ],
-    price: 3.5,
+    cost: 3.5,
     quantity: PlateQuantity(),
   );
   static Plate r4 = Plate(
@@ -75,7 +68,26 @@ abstract class PlateList {
     extras: [
       SideDishList.frenchFries,
     ],
-    price: 3.5,
+    cost: 3.5,
+    quantity: PlateQuantity(),
+  );
+
+  static Plate r5 = Plate(
+    code: "R5",
+    title: "Salchipapas",
+    ingredients: [
+      SideDishList.frenchFries,
+      SideDishList.frenchFries,
+      SideDishList.frenchFries,
+      SideDishList.frenchFries,
+      SideDishList.frenchFries,
+      SideDishList.frenchFries,
+      IngredientsList.bacon,
+      IngredientsList.corn,
+      IngredientsList.kraftCheese,
+      IngredientsList.cowCheese,
+    ],
+    cost: 2,
     quantity: PlateQuantity(),
   );
 
@@ -87,6 +99,25 @@ abstract class PlateList {
       r1,
       r1,
       r1,
+    ],
+    extras: [
+      SideDishList.pepsiCola,
+    ],
+    price: 10,
+    quantity: PlateQuantity(),
+  );
+
+  static PlatePack c2 = PlatePack(
+    code: "C2",
+    title: "Combo de Perros Especiales",
+    plates: [
+      r2,
+      r2,
+      r2,
+      r2,
+    ],
+    extras: [
+      SideDishList.pepsiCola,
     ],
     price: 10,
     quantity: PlateQuantity(),
@@ -105,8 +136,18 @@ abstract class PlateList {
       SideDishList.frenchFries,
       SideDishList.frenchFries,
     ],
-    price: 0.0,
-    quantity: PlateQuantity(
-        initialAmount: 300.0, count: 300.0, prefix: "", suffix: "g"),
+    cost: 0.0,
+    quantity: PlateQuantity(),
   );
+
+  static List<Plate> list = [
+    r1,
+    r2,
+    r3,
+    r4,
+    r5,
+    e1,
+  ];
+
+  static List<PlatePack> listPacks = [c1, c2];
 }
