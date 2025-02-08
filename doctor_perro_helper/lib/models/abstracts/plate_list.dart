@@ -19,7 +19,7 @@ abstract class PlateList {
     extras: [
       SideDishList.frenchFries,
     ],
-    cost: 2.0,
+    cost: 1.5,
     quantity: PlateQuantity(),
   );
   static Plate r2 = Plate(
@@ -37,7 +37,7 @@ abstract class PlateList {
     extras: [
       SideDishList.frenchFries,
     ],
-    cost: 3.0,
+    cost: 1.5,
     quantity: PlateQuantity(),
   );
   static Plate r3 = Plate(
@@ -59,11 +59,10 @@ abstract class PlateList {
     code: "R4",
     title: "Hamburguesa Doble",
     ingredients: [
-      IngredientsList.patty,
       IngredientsList.burgerSauce,
-      IngredientsList.bacon,
-      IngredientsList.bacon,
-      IngredientsList.kraftCheese,
+      IngredientsList.patty.amount(2),
+      IngredientsList.bacon.amount(2),
+      IngredientsList.kraftCheese.amount(2),
     ],
     extras: [
       SideDishList.frenchFries,
@@ -76,12 +75,7 @@ abstract class PlateList {
     code: "R5",
     title: "Salchipapas",
     ingredients: [
-      SideDishList.frenchFries,
-      SideDishList.frenchFries,
-      SideDishList.frenchFries,
-      SideDishList.frenchFries,
-      SideDishList.frenchFries,
-      SideDishList.frenchFries,
+      SideDishList.frenchFries.amount(12),
       IngredientsList.bacon,
       IngredientsList.corn,
       IngredientsList.kraftCheese,
@@ -128,13 +122,7 @@ abstract class PlateList {
     code: "E3",
     title: "Servicio de Papas Fritas",
     ingredients: [
-      // 300g of FrenchFries
-      SideDishList.frenchFries,
-      SideDishList.frenchFries,
-      SideDishList.frenchFries,
-      SideDishList.frenchFries,
-      SideDishList.frenchFries,
-      SideDishList.frenchFries,
+      SideDishList.frenchFries.amount(6),
     ],
     cost: 0.0,
     quantity: PlateQuantity(),

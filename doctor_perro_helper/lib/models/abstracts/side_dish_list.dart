@@ -12,7 +12,7 @@ abstract class SideDishList {
     title: "Papas Fritas",
     cost: 0.5,
     quantity: PlateQuantity(
-      initialAmount: 50.0,
+      amount: 1.0,
       count: 50.0,
       prefix: "",
       suffix: "g",

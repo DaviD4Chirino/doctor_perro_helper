@@ -31,7 +31,7 @@ abstract class IngredientsList {
   );
   static Ingredient patty = Ingredient(
     title: "Carne",
-    cost: 8.0,
+    cost: 0.8,
   );
   static Ingredient bacon = Ingredient(
     title: "Tocino",

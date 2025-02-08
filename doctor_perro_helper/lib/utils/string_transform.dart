@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:doctor_perro_helper/models/ingredient.dart';
+
 /// Converts any duplicated word into word xNumber
 String formatDuplicatedSentences(String input) {
   // Split the input string into sentences

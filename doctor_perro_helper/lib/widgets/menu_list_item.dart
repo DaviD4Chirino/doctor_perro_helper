@@ -44,7 +44,7 @@ class MenuListItem extends ConsumerWidget {
           ],
         ),
         subtitle: Text(
-          plate.ingredients.join(", "),
+          plate.ingredientsTitles,
           style: TextStyle(
             color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
           ),
@@ -55,14 +55,14 @@ class MenuListItem extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "${removePaddingZero(plate.cost.toString())}\$",
+              "${removePaddingZero(plate.price.toString())}\$",
               style: TextStyle(
                 fontSize: theme.textTheme.titleMedium?.fontSize,
                 color: Theme.of(context).colorScheme.primary,
               ),
             ),
             Text(
-              "${removePaddingZero(ref.read(dolarPriceNotifierProvider.notifier).calculate(plate.cost).toString())}bs",
+              "${removePaddingZero(ref.read(dolarPriceNotifierProvider.notifier).calculate(plate.price).toString())}bs",
               style: TextStyle(
                 fontSize: theme.textTheme.labelSmall?.fontSize,
               ),
