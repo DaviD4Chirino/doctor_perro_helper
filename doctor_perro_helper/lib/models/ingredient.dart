@@ -1,9 +1,10 @@
 import 'package:doctor_perro_helper/models/plate_quantity.dart';
 import 'package:doctor_perro_helper/models/side_dish.dart';
+import 'package:doctor_perro_helper/utils/string_math.dart';
 
 class Ingredient {
   Ingredient({
-    required this.title,
+    required this.name,
     required this.cost,
     this.quantity,
   });
@@ -11,7 +12,7 @@ class Ingredient {
   /// Returns this same [Ingredient] with the initial amount changed
   SideDish amount(double amount) {
     return SideDish(
-      title: title,
+      name: name,
       cost: cost,
       quantity: PlateQuantity(
         // count: quantity != null ? quantity?.count as double : 1,
@@ -27,7 +28,20 @@ class Ingredient {
 
   double get price => (quantity?.amount ?? 1) * cost;
 
-  String title;
+  String get title {
+    String suffix = this.quantity?.suffix ?? "";
+    String prefix = this.quantity?.prefix ?? "";
+    double amount = this.quantity?.amount ?? 1.0;
+    double count = this.quantity?.count ?? 1.0;
+
+    double quantity = count * amount;
+
+    return amount > 1
+        ? "$name $prefix${removePaddingZero(quantity.toString())}$suffix"
+        : name;
+  }
+
+  String name = "";
   double cost;
   PlateQuantity? quantity = PlateQuantity();
 }

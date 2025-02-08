@@ -2,47 +2,47 @@ import 'package:doctor_perro_helper/models/ingredient.dart';
 
 abstract class IngredientsList {
   static Ingredient sausage = Ingredient(
-    title: "Salchicha",
+    name: "Salchicha",
     cost: 0.0,
   );
   static Ingredient salad = Ingredient(
-    title: "Ensalada",
+    name: "Ensalada",
     cost: 0.0,
   );
   static Ingredient potatoes = Ingredient(
-    title: "Papas",
+    name: "Papas",
     cost: 0.0,
   );
   static Ingredient corn = Ingredient(
-    title: "Papas",
+    name: "Papas",
     cost: 0.0,
   );
   static Ingredient tomatoSauce = Ingredient(
-    title: "Salsa de Tomate",
+    name: "Salsa de Tomate",
     cost: 0.0,
   );
   static Ingredient garlicSauce = Ingredient(
-    title: "Salsa de Ajo",
+    name: "Salsa de Ajo",
     cost: 0.0,
   );
   static Ingredient burgerSauce = Ingredient(
-    title: "Salsa de Hamburguesa",
+    name: "Salsa de Hamburguesa",
     cost: 0.0,
   );
   static Ingredient patty = Ingredient(
-    title: "Carne",
+    name: "Carne",
     cost: 0.8,
   );
   static Ingredient bacon = Ingredient(
-    title: "Tocino",
+    name: "Tocino",
     cost: 0.5,
   );
   static Ingredient kraftCheese = Ingredient(
-    title: "Queso Kraft",
+    name: "Queso Kraft",
     cost: 0.5,
   );
   static Ingredient cowCheese = Ingredient(
-    title: "Queso de Res",
+    name: "Queso de Res",
     cost: 0.0,
   );
 

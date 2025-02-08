@@ -9,14 +9,14 @@ class PlatePack {
     required this.code,
     required this.title,
     required this.plates,
-    required this.price,
+    required this.cost,
     required this.quantity,
     this.extras,
     this.prefix = "x",
     this.suffix = "",
   });
 
-  get plateTitleList {
+  String get plateTitleList {
     List<String> list = [];
     for (var ingredient in plates) {
       list.add(ingredient.title);
@@ -24,10 +24,29 @@ class PlatePack {
     return formatDuplicatedSentences(list.join(", "));
   }
 
+  List<String> get extrasTitleList {
+    List<String> list = [];
+
+    for (SideDish extra in extras!) {
+      list.add(extra.title);
+    }
+
+    return list;
+  }
+
+  double get price {
+    double amount = cost;
+
+    for (var extra in extras!) {
+      amount += extra.price;
+    }
+    return amount;
+  }
+
   String code;
   String title;
   List<Plate> plates;
-  double price;
+  double cost;
   PlateQuantity quantity;
   String prefix;
   String suffix;

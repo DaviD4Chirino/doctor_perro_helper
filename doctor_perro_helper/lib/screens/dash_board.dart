@@ -3,6 +3,7 @@ import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
 import 'package:doctor_perro_helper/widgets/current_date.dart';
 import 'package:doctor_perro_helper/widgets/current_dolar_price.dart';
 import 'package:doctor_perro_helper/widgets/menu_list_item.dart';
+import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:doctor_perro_helper/widgets/todays_earnings.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,8 @@ class DashBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+
     return Scaffold(
       appBar: appBar(),
       body: ListView(
@@ -43,11 +46,53 @@ class DashBoard extends StatelessWidget {
           SizedBox(
             height: Sizes().xl,
           ),
-          ...PlateList.list.map(
+          ...PlateList.plates.map(
             (plate) => Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: MenuListItem(
                 plate: plate,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: Sizes().xxl,
+          ),
+          Text(
+            "Combos",
+            style: TextStyle(
+              fontSize: theme.textTheme.labelLarge?.fontSize,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(
+            height: Sizes().xl,
+          ),
+          ...PlateList.packs.map(
+            (pack) => Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: MenuListItemPack(
+                pack: pack,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: Sizes().xxl,
+          ),
+          Text(
+            "Extras",
+            style: TextStyle(
+              fontSize: theme.textTheme.labelLarge?.fontSize,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(
+            height: Sizes().xl,
+          ),
+          ...PlateList.extras.map(
+            (extra) => Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: MenuListItem(
+                plate: extra,
               ),
             ),
           ),
@@ -63,6 +108,7 @@ class DashBoard extends StatelessWidget {
         width: 60.0,
         height: 60.0,
       ),
+      toolbarHeight: 50.0,
       centerTitle: true,
     );
   }

@@ -98,7 +98,7 @@ abstract class PlateList {
       SideDishList.pepsiCola,
       SideDishList.frenchFries.amount(4),
     ],
-    price: 5.5,
+    cost: 5.5,
     quantity: PlateQuantity(),
   );
 
@@ -112,32 +112,40 @@ abstract class PlateList {
       r2,
     ],
     extras: [
-      SideDishList.frenchFries.amount(4),
       SideDishList.pepsiCola,
+      SideDishList.frenchFries.amount(4),
     ],
-    price: 10.5,
+    cost: 10.5,
     quantity: PlateQuantity(),
   );
 
   // Extras
   static Plate e1 = Plate(
-    code: "E3",
+    code: "E1",
     title: "Servicio de Papas Fritas",
     ingredients: [
       SideDishList.frenchFries.amount(6),
     ],
-    cost: 3,
+    cost: SideDishList.frenchFries.amount(6).price,
+    quantity: PlateQuantity(),
+  );
+  static Plate e2 = Plate(
+    code: "E2",
+    title: "Refresco PepsiCola",
+    ingredients: [
+      SideDishList.pepsiCola,
+    ],
+    cost: SideDishList.pepsiCola.price,
     quantity: PlateQuantity(),
   );
 
-  static List<Plate> list = [
+  static List<Plate> plates = [
     r1,
     r2,
     r3,
     r4,
     r5,
-    e1,
   ];
-
-  static List<PlatePack> listPacks = [c1, c2];
+  static List<Plate> extras = [e1, e2];
+  static List<PlatePack> packs = [c1, c2];
 }
