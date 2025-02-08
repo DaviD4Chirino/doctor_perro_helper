@@ -1,17 +1,7 @@
-import 'dart:developer';
-
-import 'package:doctor_perro_helper/config/border_size.dart';
-import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
-import 'package:doctor_perro_helper/models/plate.dart';
-import 'package:doctor_perro_helper/models/plate_quantity.dart';
-import 'package:doctor_perro_helper/models/abstracts/ingredients_list.dart';
+import 'package:doctor_perro_helper/screens/dash_board.dart';
 import 'package:doctor_perro_helper/screens/orders/orders.dart';
 import 'package:doctor_perro_helper/screens/pages/calculator/calculator.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/settings.dart';
-import 'package:doctor_perro_helper/widgets/current_date.dart';
-import 'package:doctor_perro_helper/widgets/current_dolar_price.dart';
-import 'package:doctor_perro_helper/widgets/menu_list_item.dart';
-import 'package:doctor_perro_helper/widgets/todays_earnings.dart';
 import 'package:flutter/material.dart';
 
 // final List<Plate> plates = [
