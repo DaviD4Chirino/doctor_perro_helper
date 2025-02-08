@@ -43,11 +43,25 @@ class MenuListItem extends ConsumerWidget {
             ),
           ],
         ),
-        subtitle: Text(
-          plate.ingredientsTitles,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-          ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              plate.ingredientsTitles,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+              ),
+            ),
+            ...plate.extrasTitleList.map(
+              (title) => Text(
+                "+ $title",
+                style: TextStyle(
+                  color: theme.colorScheme.onSurface.withAlpha(150),
+                  fontSize: theme.textTheme.labelSmall?.fontSize,
+                ),
+              ),
+            )
+          ],
         ),
         // This will become a checkmark when the user taps on it
         leading: const Icon(Icons.fastfood),

@@ -26,6 +26,9 @@ class PlatePack {
 
   List<String> get extrasTitleList {
     List<String> list = [];
+    if (extras == null) {
+      return list;
+    }
 
     for (SideDish extra in extras!) {
       list.add(extra.title);

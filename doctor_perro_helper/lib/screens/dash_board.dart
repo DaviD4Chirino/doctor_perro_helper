@@ -3,7 +3,6 @@ import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
 import 'package:doctor_perro_helper/widgets/current_date.dart';
 import 'package:doctor_perro_helper/widgets/current_dolar_price.dart';
 import 'package:doctor_perro_helper/widgets/menu_list_item.dart';
-import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:doctor_perro_helper/widgets/todays_earnings.dart';
 import 'package:flutter/material.dart';
 
