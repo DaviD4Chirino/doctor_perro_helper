@@ -37,7 +37,7 @@ abstract class PlateList {
     extras: [
       SideDishList.frenchFries,
     ],
-    cost: 1.5,
+    cost: 2.5,
     quantity: PlateQuantity(),
   );
   static Plate r3 = Plate(
@@ -52,7 +52,7 @@ abstract class PlateList {
     extras: [
       SideDishList.frenchFries,
     ],
-    cost: 3.5,
+    cost: 3.0,
     quantity: PlateQuantity(),
   );
   static Plate r4 = Plate(
@@ -67,7 +67,7 @@ abstract class PlateList {
     extras: [
       SideDishList.frenchFries,
     ],
-    cost: 3.5,
+    cost: 5.5,
     quantity: PlateQuantity(),
   );
 
@@ -81,7 +81,7 @@ abstract class PlateList {
       IngredientsList.kraftCheese,
       IngredientsList.cowCheese,
     ],
-    cost: 2,
+    cost: 5,
     quantity: PlateQuantity(),
   );
 
@@ -96,8 +96,9 @@ abstract class PlateList {
     ],
     extras: [
       SideDishList.pepsiCola,
+      SideDishList.frenchFries.amount(4),
     ],
-    price: 10,
+    price: 5.5,
     quantity: PlateQuantity(),
   );
 
@@ -111,9 +112,10 @@ abstract class PlateList {
       r2,
     ],
     extras: [
+      SideDishList.frenchFries.amount(4),
       SideDishList.pepsiCola,
     ],
-    price: 10,
+    price: 10.5,
     quantity: PlateQuantity(),
   );
 
@@ -124,7 +126,7 @@ abstract class PlateList {
     ingredients: [
       SideDishList.frenchFries.amount(6),
     ],
-    cost: 0.0,
+    cost: 3,
     quantity: PlateQuantity(),
   );
 

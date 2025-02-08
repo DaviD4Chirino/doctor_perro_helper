@@ -1,4 +1,5 @@
 import 'package:doctor_perro_helper/models/plate_quantity.dart';
+import 'package:doctor_perro_helper/models/side_dish.dart';
 
 class Ingredient {
   Ingredient({
@@ -8,8 +9,8 @@ class Ingredient {
   });
 
   /// Returns this same [Ingredient] with the initial amount changed
-  Ingredient amount(double amount) {
-    return Ingredient(
+  SideDish amount(double amount) {
+    return SideDish(
       title: title,
       cost: cost,
       quantity: PlateQuantity(
@@ -24,7 +25,7 @@ class Ingredient {
     );
   }
 
-  double get price => (quantity?.amount ?? 1 * cost);
+  double get price => (quantity?.amount ?? 1) * cost;
 
   String title;
   double cost;

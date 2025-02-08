@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:doctor_perro_helper/models/ingredient.dart';
 import 'package:doctor_perro_helper/models/plate_quantity.dart';
 import 'package:doctor_perro_helper/models/side_dish.dart';
@@ -34,12 +32,14 @@ class Plate {
     return list.join(", ");
   }
 
+  /// The cost of the plate + their extras, ingredient cost are ignore bc
+  /// Kory is an lazy MF
   double get price {
-    double amount = 0;
-    amount += cost;
-    for (var ingredient in ingredients) {
+    double amount = cost;
+    /* for (var ingredient in ingredients) {
       amount += ingredient.price;
-    }
+    } */
+
     if (extras == null) {
       return amount;
     }

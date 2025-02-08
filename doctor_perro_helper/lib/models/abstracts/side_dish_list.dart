@@ -4,7 +4,7 @@ import 'package:doctor_perro_helper/models/side_dish.dart';
 abstract class SideDishList {
   static SideDish pepsiCola = SideDish(
     title: "Pepsi Cola",
-    cost: 3.0,
+    cost: 2.5,
     quantity: PlateQuantity(),
   );
 
@@ -12,7 +12,6 @@ abstract class SideDishList {
     title: "Papas Fritas",
     cost: 0.5,
     quantity: PlateQuantity(
-      amount: 1.0,
       count: 50.0,
       prefix: "",
       suffix: "g",
