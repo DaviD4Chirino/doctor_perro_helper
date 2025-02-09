@@ -16,11 +16,12 @@ class Section extends StatelessWidget {
       padding: EdgeInsets.only(
           // left: sizes.large,
           // right: sizes.large,
-          top: sizes.xxl),
+          top: sizes.xxxl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.baseline,
         // mainAxisAlignment: MainAxisAlignment.end,
         textBaseline: TextBaseline.alphabetic,
+        spacing: sizes.large,
         children: [
           Row(
             textBaseline: TextBaseline.alphabetic,
