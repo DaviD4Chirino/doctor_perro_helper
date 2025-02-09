@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
@@ -16,6 +14,9 @@ class NewOrder extends StatefulWidget {
 }
 
 class _NewOrderState extends State<NewOrder> {
+  List<Plate> selectedPlates = [];
+  List<PlatePack> selectedPacks = [];
+
   @override
   Widget build(BuildContext context) {
     ThemeData themeContext = Theme.of(context);
