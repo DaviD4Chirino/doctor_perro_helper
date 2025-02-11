@@ -8,7 +8,7 @@ import 'package:doctor_perro_helper/models/abstracts/ingredients_list.dart';
 abstract class PlateList {
   static Plate r1 = Plate(
     code: "R1",
-    title: "Perro normal",
+    name: "Perro normal",
     ingredients: [
       IngredientsList.sausage,
       IngredientsList.salad,
@@ -24,7 +24,7 @@ abstract class PlateList {
   );
   static Plate r2 = Plate(
     code: "R2",
-    title: "Perro Especial",
+    name: "Perro Especial",
     ingredients: [
       IngredientsList.sausage,
       IngredientsList.salad,
@@ -42,7 +42,7 @@ abstract class PlateList {
   );
   static Plate r3 = Plate(
     code: "R3",
-    title: "Hamburguesa",
+    name: "Hamburguesa",
     ingredients: [
       IngredientsList.patty,
       IngredientsList.burgerSauce,
@@ -57,7 +57,7 @@ abstract class PlateList {
   );
   static Plate r4 = Plate(
     code: "R4",
-    title: "Hamburguesa Doble",
+    name: "Hamburguesa Doble",
     ingredients: [
       IngredientsList.burgerSauce,
       IngredientsList.patty.amount(2),
@@ -73,7 +73,7 @@ abstract class PlateList {
 
   static Plate r5 = Plate(
     code: "R5",
-    title: "Salchipapas",
+    name: "Salchipapas",
     ingredients: [
       SideDishList.frenchFries.amount(12),
       IngredientsList.bacon,
@@ -87,7 +87,7 @@ abstract class PlateList {
 
   static PlatePack c1 = PlatePack(
     code: "C1",
-    title: "Combo de Perros",
+    name: "Combo de Perros",
     plates: [
       r1,
       r1,
@@ -104,7 +104,7 @@ abstract class PlateList {
 
   static PlatePack c2 = PlatePack(
     code: "C2",
-    title: "Combo de Perros Especiales",
+    name: "Combo de Perros Especiales",
     plates: [
       r2,
       r2,
@@ -122,7 +122,7 @@ abstract class PlateList {
   // Extras
   static Plate e1 = Plate(
     code: "E1",
-    title: "Servicio de Papas Fritas",
+    name: "Servicio de Papas Fritas",
     ingredients: [
       SideDishList.frenchFries.amount(6),
     ],
@@ -131,7 +131,7 @@ abstract class PlateList {
   );
   static Plate e2 = Plate(
     code: "E2",
-    title: "Refresco PepsiCola",
+    name: "Refresco PepsiCola",
     ingredients: [
       SideDishList.pepsiCola,
     ],

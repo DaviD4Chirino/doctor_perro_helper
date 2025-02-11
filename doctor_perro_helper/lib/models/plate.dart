@@ -5,12 +5,32 @@ import 'package:doctor_perro_helper/models/side_dish.dart';
 class Plate {
   Plate({
     required this.code,
-    required this.title,
+    required this.name,
     required this.ingredients,
     required this.cost,
     required this.quantity,
     this.extras,
+    this.id,
   });
+  Plate amount(double amount) {
+    return Plate(
+      code: code,
+      name: name,
+      cost: cost,
+      ingredients: ingredients,
+      quantity: PlateQuantity(
+        // count: quantity != null ? quantity?.count as double : 1,
+        count: quantity.count,
+        amount: amount,
+        max: quantity.max,
+        min: quantity.min,
+        prefix: quantity.prefix,
+        suffix: quantity.suffix,
+      ),
+    );
+  }
+
+  // double get price => (quantity.amount) * cost;
 
   String get ingredientsTitles {
     List<String> list = [];
@@ -25,10 +45,7 @@ class Plate {
   /// The cost of the plate + their extras, ingredient cost are ignore bc
   /// Kory is an lazy MF
   double get price {
-    double amount = cost;
-    /* for (var ingredient in ingredients) {
-      amount += ingredient.price;
-    } */
+    double amount = cost * quantity.amount;
 
     if (extras == null) {
       return amount;
@@ -54,8 +71,9 @@ class Plate {
     return list;
   }
 
+  String? id = "";
   String code;
-  String title;
+  String name;
   List<Ingredient> ingredients;
   List<SideDish>? extras = [];
   double cost;

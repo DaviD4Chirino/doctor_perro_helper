@@ -7,7 +7,7 @@ import 'package:doctor_perro_helper/utils/string_transform.dart';
 class PlatePack {
   PlatePack({
     required this.code,
-    required this.title,
+    required this.name,
     required this.plates,
     required this.cost,
     required this.quantity,
@@ -15,11 +15,28 @@ class PlatePack {
     this.prefix = "x",
     this.suffix = "",
   });
+  PlatePack amount(double amount) {
+    return PlatePack(
+      code: code,
+      name: name,
+      cost: cost,
+      plates: plates,
+      quantity: PlateQuantity(
+        // count: quantity != null ? quantity?.count as double : 1,
+        count: quantity.count,
+        amount: amount,
+        max: quantity.max,
+        min: quantity.min,
+        prefix: quantity.prefix,
+        suffix: quantity.suffix,
+      ),
+    );
+  }
 
   String get plateTitleList {
     List<String> list = [];
     for (var ingredient in plates) {
-      list.add(ingredient.title);
+      list.add(ingredient.name);
     }
     return formatDuplicatedSentences(list.join(", "));
   }
@@ -38,7 +55,7 @@ class PlatePack {
   }
 
   double get price {
-    double amount = cost;
+    double amount = cost * quantity.amount;
 
     for (var extra in extras!) {
       amount += extra.price;
@@ -47,7 +64,7 @@ class PlatePack {
   }
 
   String code;
-  String title;
+  String name;
   List<Plate> plates;
   double cost;
   PlateQuantity quantity;

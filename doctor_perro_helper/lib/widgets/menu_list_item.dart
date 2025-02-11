@@ -36,7 +36,7 @@ class MenuListItem extends ConsumerWidget {
             ),
             Text(
               // "Perro Normal",
-              plate.title,
+              plate.name,
               style: const TextStyle(
                 fontSize: 12.0,
               ),
@@ -118,7 +118,7 @@ class MenuListItemPack extends ConsumerWidget {
             ),
             Text(
               // "Perro Normal",
-              pack.title,
+              pack.name,
               style: const TextStyle(
                 fontSize: 12,
               ),

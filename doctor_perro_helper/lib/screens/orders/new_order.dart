@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
@@ -16,6 +18,24 @@ class NewOrder extends StatefulWidget {
 class _NewOrderState extends State<NewOrder> {
   List<Plate> selectedPlates = [];
   List<PlatePack> selectedPacks = [];
+
+  void onPlateSwipe(Plate plate, bool positive) {
+    if (positive) selectedPlates.add(plate);
+    if (!positive) {
+      selectedPlates.removeWhere(
+          (Plate existingPlate) => existingPlate.code == plate.code);
+    }
+    log(plate.quantity.amount.toString());
+  }
+
+  // ignore: no_leading_underscores_for_local_identifiers
+  void onPackSwipe(PlatePack pack, bool positive, double count) {
+    log(pack.quantity.amount.toString());
+    selectedPacks.removeWhere(
+        (PlatePack existingPack) => existingPack.code == pack.code);
+    selectedPacks.add(pack);
+    // log(pack.quantity.amount.toString());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +63,7 @@ class _NewOrderState extends State<NewOrder> {
                   ...PlateList.packs.map(
                     (PlatePack pack) => SwipeablePack(
                       pack: pack,
+                      onPackSwiped: onPackSwipe,
                     ),
                   )
                 ],
@@ -61,6 +82,7 @@ class _NewOrderState extends State<NewOrder> {
                   ...PlateList.plates.map(
                     (Plate plate) => SwipeablePlate(
                       plate: plate,
+                      onPlateSwiped: (plate, direction, count) {},
                     ),
                   )
                 ],
@@ -79,6 +101,7 @@ class _NewOrderState extends State<NewOrder> {
                   ...PlateList.extras.map(
                     (Plate extras) => SwipeablePlate(
                       plate: extras,
+                      onPlateSwiped: (plate, direction, count) {},
                     ),
                   )
                 ],
