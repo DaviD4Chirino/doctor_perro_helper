@@ -4,9 +4,11 @@ import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
+import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
 import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:doctor_perro_helper/widgets/reusables/swipeable_plate.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class NewOrder extends StatefulWidget {
   const NewOrder({super.key});
@@ -25,7 +27,6 @@ class _NewOrderState extends State<NewOrder> {
       selectedPlates.removeWhere(
           (Plate existingPlate) => existingPlate.code == plate.code);
     }
-    // log(plate.quantity.amount.toString());
   }
 
   // ignore: no_leading_underscores_for_local_identifiers
@@ -38,22 +39,7 @@ class _NewOrderState extends State<NewOrder> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    /*  PlateList.platesWithAmount(3).forEach((Plate plate) => log(
-        "${plate.name} - amount: ${plate.quantity.amount} - price: ${plate.price}")); */
-    PlateList.packsWithAmount(2).forEach((PlatePack pack) => log(
-        "${pack.name} - amount: ${pack.quantity.amount} - price: ${pack.price} - ${pack.plateTitleList}"));
-    log("C1 price - ${PlateList.c1.price}");
-  }
-
-  @override
   Widget build(BuildContext context) {
-    /* PlateList.platesWithAmount(3).forEach((Plate plate) => log(
-        "${plate.name} - amount: ${plate.quantity.amount} - price: ${plate.price}"));
-    PlateList.packsWithAmount(1).forEach((PlatePack pack) => log(
-        "${pack.name} - amount: ${pack.quantity.amount} - price: ${pack.cost} - ${pack.plateTitleList}"));
-    log("C1 price - ${PlateList.c1.price}"); */
     ThemeData themeContext = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -65,6 +51,7 @@ class _NewOrderState extends State<NewOrder> {
         ),
         child: ListView(
           children: [
+            const DraftedOrder(),
             Section(
               title: Text(
                 "Combos",
@@ -126,5 +113,36 @@ class _NewOrderState extends State<NewOrder> {
         ),
       ),
     );
+  }
+}
+
+class DraftedOrder extends ConsumerStatefulWidget {
+  const DraftedOrder({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => DraftedOrderState();
+}
+
+class DraftedOrderState extends ConsumerState<DraftedOrder> {
+  @override
+  Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+    return Section(
+        title: Text(
+          "Orden seleccionada",
+          style: TextStyle(
+            fontSize: theme.textTheme.titleLarge?.fontSize,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        child: Column(
+          children: [
+            ListTile(
+              leading: DolarAndBolivarPriceText(
+                price: 15.0,
+              ),
+            )
+          ],
+        ));
   }
 }

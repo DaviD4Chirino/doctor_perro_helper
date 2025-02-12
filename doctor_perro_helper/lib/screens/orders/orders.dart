@@ -133,7 +133,7 @@ class _ExpansibleOrderState extends State<ExpansibleOrder> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
-              child: FilledButton(
+              child: OutlinedButton(
                 onPressed: () {},
                 child: const Text("Servido"),
               ),
