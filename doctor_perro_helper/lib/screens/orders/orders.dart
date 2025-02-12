@@ -62,7 +62,7 @@ class ExpansibleOrder extends StatefulWidget {
 class _ExpansibleOrderState extends State<ExpansibleOrder> {
   @override
   Widget build(BuildContext context) {
-    ThemeData themeContext = Theme.of(context);
+    ThemeData theme = Theme.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -77,13 +77,13 @@ class _ExpansibleOrderState extends State<ExpansibleOrder> {
               Text(
                 "12\$",
                 style: TextStyle(
-                  fontSize: themeContext.textTheme.titleLarge?.fontSize,
+                  fontSize: theme.textTheme.titleLarge?.fontSize,
                 ),
               ),
               Text(
                 "430.5bs",
                 style: TextStyle(
-                  fontSize: themeContext.textTheme.labelSmall?.fontSize,
+                  fontSize: theme.textTheme.labelSmall?.fontSize,
                 ),
               ),
             ],
@@ -97,8 +97,8 @@ class _ExpansibleOrderState extends State<ExpansibleOrder> {
               Text(
                 "Calle Jabonería Casa 11",
                 style: TextStyle(
-                  fontSize: themeContext.textTheme.labelSmall?.fontSize,
-                  color: themeContext.colorScheme.onSurface.withAlpha(150),
+                  fontSize: theme.textTheme.labelSmall?.fontSize,
+                  color: theme.colorScheme.onSurface.withAlpha(150),
                 ),
               ),
             ],

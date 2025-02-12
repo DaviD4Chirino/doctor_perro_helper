@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
+import 'package:doctor_perro_helper/models/ingredient.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
 import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
@@ -138,11 +139,72 @@ class DraftedOrderState extends ConsumerState<DraftedOrder> {
         child: Column(
           children: [
             ListTile(
-              leading: DolarAndBolivarPriceText(
+              titleAlignment: ListTileTitleAlignment.top,
+              trailing: DolarAndBolivarPriceText(
                 price: 15.0,
               ),
-            )
+              title: Text("4R4 - E1"),
+              subtitle: Column(
+                children: [
+                  ListTile(
+                    title: Text("1R1:"),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: Sizes().xl),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              // First the added things
+                              Text(
+                                "+ 150g de Papas",
+                              ),
+                              // Second the considerations
+                              Text(
+                                "* Poca Mostaza",
+                              ),
+                              // Third the removed
+                              Text(
+                                "- Queso de año",
+                                style: TextStyle(
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: Sizes().medium),
+                        Text(
+                          "Calle Jabonería Casa 11",
+                          style: TextStyle(
+                            fontSize: theme.textTheme.labelMedium?.fontSize,
+                            color: theme.colorScheme.onSurface.withAlpha(150),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ));
+  }
+}
+
+class ReviewPlate extends StatelessWidget {
+  const ReviewPlate({
+    super.key,
+    required this.addedIngredients,
+    required this.removedIngredients,
+  });
+
+  final List<Ingredient> addedIngredients;
+  final List<Ingredient> removedIngredients;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text("");
   }
 }
