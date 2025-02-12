@@ -6,6 +6,15 @@ import 'package:doctor_perro_helper/models/abstracts/ingredients_list.dart';
 
 /// A class with every single plate in the restaurant
 abstract class PlateList {
+  /// Returns the all the plates with the specified amount
+  static List<Plate> platesWithAmount(double amount) {
+    return [...plates.map((Plate plate) => plate.amount(amount))];
+  }
+
+  static List<PlatePack> packsWithAmount(double amount) {
+    return [...packs.map((PlatePack pack) => pack.amount(amount))];
+  }
+
   static Plate r1 = Plate(
     code: "R1",
     name: "Perro normal",
@@ -88,37 +97,28 @@ abstract class PlateList {
   static PlatePack c1 = PlatePack(
     code: "C1",
     name: "Combo de Perros",
-    plates: [
-      r1,
-      r1,
-      r1,
-      r1,
-    ],
+    plates: [r1.amount(4).withoutExtras()],
     extras: [
       SideDishList.pepsiCola,
       SideDishList.frenchFries.amount(4),
     ],
-    cost: 5.5,
+    cost: -0.5,
     quantity: PlateQuantity(),
   );
+  // (1.5 * 4) + 2.5 + (0.5 * 4) = 10.5
 
   static PlatePack c2 = PlatePack(
     code: "C2",
     name: "Combo de Perros Especiales",
-    plates: [
-      r2,
-      r2,
-      r2,
-      r2,
-    ],
+    plates: [r2.amount(4).withoutExtras()],
     extras: [
       SideDishList.pepsiCola,
       SideDishList.frenchFries.amount(4),
     ],
-    cost: 10.5,
+    cost: 0.5,
     quantity: PlateQuantity(),
   );
-
+  // (2.5 * 4)+ (0.5*4) + 2.5 = 14.5
   // Extras
   static Plate e1 = Plate(
     code: "E1",

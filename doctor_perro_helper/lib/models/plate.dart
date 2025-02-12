@@ -1,6 +1,7 @@
 import 'package:doctor_perro_helper/models/ingredient.dart';
 import 'package:doctor_perro_helper/models/plate_quantity.dart';
 import 'package:doctor_perro_helper/models/side_dish.dart';
+import 'package:doctor_perro_helper/utils/string_math.dart';
 
 class Plate {
   Plate({
@@ -13,6 +14,15 @@ class Plate {
     this.id,
   });
   Plate amount(double amount) {
+    // to add the extras with the same amount as the plate
+    List<SideDish>? newExtras;
+    if (extras != null) {
+      newExtras = [];
+      for (var extra in extras!) {
+        newExtras.add(extra.amount((extra.quantity?.amount ?? 1) * amount));
+      }
+    }
+
     return Plate(
       code: code,
       name: name,
@@ -27,6 +37,18 @@ class Plate {
         prefix: quantity.prefix,
         suffix: quantity.suffix,
       ),
+      extras: newExtras,
+    );
+  }
+
+  Plate withoutExtras() {
+    return Plate(
+      code: code,
+      name: name,
+      ingredients: ingredients,
+      cost: cost,
+      quantity: quantity,
+      id: id,
     );
   }
 
@@ -47,15 +69,26 @@ class Plate {
   double get price {
     double amount = cost * quantity.amount;
 
-    if (extras == null) {
-      return amount;
-    }
-
-    for (var extra in extras!) {
-      amount += extra.price;
+    if (extras != null) {
+      for (var extra in extras!) {
+        amount += extra.price;
+      }
     }
 
     return amount;
+  }
+
+  String get title {
+    String suffix = this.quantity.suffix;
+    String prefix = this.quantity.prefix;
+    double amount = this.quantity.amount;
+    double count = this.quantity.count;
+
+    double quantity = count * amount;
+
+    return amount > 1
+        ? "$name $prefix${removePaddingZero(quantity.toString())}$suffix"
+        : name;
   }
 
   List<String> get extrasTitleList {
@@ -76,6 +109,8 @@ class Plate {
   String name;
   List<Ingredient> ingredients;
   List<SideDish>? extras = [];
+
+  /// The monetary cost that takes to make this plate, not counting the extras
   double cost;
   PlateQuantity quantity;
 }

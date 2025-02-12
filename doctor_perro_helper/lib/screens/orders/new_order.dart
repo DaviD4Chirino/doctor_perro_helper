@@ -25,7 +25,7 @@ class _NewOrderState extends State<NewOrder> {
       selectedPlates.removeWhere(
           (Plate existingPlate) => existingPlate.code == plate.code);
     }
-    log(plate.quantity.amount.toString());
+    // log(plate.quantity.amount.toString());
   }
 
   // ignore: no_leading_underscores_for_local_identifiers
@@ -38,7 +38,22 @@ class _NewOrderState extends State<NewOrder> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    /*  PlateList.platesWithAmount(3).forEach((Plate plate) => log(
+        "${plate.name} - amount: ${plate.quantity.amount} - price: ${plate.price}")); */
+    PlateList.packsWithAmount(2).forEach((PlatePack pack) => log(
+        "${pack.name} - amount: ${pack.quantity.amount} - price: ${pack.price} - ${pack.plateTitleList}"));
+    log("C1 price - ${PlateList.c1.price}");
+  }
+
+  @override
   Widget build(BuildContext context) {
+    /* PlateList.platesWithAmount(3).forEach((Plate plate) => log(
+        "${plate.name} - amount: ${plate.quantity.amount} - price: ${plate.price}"));
+    PlateList.packsWithAmount(1).forEach((PlatePack pack) => log(
+        "${pack.name} - amount: ${pack.quantity.amount} - price: ${pack.cost} - ${pack.plateTitleList}"));
+    log("C1 price - ${PlateList.c1.price}"); */
     ThemeData themeContext = Theme.of(context);
     return Scaffold(
       appBar: AppBar(

@@ -1,9 +1,7 @@
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_quantity.dart';
 import 'package:doctor_perro_helper/models/side_dish.dart';
-import 'package:doctor_perro_helper/utils/string_transform.dart';
 
-/// This is a Plate Class with other Plates inside
 class PlatePack {
   PlatePack({
     required this.code,
@@ -12,17 +10,29 @@ class PlatePack {
     required this.cost,
     required this.quantity,
     this.extras,
-    this.prefix = "x",
-    this.suffix = "",
   });
+
   PlatePack amount(double amount) {
+    List<SideDish>? newExtras;
+    List<Plate> newPlates = [];
+
+    if (extras != null) {
+      newExtras = [];
+      for (var extra in extras!) {
+        newExtras.add(extra.amount((extra.quantity?.amount ?? 1) * amount));
+      }
+    }
+
+    for (Plate plate in plates) {
+      newPlates.add(plate.amount(plate.quantity.amount * amount));
+    }
+
     return PlatePack(
       code: code,
       name: name,
       cost: cost,
-      plates: plates,
+      plates: newPlates,
       quantity: PlateQuantity(
-        // count: quantity != null ? quantity?.count as double : 1,
         count: quantity.count,
         amount: amount,
         max: quantity.max,
@@ -30,15 +40,16 @@ class PlatePack {
         prefix: quantity.prefix,
         suffix: quantity.suffix,
       ),
+      extras: newExtras,
     );
   }
 
   String get plateTitleList {
     List<String> list = [];
-    for (var ingredient in plates) {
-      list.add(ingredient.name);
+    for (var plate in plates) {
+      list.add(plate.title);
     }
-    return formatDuplicatedSentences(list.join(", "));
+    return list.join(", ");
   }
 
   List<String> get extrasTitleList {
@@ -55,20 +66,26 @@ class PlatePack {
   }
 
   double get price {
-    double amount = cost * quantity.amount;
+    double totalAmount = cost * quantity.amount;
 
-    for (var extra in extras!) {
-      amount += extra.price;
+    for (Plate plate in plates) {
+      totalAmount += plate.price;
     }
-    return amount;
+
+    if (extras != null) {
+      for (var extra in extras!) {
+        totalAmount += extra.price;
+      }
+    }
+    return totalAmount;
   }
 
   String code;
   String name;
   List<Plate> plates;
+
+  /// The monetary cost that takes to make this pack, not counting the extras
   double cost;
   PlateQuantity quantity;
-  String prefix;
-  String suffix;
   List<SideDish>? extras = [];
 }
