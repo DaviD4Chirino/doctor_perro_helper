@@ -10,6 +10,7 @@ class PlatePack {
     required this.cost,
     required this.quantity,
     this.extras,
+    this.id = "",
   });
 
   PlatePack amount(double amount) {
@@ -43,6 +44,14 @@ class PlatePack {
       extras: newExtras,
     );
   }
+
+  PlatePack withoutExtras() => PlatePack(
+      code: code,
+      name: name,
+      plates: plates,
+      cost: cost,
+      quantity: quantity,
+      id: id);
 
   String get plateTitleList {
     List<String> list = [];
@@ -80,6 +89,7 @@ class PlatePack {
     return totalAmount;
   }
 
+  String id;
   String code;
   String name;
   List<Plate> plates;
