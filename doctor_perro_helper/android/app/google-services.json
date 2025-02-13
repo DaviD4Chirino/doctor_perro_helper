@@ -12,7 +12,20 @@
           "package_name": "com.davidspace.doctor_perro_helper"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "891418491265-plraajk3ktk9bk49f94i8fhab6ecqtua.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.davidspace.doctor_perro_helper",
+            "certificate_hash": "c38127d8bfb646b4c78747006cf6bcab799805bd"
+          }
+        },
+        {
+          "client_id": "891418491265-gqu6js4vh9q4vkaha32j7n1b36djtep3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAHOa9r2gwmMrg0a1PCDj1k93mOmzGIl7M"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "891418491265-b7sflf9rd3gabndckso844v6l37rlvut.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
