@@ -34,6 +34,7 @@ class MainApp extends StatelessWidget {
       child: MaterialApp(
         theme: AppTheme.light,
         darkTheme: AppTheme.dark,
+        themeMode: ThemeMode.system,
         title: "Dr.Perro Helper",
         initialRoute: "/",
         routes: {
