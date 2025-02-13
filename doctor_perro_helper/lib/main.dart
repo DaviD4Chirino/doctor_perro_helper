@@ -1,3 +1,4 @@
+import 'package:doctor_perro_helper/config/themes/app_theme.dart';
 import 'package:doctor_perro_helper/config/themes/dark_theme.dart';
 import 'package:doctor_perro_helper/config/themes/light_theme.dart';
 import 'package:doctor_perro_helper/models/use_shared_preferences.dart';
@@ -31,8 +32,8 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ToastificationWrapper(
       child: MaterialApp(
-        theme: lightTheme,
-        darkTheme: darkTheme,
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
         title: "Dr.Perro Helper",
         initialRoute: "/",
         routes: {
