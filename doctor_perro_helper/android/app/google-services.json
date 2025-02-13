@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "891418491265",
+    "project_id": "dr-perro-helper",
+    "storage_bucket": "dr-perro-helper.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:891418491265:android:dc196515e00da85cf01080",
+        "android_client_info": {
+          "package_name": "com.davidspace.doctor_perro_helper"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHOa9r2gwmMrg0a1PCDj1k93mOmzGIl7M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

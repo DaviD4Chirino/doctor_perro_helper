@@ -1,6 +1,4 @@
 import 'package:doctor_perro_helper/config/themes/app_theme.dart';
-import 'package:doctor_perro_helper/config/themes/dark_theme.dart';
-import 'package:doctor_perro_helper/config/themes/light_theme.dart';
 import 'package:doctor_perro_helper/models/use_shared_preferences.dart';
 import 'package:doctor_perro_helper/screens/pages/home/home.dart';
 import 'package:flutter/material.dart';
