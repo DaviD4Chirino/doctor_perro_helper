@@ -1,6 +1,9 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/change_dolar_price.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -14,6 +17,21 @@ class SettingsPage extends StatelessWidget {
           horizontal: Sizes().large,
         ),
         children: [
+          Text(
+            "Cuenta",
+            style: TextStyle(
+              fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SettingButton(
+            child: const ListTile(
+              title: Text("No estás registrado"),
+            ),
+            onTap: () {
+              signInWithGoogle();
+            },
+          ),
           Text(
             "Ajustes",
             style: TextStyle(
@@ -36,6 +54,23 @@ class SettingsPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> signInWithGoogle() async {
+    GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+    AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+
+    if (kDebugMode) {
+      print(userCredential.user?.displayName);
+    }
   }
 }
 
