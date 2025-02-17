@@ -158,7 +158,7 @@ class _HomeState extends State<Home> {
   AppBar appBar() {
     return AppBar(
       title: const Image(
-        image: AssetImage("lib/assets/logos/logo_border_transparent.png"),
+        image: AssetImage("assets/logos/logo_border_transparent.png"),
         width: 60.0,
         height: 60.0,
       ),
