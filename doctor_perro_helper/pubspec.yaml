@@ -25,6 +25,7 @@ dependencies:
   riverpod_annotation: ^2.6.1
   shared_preferences: ^2.4.0
   toastification: ^2.3.0
+  flutter_native_splash: ^2.4.4
 
 dev_dependencies:
   flutter_test:
@@ -48,4 +49,13 @@ flutter_launcher_icons:
   ios: true
   image_path: "lib/assets/logos/logo_background.png"
   adaptive_icon_foreground: "lib/assets/logos/logo_background.png"
-  adaptive_icon_background: "#FFCC5EFF"
+  adaptive_icon_background: "#FD9D43"
+
+
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+
+  color: "#FD9D43"
+  image: "lib/assets/logos/logo_border_transparent.png"

@@ -1,8 +1,10 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
+import 'package:doctor_perro_helper/models/providers/user.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/change_dolar_price.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -24,14 +26,7 @@ class SettingsPage extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SettingButton(
-            child: const ListTile(
-              title: Text("No estás registrado"),
-            ),
-            onTap: () {
-              signInWithGoogle();
-            },
-          ),
+          const Account(),
           Text(
             "Ajustes",
             style: TextStyle(
@@ -54,23 +49,6 @@ class SettingsPage extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Future<void> signInWithGoogle() async {
-    GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-
-    AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-
-    UserCredential userCredential =
-        await FirebaseAuth.instance.signInWithCredential(credential);
-
-    if (kDebugMode) {
-      print(userCredential.user?.displayName);
-    }
   }
 }
 
@@ -95,6 +73,60 @@ class SettingButton extends StatelessWidget {
                 Theme.of(context).colorScheme.onSurfaceVariant.withAlpha(100),
           )
         ],
+      ),
+    );
+  }
+}
+
+class Account extends ConsumerStatefulWidget {
+  const Account({super.key});
+
+  @override
+  ConsumerState<Account> createState() => _AccountState();
+}
+
+class _AccountState extends ConsumerState<Account> {
+  bool isLoading = false;
+
+  Future<void> signIn() async {
+    setState(() {
+      isLoading = true;
+    });
+    await ref.read(userNotifierProvider.notifier).signInWithGoogle();
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    User? user = ref.watch(userNotifierProvider);
+    ThemeData theme = Theme.of(context);
+    String titleString = (user?.displayName ?? "No estás registrado");
+    var leading = user != null
+        ? CircleAvatar(
+            foregroundImage: NetworkImage(
+              user.photoURL as String,
+            ),
+            backgroundColor: theme.colorScheme.surface,
+            foregroundColor: theme.colorScheme.surface,
+          )
+        : const Icon(Icons.account_circle_outlined);
+    // final avatar = CircleAvatar()
+
+    return SettingButton(
+      onTap: signIn,
+      child: ListTile(
+        leading: isLoading ? const CircularProgressIndicator() : leading,
+        trailing: user != null
+            ? IconButton(
+                tooltip: "Cerrar Sesión",
+                visualDensity: VisualDensity.compact,
+                onPressed:
+                    ref.read(userNotifierProvider.notifier).googleSignOut,
+                icon: const Icon(Icons.exit_to_app))
+            : null,
+        title: Text(titleString),
       ),
     );
   }

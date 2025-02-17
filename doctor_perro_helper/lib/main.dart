@@ -1,18 +1,24 @@
 import 'package:doctor_perro_helper/config/themes/app_theme.dart';
+import 'package:doctor_perro_helper/models/providers/user.dart';
 import 'package:doctor_perro_helper/models/use_shared_preferences.dart';
 import 'package:doctor_perro_helper/screens/pages/home/home.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:toastification/toastification.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 Future main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await UseSharedPreferences.init();
+
   await initializeDateFormatting('es_ES');
   await Firebase.initializeApp();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -25,8 +31,38 @@ Future main() async {
   );
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends ConsumerStatefulWidget {
   const MainApp({super.key});
+
+  @override
+  ConsumerState<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends ConsumerState<MainApp> {
+  @override
+  void initState() {
+    super.initState();
+    initialization();
+  }
+
+  /// Put here anything that you need to initialize in the app,
+  /// this should be use for things like class init whose class exist inside
+  /// this repo, and not from dependencies unless necessary.
+
+  Future<void> initialization() async {
+    if (kDebugMode) {
+      print("Initializing app...");
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ref.watch(userNotifierProvider.notifier).silentlySignIn();
+      FlutterNativeSplash.remove();
+    });
+
+    if (kDebugMode) {
+      print("App initialized");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
