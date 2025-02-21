@@ -1,9 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/providers/user.dart';
+import 'package:doctor_perro_helper/models/providers/users_database.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/change_dolar_price.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+
+FirebaseFirestore db = FirebaseFirestore.instance;
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -86,6 +92,17 @@ class Account extends ConsumerStatefulWidget {
 class _AccountState extends ConsumerState<Account> {
   bool isLoading = false;
 
+  Future<void> handleTap() async {
+    await signIn();
+    String dName = ref.watch(userNotifierProvider)?.displayName ?? "";
+
+    Map<String, dynamic> user = {
+      "creation_date": Timestamp.fromDate(DateTime.now()),
+      "login_date": Timestamp.fromDate(DateTime.now()),
+    };
+    await db.collection("users").add(user);
+  }
+
   Future<void> signIn() async {
     setState(() {
       isLoading = true;
@@ -113,7 +130,7 @@ class _AccountState extends ConsumerState<Account> {
     // final avatar = CircleAvatar()
 
     return SettingButton(
-      onTap: signIn,
+      onTap: handleTap,
       child: ListTile(
         leading: isLoading ? const CircularProgressIndicator() : leading,
         trailing: user != null
