@@ -1,8 +1,8 @@
 import 'package:doctor_perro_helper/models/order/order_status.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 
-class Order {
-  Order({
+class MenuOrder {
+  MenuOrder({
     required this.plates,
   });
 
@@ -24,8 +24,8 @@ class Order {
 
   OrderStatus get status => _status;
 
-  Order create() {
-    return Order(plates: plates);
+  MenuOrder create() {
+    return MenuOrder(plates: plates);
   }
 
   List<Plate> plates;

@@ -1,15 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/providers/user.dart';
-import 'package:doctor_perro_helper/models/providers/users_database.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/change_dolar_price.dart';
+import 'package:doctor_perro_helper/utils/database/account.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
-
-FirebaseFirestore db = FirebaseFirestore.instance;
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -94,20 +90,27 @@ class _AccountState extends ConsumerState<Account> {
 
   Future<void> handleTap() async {
     await signIn();
-    String dName = ref.watch(userNotifierProvider)?.displayName ?? "";
+    /* String dName = ref.watch(userNotifierProvider)?.displayName ?? "";
+    // UserAccount = UserAccount.fromJson(json)
 
     Map<String, dynamic> user = {
       "creation_date": Timestamp.fromDate(DateTime.now()),
       "login_date": Timestamp.fromDate(DateTime.now()),
     };
-    await db.collection("users").add(user);
+    await db.collection("users").add(user); */
   }
 
   Future<void> signIn() async {
     setState(() {
       isLoading = true;
     });
-    await ref.read(userNotifierProvider.notifier).signInWithGoogle();
+    await ref.read(userNotifierProvider.notifier).googleSignIn();
+    // print(ref.watch(userNotifierProvider)?.uid);
+    // David Chirino
+    // YTknZVtjKZQcYB6VszIcXU4FWKA3 YTknZVtjKZQcYB6VszIcXU4FWKA3
+    /* await login("xsdads");
+    await login("4FhMbE7RA3kHwJWgtT0R"); */
+
     setState(() {
       isLoading = false;
     });

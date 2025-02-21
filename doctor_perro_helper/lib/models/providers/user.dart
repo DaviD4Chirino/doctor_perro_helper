@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_perro_helper/models/user_account.dart';
+import 'package:doctor_perro_helper/utils/database/account.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part "user.g.dart";
+
+FirebaseFirestore db = FirebaseFirestore.instance;
 
 @riverpod
 class UserNotifier extends _$UserNotifier {
@@ -17,7 +22,7 @@ class UserNotifier extends _$UserNotifier {
 
   /// Pops up the Sign In With Google and on successful returns true
   /// and automatically updates the [state].
-  Future<void> signInWithGoogle() async {
+  Future<void> googleSignIn() async {
     GoogleSignIn google = GoogleSignIn();
 
     try {
@@ -31,7 +36,25 @@ class UserNotifier extends _$UserNotifier {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
 
+      User? user = userCredential.user;
+
+      if (await hasDocument("users", user?.uid ?? "no-id")) {
+        await login(user?.uid as String);
+      } else {
+        // dont look at me
+        DocumentReference acc = await createAccount(
+          UserDocument(
+            displayName: user?.displayName as String,
+            email: user?.email as String,
+          )..uid = user?.uid as String,
+        );
+        await login(acc.id);
+      }
+
       state = userCredential.user;
+      if (kDebugMode) {
+        print("Signup and database updated");
+      }
     } catch (e) {
       // String extractedErrorMessage = extractErrorMessage(e);
       if (kDebugMode) {
