@@ -85,6 +85,21 @@ class UserNotifier extends _$UserNotifier {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
 
+      User? user = userCredential.user;
+
+      if (await hasDocument("users", user?.uid ?? "no-id")) {
+        await login(user?.uid as String);
+      } else {
+        // dont look at me
+        DocumentReference acc = await createAccount(
+          UserDocument(
+            displayName: user?.displayName as String,
+            email: user?.email as String,
+          )..uid = user?.uid as String,
+        );
+        await login(acc.id);
+      }
+
       state = userCredential.user;
     } catch (e) {
       if (kDebugMode) {
