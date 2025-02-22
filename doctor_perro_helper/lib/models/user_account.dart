@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_perro_helper/models/order/order.dart';
 import 'package:doctor_perro_helper/models/user_role.dart';
+import 'package:doctor_perro_helper/utils/extensions/user_role_extensions.dart';
 
 class UserDocument {
   UserDocument({
