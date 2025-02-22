@@ -26,6 +26,7 @@ Future<UserCredential?> signInWithGoogle() async {
       print("Exception \n $e");
     }
   }
+  return null;
 }
 
 Future<UserCredential?> silentSignInWithGoogle() async {
