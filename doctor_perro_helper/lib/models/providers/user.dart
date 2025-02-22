@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part "user.g.dart";
 
+//?: rework this so the credential and document are getters instead of a class
 @riverpod
 class UserNotifier extends _$UserNotifier {
   @override

@@ -1,8 +1,9 @@
+import 'dart:developer';
+
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/providers/user.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/change_dolar_price.dart';
 import 'package:doctor_perro_helper/utils/extensions/user_role_extensions.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -88,7 +89,6 @@ class _AccountState extends ConsumerState<Account> {
   bool isLoading = false;
 
   Future<void> handleTap() async {
-    if (isLoading) return;
     await signIn();
   }
 
@@ -97,12 +97,6 @@ class _AccountState extends ConsumerState<Account> {
       isLoading = true;
     });
     await ref.read(userNotifierProvider.notifier).googleSignIn();
-    // print(ref.watch(userNotifierProvider)?.uid);
-    // David Chirino
-    // YTknZVtjKZQcYB6VszIcXU4FWKA3 YTknZVtjKZQcYB6VszIcXU4FWKA3
-    /* await login("xsdads");
-    await login("4FhMbE7RA3kHwJWgtT0R"); */
-
     setState(() {
       isLoading = false;
     });
@@ -138,7 +132,7 @@ class _AccountState extends ConsumerState<Account> {
             : null,
         title: Text(titleString),
         subtitle: userData.document != null
-            ? Text(userData.document?.role?.toShortString().capitalize ?? "")
+            ? Text(userData.document?.role?.translate() ?? "")
             : null,
       ),
     );
