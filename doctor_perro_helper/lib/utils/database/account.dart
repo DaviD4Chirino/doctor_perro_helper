@@ -7,48 +7,37 @@ import 'package:flutter/foundation.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 
-Future<void> login(String uid) async {
+/// Updates the account in the database
+/// WARNING: does not check if they exist
+Future<DocumentReference?> login(String uid) async {
   try {
-    if (await hasDocument("users", uid) == false) {
-      log("Does not have the document $uid");
-      return;
-    }
-
     final DocumentReference doc = getDocument("users", uid);
     final DocumentSnapshot snap = await getDocument("users", uid).get();
 
     UserDocument account =
         UserDocument.fromJson(snap.data() as Map<String, dynamic>);
     account.loginTime = DateTime.timestamp();
-
     await doc.set(account.toJson());
+
+    return doc;
   } catch (e) {
     if (kDebugMode) {
       print("Error getting document: $e");
     }
   }
+  return null;
 }
 
-/// creates the account or returns the already existing one
+/// creates the account
+/// WARNING: does not check if they already exist
 Future<DocumentReference> createAccount(UserDocument account) async {
-  if (await hasDocument("users", account.uid)) {
-    if (kDebugMode) {
-      print("Account already in database");
-    }
-    return getDocument("users", account.uid);
-  } else {
-    var newAcc = account
-      ..creationTime = DateTime.timestamp()
-      ..role = UserRole.employee;
+  var newAcc = account
+    ..creationTime = DateTime.timestamp()
+    ..role = UserRole.employee;
 
-    await db.collection("users").doc(newAcc.uid).set(newAcc.toJson());
-    return getDocument("users", newAcc.uid);
-  }
+  await db.collection("users").doc(newAcc.uid).set(newAcc.toJson());
+  return getDocument("users", newAcc.uid);
 }
-
-/// This will check if the account already exist in the database,
-/// if not, it will create a new document or else it will log in
-Future<void> createAndLoginAccount() async {}
 
 Future<bool> hasDocument(String collectionPath, String docPath) async {
   final CollectionReference collection = db.collection(collectionPath);

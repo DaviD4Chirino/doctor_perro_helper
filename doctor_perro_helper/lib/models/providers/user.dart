@@ -10,11 +10,11 @@ part "user.g.dart";
 @riverpod
 class UserNotifier extends _$UserNotifier {
   @override
-  User? build() {
-    return null;
+  UserData build() {
+    return UserData(credential: null, document: null);
   }
 
-  void setUser(User user) {
+  void setUser(UserData user) {
     state = user;
   }
 
@@ -24,8 +24,13 @@ class UserNotifier extends _$UserNotifier {
     try {
       UserCredential? credentials = await signInWithGoogle();
       User? user = credentials?.user;
-      await handleAccountLoginAndDatabase(user);
-      state = user;
+      DocumentReference doc = await handleAccountLoginAndDatabase(user);
+      var data = await doc.get();
+
+      state = UserData(
+        credential: credentials,
+        document: UserDocument.fromJson(data.data() as Map<String, dynamic>),
+      );
     } catch (e) {
       if (kDebugMode) {
         print("ERROR ON -> $e");
@@ -35,18 +40,22 @@ class UserNotifier extends _$UserNotifier {
 
   Future<void> googleSignOut() async {
     await signOutWithGoogle();
-    state = null;
+    state = UserData(credential: null, document: null);
   }
 
   Future<void> silentlySignIn() async {
     try {
-      UserCredential? userCredential = await silentSignInWithGoogle();
+      UserCredential? credentials = await silentSignInWithGoogle();
 
-      User? user = userCredential?.user;
+      User? user = credentials?.user;
 
-      await handleAccountLoginAndDatabase(user);
+      DocumentReference doc = await handleAccountLoginAndDatabase(user);
+      var docGet = await doc.get();
 
-      state = userCredential?.user;
+      state = UserData(
+        credential: credentials,
+        document: UserDocument.fromJson(docGet.data() as Map<String, dynamic>),
+      );
     } catch (e) {
       if (kDebugMode) {
         print("Exception \n $e");
@@ -66,18 +75,34 @@ String extractErrorMessage(dynamic exception) {
 }
 
 /// This creates an account if theres no document with its uid and logs it in.
-/// also updates te database.
-Future<void> handleAccountLoginAndDatabase(User? user) async {
+/// Also updates te database.
+/// Also spits the [DocumentReference] if exist.
+Future<DocumentReference> handleAccountLoginAndDatabase(User? user) async {
   if (await hasDocument("users", user?.uid ?? "no-id")) {
-    await login(user?.uid as String);
+    DocumentReference doc =
+        await login(user?.uid as String) as DocumentReference;
+    return doc;
   } else {
     // dont look at me
-    DocumentReference acc = await createAccount(
+    DocumentReference doc = await createAccount(
       UserDocument(
         displayName: user?.displayName as String,
         email: user?.email as String,
       )..uid = user?.uid as String,
     );
-    await login(acc.id);
+    await login(doc.id);
+
+    return doc;
   }
+}
+
+class UserData {
+  UserData({
+    required this.credential,
+    required this.document,
+  });
+  bool get isEmpty => credential == null && document == null;
+
+  UserCredential? credential;
+  UserDocument? document;
 }

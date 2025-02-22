@@ -1,7 +1,6 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/providers/user.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/change_dolar_price.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -87,15 +86,8 @@ class _AccountState extends ConsumerState<Account> {
   bool isLoading = false;
 
   Future<void> handleTap() async {
+    if (isLoading) return;
     await signIn();
-    /* String dName = ref.watch(userNotifierProvider)?.displayName ?? "";
-    // UserAccount = UserAccount.fromJson(json)
-
-    Map<String, dynamic> user = {
-      "creation_date": Timestamp.fromDate(DateTime.now()),
-      "login_date": Timestamp.fromDate(DateTime.now()),
-    };
-    await db.collection("users").add(user); */
   }
 
   Future<void> signIn() async {
@@ -116,13 +108,15 @@ class _AccountState extends ConsumerState<Account> {
 
   @override
   Widget build(BuildContext context) {
-    User? user = ref.watch(userNotifierProvider);
+    UserData userData = ref.watch(userNotifierProvider);
+    bool isEmpty = userData.isEmpty;
     ThemeData theme = Theme.of(context);
-    String titleString = (user?.displayName ?? "No estás registrado");
-    var leading = user != null
+    String titleString =
+        (userData.document?.displayName ?? "No estás registrado");
+    var leading = userData.credential != null
         ? CircleAvatar(
             foregroundImage: NetworkImage(
-              user.photoURL as String,
+              userData.credential?.user?.photoURL ?? "",
             ),
             backgroundColor: theme.colorScheme.surface,
             foregroundColor: theme.colorScheme.surface,
@@ -134,10 +128,9 @@ class _AccountState extends ConsumerState<Account> {
       onTap: handleTap,
       child: ListTile(
         leading: isLoading ? const CircularProgressIndicator() : leading,
-        trailing: user != null
+        trailing: userData.credential != null
             ? IconButton(
                 tooltip: "Cerrar Sesión",
-                visualDensity: VisualDensity.compact,
                 onPressed:
                     ref.read(userNotifierProvider.notifier).googleSignOut,
                 icon: const Icon(Icons.exit_to_app))
