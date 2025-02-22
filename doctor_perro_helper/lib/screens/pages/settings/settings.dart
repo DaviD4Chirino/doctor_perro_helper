@@ -1,6 +1,8 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/providers/user.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/change_dolar_price.dart';
+import 'package:doctor_perro_helper/utils/extensions/user_role_extensions.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -109,7 +111,6 @@ class _AccountState extends ConsumerState<Account> {
   @override
   Widget build(BuildContext context) {
     UserData userData = ref.watch(userNotifierProvider);
-    bool isEmpty = userData.isEmpty;
     ThemeData theme = Theme.of(context);
     String titleString =
         (userData.document?.displayName ?? "No estás registrado");
@@ -136,6 +137,9 @@ class _AccountState extends ConsumerState<Account> {
                 icon: const Icon(Icons.exit_to_app))
             : null,
         title: Text(titleString),
+        subtitle: userData.document != null
+            ? Text(userData.document?.role?.toShortString().capitalize ?? "")
+            : null,
       ),
     );
   }

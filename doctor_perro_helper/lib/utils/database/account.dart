@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_perro_helper/models/user_account.dart';
 import 'package:doctor_perro_helper/models/user_role.dart';
