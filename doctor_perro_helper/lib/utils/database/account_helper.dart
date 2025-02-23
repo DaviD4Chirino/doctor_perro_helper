@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_perro_helper/utils/database/document_helper.dart';
 import 'package:doctor_perro_helper/models/user_account.dart';
 import 'package:doctor_perro_helper/models/user_role.dart';
 import 'package:flutter/foundation.dart';
 
-FirebaseFirestore db = FirebaseFirestore.instance;
+import 'shared.dart';
 
 /// Updates the account in the database
 /// WARNING: does not check if they exist
@@ -36,14 +37,3 @@ Future<DocumentReference> createAccount(UserDocument account) async {
   await db.collection("users").doc(newAcc.uid).set(newAcc.toJson());
   return getDocument("users", newAcc.uid);
 }
-
-Future<bool> hasDocument(String collectionPath, String docPath) async {
-  final CollectionReference collection = db.collection(collectionPath);
-  final DocumentReference doc = collection.doc(docPath);
-  final DocumentSnapshot user = await doc.get();
-
-  return user.exists;
-}
-
-DocumentReference getDocument(String collectionPath, String docPath) =>
-    db.collection(collectionPath).doc(docPath);

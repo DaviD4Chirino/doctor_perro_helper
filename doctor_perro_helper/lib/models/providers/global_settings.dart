@@ -7,6 +7,8 @@ class GlobalSettingsNotifier extends _$GlobalSettingsNotifier {
   GlobalSettings build() {
     return GlobalSettings();
   }
+
+  void init() {}
 }
 
 class GlobalSettings {

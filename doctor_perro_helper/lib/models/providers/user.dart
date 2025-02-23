@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_perro_helper/models/user_account.dart';
-import 'package:doctor_perro_helper/utils/database/account.dart';
+import 'package:doctor_perro_helper/utils/database/account_helper.dart';
+import 'package:doctor_perro_helper/utils/database/document_helper.dart';
 import 'package:doctor_perro_helper/utils/google/google.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
