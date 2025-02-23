@@ -11,4 +11,7 @@ Future<bool> hasDocument(String collectionPath, String docPath) async {
 }
 
 DocumentReference getDocument(String collectionPath, String docPath) =>
-    db.collection(collectionPath).doc(docPath);
+    getCollection(collectionPath).doc(docPath);
+
+CollectionReference getCollection(String collectionPath) =>
+    db.collection(collectionPath);

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_perro_helper/models/abstracts/database_paths.dart';
 import 'package:doctor_perro_helper/utils/database/document_helper.dart';
 import 'package:doctor_perro_helper/models/user_account.dart';
 import 'package:doctor_perro_helper/models/user_role.dart';
@@ -10,8 +11,9 @@ import 'shared.dart';
 /// WARNING: does not check if they exist
 Future<DocumentReference?> login(String uid) async {
   try {
-    final DocumentReference doc = getDocument("users", uid);
-    final DocumentSnapshot snap = await getDocument("users", uid).get();
+    final DocumentReference doc = getDocument(CollectionsPaths.users, uid);
+    final DocumentSnapshot snap =
+        await getDocument(CollectionsPaths.users, uid).get();
 
     UserDocument account =
         UserDocument.fromJson(snap.data() as Map<String, dynamic>);
@@ -34,6 +36,9 @@ Future<DocumentReference> createAccount(UserDocument account) async {
     ..creationTime = DateTime.timestamp()
     ..role = UserRole.employee;
 
-  await db.collection("users").doc(newAcc.uid).set(newAcc.toJson());
-  return getDocument("users", newAcc.uid);
+  await db
+      .collection(CollectionsPaths.users)
+      .doc(newAcc.uid)
+      .set(newAcc.toJson());
+  return getDocument(CollectionsPaths.users, newAcc.uid);
 }

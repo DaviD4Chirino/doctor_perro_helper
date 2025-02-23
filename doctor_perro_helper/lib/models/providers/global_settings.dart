@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_perro_helper/models/abstracts/database_paths.dart';
+import 'package:doctor_perro_helper/utils/database/document_helper.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part "global_settings.g.dart";
 
@@ -8,7 +11,10 @@ class GlobalSettingsNotifier extends _$GlobalSettingsNotifier {
     return GlobalSettings();
   }
 
-  void init() {}
+  Future<void> init() async {
+    CollectionReference collection =
+        getCollection(CollectionsPaths.globalSettings);
+  }
 }
 
 class GlobalSettings {
