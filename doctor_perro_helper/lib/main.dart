@@ -3,7 +3,6 @@ import 'package:doctor_perro_helper/models/providers/user.dart';
 import 'package:doctor_perro_helper/models/use_shared_preferences.dart';
 import 'package:doctor_perro_helper/screens/pages/home/home.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -50,18 +49,10 @@ class _MainAppState extends ConsumerState<MainApp> {
   /// this repo, and not from dependencies unless necessary.
 
   Future<void> initialization() async {
-    if (kDebugMode) {
-      print("Initializing app...");
-    }
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.watch(userNotifierProvider.notifier).silentlySignIn();
       FlutterNativeSplash.remove();
     });
-
-    if (kDebugMode) {
-      print("App initialized");
-    }
   }
 
   @override
@@ -72,9 +63,9 @@ class _MainAppState extends ConsumerState<MainApp> {
         darkTheme: AppTheme.dark,
         themeMode: ThemeMode.system,
         title: "Dr.Perro Helper",
-        initialRoute: "/",
+        initialRoute: "",
         routes: {
-          "/": (BuildContext context) => Home(),
+          "": (BuildContext context) => Home(),
         },
       ),
     );

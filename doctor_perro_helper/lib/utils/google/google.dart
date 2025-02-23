@@ -55,3 +55,5 @@ Future<void> signOutWithGoogle() async {
     await google.disconnect();
   }
 }
+
+Future<bool> hasSignedInWithGoogle() => GoogleSignIn().isSignedIn();

@@ -1,11 +1,7 @@
-import 'dart:developer';
-
 import 'package:doctor_perro_helper/config/border_size.dart';
-import 'package:doctor_perro_helper/models/providers/user.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/change_dolar_price.dart';
-import 'package:doctor_perro_helper/utils/extensions/user_role_extensions.dart';
+import 'package:doctor_perro_helper/screens/pages/settings/manage_account.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -26,7 +22,7 @@ class SettingsPage extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const Account(),
+          const ManageAccount(),
           Text(
             "Ajustes",
             style: TextStyle(
@@ -73,67 +69,6 @@ class SettingButton extends StatelessWidget {
                 Theme.of(context).colorScheme.onSurfaceVariant.withAlpha(100),
           )
         ],
-      ),
-    );
-  }
-}
-
-class Account extends ConsumerStatefulWidget {
-  const Account({super.key});
-
-  @override
-  ConsumerState<Account> createState() => _AccountState();
-}
-
-class _AccountState extends ConsumerState<Account> {
-  bool isLoading = false;
-
-  Future<void> handleTap() async {
-    await signIn();
-  }
-
-  Future<void> signIn() async {
-    setState(() {
-      isLoading = true;
-    });
-    await ref.read(userNotifierProvider.notifier).googleSignIn();
-    setState(() {
-      isLoading = false;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    UserData userData = ref.watch(userNotifierProvider);
-    ThemeData theme = Theme.of(context);
-    String titleString =
-        (userData.document?.displayName ?? "No estás registrado");
-    var leading = userData.credential != null
-        ? CircleAvatar(
-            foregroundImage: NetworkImage(
-              userData.credential?.user?.photoURL ?? "",
-            ),
-            backgroundColor: theme.colorScheme.surface,
-            foregroundColor: theme.colorScheme.surface,
-          )
-        : const Icon(Icons.account_circle_outlined);
-    // final avatar = CircleAvatar()
-
-    return SettingButton(
-      onTap: handleTap,
-      child: ListTile(
-        leading: isLoading ? const CircularProgressIndicator() : leading,
-        trailing: userData.credential != null
-            ? IconButton(
-                tooltip: "Cerrar Sesión",
-                onPressed:
-                    ref.read(userNotifierProvider.notifier).googleSignOut,
-                icon: const Icon(Icons.exit_to_app))
-            : null,
-        title: Text(titleString),
-        subtitle: userData.document != null
-            ? Text(userData.document?.role?.translate() ?? "")
-            : null,
       ),
     );
   }
