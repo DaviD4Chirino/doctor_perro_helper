@@ -9,21 +9,21 @@ class UserDocument {
     required this.email,
     this.creationTime,
     this.loginTime,
-    this.role,
     this.ordersMade,
+    this.uid = "no-uid",
+    this.role = UserRole.employee,
   });
 
   String displayName;
   String email;
 
-  /// This should never be messed with manually
-  String uid = "no-uid";
+  String uid;
   DateTime? creationTime;
   DateTime? loginTime;
   List<MenuOrder>? ordersMade;
 
   /// use [UserRole] for a reference of what int means what role
-  UserRole? role = UserRole.employee;
+  UserRole role;
 
   Map<String, dynamic> toJson() => {
         "display-name": displayName,
@@ -32,7 +32,7 @@ class UserDocument {
         "login-time": loginTime,
         "orders-made": ordersMade,
         "uid": uid,
-        "role": role?.toShortString(),
+        "role": role.toShortString(),
       };
   UserDocument.fromJson(Map<String, dynamic> json)
       : displayName = json["display-name"] as String,
@@ -41,7 +41,5 @@ class UserDocument {
         loginTime = (json["login-time"] as Timestamp?)?.toDate(),
         ordersMade = json["orders-made"],
         uid = json["uid"] as String,
-        role = json["role"] != null
-            ? UserRoleExtension.fromString(json["role"])
-            : null;
+        role = UserRoleExtension.fromString(json["role"]);
 }

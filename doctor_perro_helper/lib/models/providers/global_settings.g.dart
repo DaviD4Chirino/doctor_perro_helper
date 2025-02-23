@@ -1,27 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'users_database.dart';
+part of 'global_settings.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$usersDatabaseNotifierHash() =>
-    r'446c505bb4123ae8c58bf59ccc903821630b7962';
+String _$globalSettingsNotifierHash() =>
+    r'3c44140730b3d3c78ddfdf661111b426d6a36183';
 
-/// See also [UsersDatabaseNotifier].
-@ProviderFor(UsersDatabaseNotifier)
-final usersDatabaseNotifierProvider = AutoDisposeNotifierProvider<
-    UsersDatabaseNotifier, CollectionReference>.internal(
-  UsersDatabaseNotifier.new,
-  name: r'usersDatabaseNotifierProvider',
+/// See also [GlobalSettingsNotifier].
+@ProviderFor(GlobalSettingsNotifier)
+final globalSettingsNotifierProvider = AutoDisposeNotifierProvider<
+    GlobalSettingsNotifier, GlobalSettings>.internal(
+  GlobalSettingsNotifier.new,
+  name: r'globalSettingsNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$usersDatabaseNotifierHash,
+      : _$globalSettingsNotifierHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$UsersDatabaseNotifier = AutoDisposeNotifier<CollectionReference>;
+typedef _$GlobalSettingsNotifier = AutoDisposeNotifier<GlobalSettings>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

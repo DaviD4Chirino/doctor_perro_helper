@@ -89,7 +89,8 @@ Future<DocumentReference> handleAccountLoginAndDatabase(User? user) async {
       UserDocument(
         displayName: user?.displayName as String,
         email: user?.email as String,
-      )..uid = user?.uid as String,
+        uid: user?.uid as String,
+      ),
     );
     await login(doc.id);
 
@@ -106,4 +107,11 @@ class UserData {
 
   UserCredential? credential;
   UserDocument? document;
+
+  UserData merge(UserCredential? credential, UserDocument? document) {
+    return UserData(
+      credential: credential ?? this.credential,
+      document: document ?? this.document,
+    );
+  }
 }
