@@ -1,8 +1,11 @@
 import 'package:doctor_perro_helper/config/themes/app_theme.dart';
+import 'package:doctor_perro_helper/models/providers/global_settings.dart';
+
 import 'package:doctor_perro_helper/models/providers/user.dart';
 import 'package:doctor_perro_helper/models/use_shared_preferences.dart';
 import 'package:doctor_perro_helper/screens/pages/home/home.dart';
 import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -51,6 +54,7 @@ class _MainAppState extends ConsumerState<MainApp> {
   Future<void> initialization() async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.watch(userNotifierProvider.notifier).silentlySignIn();
+      await ref.watch(globalSettingsNotifierProvider.notifier).init();
       FlutterNativeSplash.remove();
     });
   }

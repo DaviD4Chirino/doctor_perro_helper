@@ -1,4 +1,4 @@
-import 'package:doctor_perro_helper/models/providers/settings.dart';
+import 'package:doctor_perro_helper/models/providers/global_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -37,7 +37,8 @@ class _ChangePriceTextFieldState extends ConsumerState<ChangePriceTextField> {
       autofocus: true,
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
-        suffixText: "${ref.watch(dolarPriceNotifierProvider)}bs",
+        suffixText:
+            "${ref.watch(globalSettingsNotifierProvider).dolarPrice?.latestValue}bs",
         errorText: isInvalid ? "Monto inválido" : null,
       ),
       onSubmitted: (String value) {
@@ -47,7 +48,9 @@ class _ChangePriceTextFieldState extends ConsumerState<ChangePriceTextField> {
         }
 
         double parsed = double.tryParse(value) ?? 0.0;
-        ref.read(dolarPriceNotifierProvider.notifier).changePrice(parsed);
+        ref
+            .read(globalSettingsNotifierProvider.notifier)
+            .changeDolarPriceInBs(parsed);
         Navigator.pop(context);
       },
       onChanged: (String value) => setState(
