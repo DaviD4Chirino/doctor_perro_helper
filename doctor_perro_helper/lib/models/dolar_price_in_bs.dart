@@ -36,8 +36,9 @@ class DolarPriceInBsDoc {
           (json["value"] as List<dynamic>).length,
           (int i) {
             Timestamp? upTime = json["value"][i]["update-time"];
+            dynamic val = json["value"][i]["value"];
             return DolarPriceInBs(
-              value: (json["value"][i]["value"]),
+              value: (val is int ? val.toDouble() : val),
               updateTime: (upTime)?.toDate(),
             );
           },

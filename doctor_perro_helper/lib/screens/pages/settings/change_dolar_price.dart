@@ -1,4 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_perro_helper/models/abstracts/database_paths.dart';
+import 'package:doctor_perro_helper/models/dolar_price_in_bs.dart';
 import 'package:doctor_perro_helper/models/providers/global_settings.dart';
+import 'package:doctor_perro_helper/utils/database/document_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -48,13 +52,29 @@ class _ChangePriceTextFieldState extends ConsumerState<ChangePriceTextField> {
         }
 
         double parsed = double.tryParse(value) ?? 0.0;
-        ref
-            .read(globalSettingsNotifierProvider.notifier)
-            .changeDolarPriceInBs(parsed);
+        changeDolar(parsed);
         Navigator.pop(context);
       },
       onChanged: (String value) => setState(
           () => isInvalid = !RegExp(r"^[0-9]+(\.[0-9]+)?$").hasMatch(value)),
     );
   }
+}
+
+Future<void> changeDolar(double amount) async {
+  DocumentReference docRef = getDocument(
+      CollectionsPaths.globalSettings, GlobalSettingsPaths.dolarPriceInBs);
+
+  DocumentSnapshot docSnap = await docRef.get();
+  var data = docSnap.data();
+
+  DolarPriceInBsDoc dolarPriceInBsDoc =
+      DolarPriceInBsDoc.fromJson(data as Map<String, dynamic>);
+
+  DolarPriceInBsDoc? dolarPriceDoc =
+      DolarPriceInBsDoc(history: dolarPriceInBsDoc.history);
+  dolarPriceDoc.history
+      .add(DolarPriceInBs(value: amount, updateTime: DateTime.now()));
+
+  await docRef.update(dolarPriceDoc.toJson());
 }
