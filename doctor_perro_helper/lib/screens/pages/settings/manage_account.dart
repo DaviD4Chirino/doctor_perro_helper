@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:doctor_perro_helper/models/providers/streams/user_data_provider_stream.dart';
 import 'package:doctor_perro_helper/models/providers/user.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/settings.dart';
@@ -18,7 +20,6 @@ class _ManageAccountState extends ConsumerState<ManageAccount> {
   @override
   void initState() {
     super.initState();
-    print("AUTH STATE HERE----> ");
   }
 
   bool isLoading = false;
@@ -31,52 +32,68 @@ class _ManageAccountState extends ConsumerState<ManageAccount> {
   }
 
   Future<void> signIn() async {
-    setState(() {
+    /* setState(() {
       isLoading = true;
-    });
+    }); */
     await signInWithGoogle();
-    setState(() {
+    /* setState(() {
       isLoading = false;
-    });
+    }); */
   }
 
   @override
   Widget build(BuildContext context) {
-    UserData userData = ref.watch(userNotifierProvider);
+    AsyncValue<UserData> userDataStream = ref.watch(userDataProvider);
     ThemeData theme = Theme.of(context);
-
-    AsyncValue<User?> userStream = ref.watch(authStateChangesProvider);
-
-    String titleString = userStream.when(
-        data: (data) => data?.displayName ?? "No ha iniciado sesión",
-        error: (e, st) => "Error iniciando sesión",
+    //TODO: rework all this so only on when is used
+    String titleString = userDataStream.when(
+        data: (data) => data.document?.displayName ?? "No display Name",
+        error: (e, st) => "No ha iniciado sesión",
         loading: () => "Cargando...");
 
-    var leading = userData.credential != null
-        ? CircleAvatar(
-            foregroundImage: NetworkImage(
-              userData.credential?.user?.photoURL ?? "",
-            ),
-            backgroundColor: theme.colorScheme.surface,
-            foregroundColor: theme.colorScheme.surface,
-          )
-        : const Icon(Icons.account_circle_outlined);
+    Widget leading = userDataStream.when(
+      data: (UserData data) => CircleAvatar(
+        foregroundImage: NetworkImage(
+          data.user?.photoURL ?? "",
+        ),
+        backgroundColor: theme.colorScheme.surface,
+        foregroundColor: theme.colorScheme.surface,
+      ),
+      error: (e, st) => const Icon(Icons.account_circle_outlined),
+      loading: () => const CircularProgressIndicator(),
+    );
+
+    Widget? trailing = userDataStream.when(
+      data: (UserData data) => const IconButton(
+        tooltip: "Cerrar Sesión",
+        onPressed: signOutWithGoogle,
+        icon: Icon(Icons.exit_to_app),
+      ),
+      loading: () => null,
+      error: (e, st) => null,
+    );
+
+    Widget? subtitle = userDataStream.whenOrNull(
+      data: (UserData data) => Text(data.document?.role.translate() ?? ""),
+    );
+    // var _leading = userData.credential != null
+    //     ? CircleAvatar(
+    //         foregroundImage: NetworkImage(
+    //           userData.credential?.user?.photoURL ?? "",
+    //         ),
+    //         backgroundColor: theme.colorScheme.surface,
+    //         foregroundColor: theme.colorScheme.surface,
+    //       )
+    //     : const Icon(Icons.account_circle_outlined);
     // final avatar = CircleAvatar()
 
     return SettingButton(
       onTap: handleTap,
       child: ListTile(
         leading: isLoading ? const CircularProgressIndicator() : leading,
-        trailing: userData.credential != null
-            ? const IconButton(
-                tooltip: "Cerrar Sesión",
-                onPressed: signOutWithGoogle,
-                icon: Icon(Icons.exit_to_app))
-            : null,
+        trailing: trailing,
         title: Text(titleString),
-        subtitle: userData.document != null
-            ? Text(userData.document?.role?.translate() ?? "")
-            : null,
+        subtitle: subtitle,
       ),
     );
   }

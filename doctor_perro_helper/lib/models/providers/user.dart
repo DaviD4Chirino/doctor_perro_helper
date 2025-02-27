@@ -103,11 +103,13 @@ class UserData {
   UserData({
     required this.credential,
     required this.document,
+    this.user,
   });
   bool get isEmpty => credential == null && document == null;
 
   UserCredential? credential;
   UserDocument? document;
+  User? user;
 
   UserData merge(UserCredential? credential, UserDocument? document) {
     return UserData(

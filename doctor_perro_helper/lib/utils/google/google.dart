@@ -1,19 +1,21 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-/// Pops the google log in screen and returns the [UserCredential]
+/// Pops the Google log-in screen and returns the [UserCredential].
 Future<UserCredential?> signInWithGoogle() async {
   GoogleSignIn google = GoogleSignIn();
 
   try {
     GoogleSignInAccount? googleUser = await google.signIn();
-    GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+    if (googleUser == null) {
+      throw Exception('User not logged in');
+    }
+    GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
     AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
     );
 
     UserCredential userCredential =
@@ -29,14 +31,18 @@ Future<UserCredential?> signInWithGoogle() async {
   return null;
 }
 
+/// Silently signs in with Google and returns the [UserCredential].
 Future<UserCredential?> silentSignInWithGoogle() async {
   try {
     GoogleSignIn google = GoogleSignIn();
     GoogleSignInAccount? currentUser = await google.signInSilently();
-    GoogleSignInAuthentication? googleAuth = await currentUser?.authentication;
+    if (currentUser == null) {
+      throw Exception('User not logged in');
+    }
+    GoogleSignInAuthentication googleAuth = await currentUser.authentication;
     AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
     );
 
     UserCredential userCredential =
@@ -44,11 +50,14 @@ Future<UserCredential?> silentSignInWithGoogle() async {
 
     return userCredential;
   } on Exception catch (e) {
-    log("$e");
+    if (kDebugMode) {
+      print("Exception \n $e");
+    }
+    throw Exception('Failed to silently sign in with Google: $e');
   }
-  return null;
 }
 
+/// Signs out from Google.
 Future<void> signOutWithGoogle() async {
   GoogleSignIn google = GoogleSignIn();
   if (await google.isSignedIn()) {
@@ -57,4 +66,5 @@ Future<void> signOutWithGoogle() async {
   }
 }
 
+/// Checks if the user is signed in with Google.
 Future<bool> hasSignedInWithGoogle() => GoogleSignIn().isSignedIn();

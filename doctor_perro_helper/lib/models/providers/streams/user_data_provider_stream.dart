@@ -17,14 +17,15 @@ final authStateChangesProvider = StreamProvider<User?>((ref) {
 });
 
 final userDataProvider = StreamProvider<UserData>((ref) async* {
+  final authState = await ref.watch(authStateChangesProvider.future);
+
+  if (authState == null) {
+    throw Exception('User not logged in');
+  }
   try {
     CollectionReference collection = getCollection(CollectionsPaths.users);
-    User? currentUser = FirebaseAuth.instance.currentUser;
 
-    if (currentUser == null) {
-      throw Exception('User not logged in');
-    }
-    DocumentReference docRef = collection.doc(currentUser.uid);
+    DocumentReference docRef = collection.doc(authState.uid);
 
     yield* docRef.snapshots().map((docSnap) {
       Object? data = docSnap.data();
@@ -34,6 +35,7 @@ final userDataProvider = StreamProvider<UserData>((ref) async* {
       return UserData(
         credential: null,
         document: UserDocument.fromJson(data as Map<String, dynamic>),
+        user: authState,
       );
     });
   } catch (e) {
