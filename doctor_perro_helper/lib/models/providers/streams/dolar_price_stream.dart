@@ -7,7 +7,8 @@ import 'package:doctor_perro_helper/utils/database/document_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final dolarPriceProvider = StreamProvider<DolarPriceInBsDoc>((ref) {
+final StreamProvider<DolarPriceInBsDoc> dolarPriceProvider =
+    StreamProvider<DolarPriceInBsDoc>((ref) {
   CollectionReference collection =
       getCollection(CollectionsPaths.globalSettings);
   DocumentReference docRef = collection.doc(GlobalSettingsPaths.dolarPriceInBs);

@@ -4,6 +4,7 @@ import 'package:doctor_perro_helper/models/providers/global_settings.dart';
 import 'package:doctor_perro_helper/models/providers/user.dart';
 import 'package:doctor_perro_helper/models/use_shared_preferences.dart';
 import 'package:doctor_perro_helper/screens/pages/home/home.dart';
+import 'package:doctor_perro_helper/utils/google/google.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
@@ -52,10 +53,10 @@ class _MainAppState extends ConsumerState<MainApp> {
   /// this repo, and not from dependencies unless necessary.
 
   Future<void> initialization() async {
+    FlutterNativeSplash.remove();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await ref.watch(userNotifierProvider.notifier).silentlySignIn();
-      await ref.watch(globalSettingsNotifierProvider.notifier).init();
-      FlutterNativeSplash.remove();
+      await silentSignInWithGoogle();
+      // await ref.watch(globalSettingsNotifierProvider.notifier).init();
     });
   }
 

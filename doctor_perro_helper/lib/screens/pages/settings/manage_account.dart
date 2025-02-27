@@ -1,6 +1,9 @@
+import 'package:doctor_perro_helper/models/providers/streams/user_data_provider_stream.dart';
 import 'package:doctor_perro_helper/models/providers/user.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/settings.dart';
 import 'package:doctor_perro_helper/utils/extensions/user_role_extensions.dart';
+import 'package:doctor_perro_helper/utils/google/google.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,6 +15,12 @@ class ManageAccount extends ConsumerStatefulWidget {
 }
 
 class _ManageAccountState extends ConsumerState<ManageAccount> {
+  @override
+  void initState() {
+    super.initState();
+    print("AUTH STATE HERE----> ");
+  }
+
   bool isLoading = false;
 
   Future<void> handleTap() async {
@@ -25,7 +34,7 @@ class _ManageAccountState extends ConsumerState<ManageAccount> {
     setState(() {
       isLoading = true;
     });
-    await ref.read(userNotifierProvider.notifier).googleSignIn();
+    await signInWithGoogle();
     setState(() {
       isLoading = false;
     });
@@ -35,8 +44,14 @@ class _ManageAccountState extends ConsumerState<ManageAccount> {
   Widget build(BuildContext context) {
     UserData userData = ref.watch(userNotifierProvider);
     ThemeData theme = Theme.of(context);
-    String titleString =
-        (userData.document?.displayName ?? "No estás registrado");
+
+    AsyncValue<User?> userStream = ref.watch(authStateChangesProvider);
+
+    String titleString = userStream.when(
+        data: (data) => data?.displayName ?? "No ha iniciado sesión",
+        error: (e, st) => "Error iniciando sesión",
+        loading: () => "Cargando...");
+
     var leading = userData.credential != null
         ? CircleAvatar(
             foregroundImage: NetworkImage(
@@ -53,11 +68,10 @@ class _ManageAccountState extends ConsumerState<ManageAccount> {
       child: ListTile(
         leading: isLoading ? const CircularProgressIndicator() : leading,
         trailing: userData.credential != null
-            ? IconButton(
+            ? const IconButton(
                 tooltip: "Cerrar Sesión",
-                onPressed:
-                    ref.read(userNotifierProvider.notifier).googleSignOut,
-                icon: const Icon(Icons.exit_to_app))
+                onPressed: signOutWithGoogle,
+                icon: Icon(Icons.exit_to_app))
             : null,
         title: Text(titleString),
         subtitle: userData.document != null

@@ -53,6 +53,7 @@ Future<void> signOutWithGoogle() async {
   GoogleSignIn google = GoogleSignIn();
   if (await google.isSignedIn()) {
     await google.disconnect();
+    await FirebaseAuth.instance.signOut();
   }
 }
 
