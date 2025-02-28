@@ -2,11 +2,11 @@ import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/calculator_button_data.dart';
 import 'package:doctor_perro_helper/utils/copy_clipboard.dart';
 import 'package:doctor_perro_helper/utils/string_math.dart';
+import 'package:doctor_perro_helper/utils/toast_message_helper.dart';
 import 'package:doctor_perro_helper/widgets/calculator_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
-import 'package:toastification/toastification.dart';
 
 class DolarCalculator extends StatefulWidget {
   const DolarCalculator({super.key});
@@ -46,17 +46,7 @@ class _DolarCalculatorState extends State<DolarCalculator> {
 
     if (newValue.contains("copy")) {
       copy(answerString);
-
-      toastification.show(
-        title: const Text("Monto copiado"),
-        autoCloseDuration: const Duration(seconds: 2),
-        type: ToastificationType.success,
-        style: ToastificationStyle.fillColored,
-        primaryColor: Theme.of(context).colorScheme.secondary,
-        foregroundColor: Theme.of(context).colorScheme.onSecondary,
-        showProgressBar: false,
-        alignment: Alignment.bottomCenter,
-      );
+      ToastMessage.success(title: const Text("Monto copiado"));
       return;
     }
 

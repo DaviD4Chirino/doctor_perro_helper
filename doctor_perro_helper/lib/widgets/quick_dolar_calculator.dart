@@ -68,9 +68,6 @@ class _QuickDolarCalculatorState extends ConsumerState<QuickDolarCalculator> {
             onPressed: () {
               copy("${calculatedAmount.toStringAsFixed(2)}bs");
               ToastMessage.success(title: const Text("Monto copiado"));
-              ToastMessage.error(title: const Text("Monto copiado"));
-              ToastMessage.info(title: const Text("Monto copiado"));
-              ToastMessage.warning(title: const Text("Monto copiado"));
             },
             child: const Text("Copiar"))
       ],
