@@ -7,7 +7,7 @@ part "settings.g.dart";
 class DolarPriceNotifier extends _$DolarPriceNotifier {
   @override
   double build() {
-    return UseSharedPreferences.preferences.getDouble("dolar_price") ?? 60.0;
+    return UseSharedPreferences.preferences.getDouble("dolar_price") ?? 0.0;
   }
 
   void changePrice(double amount) {

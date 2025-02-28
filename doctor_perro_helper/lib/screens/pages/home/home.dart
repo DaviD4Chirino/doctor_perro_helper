@@ -113,13 +113,15 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(),
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: (int index) => setState(() {
-          currentIndex = index;
-        }),
-        children: widget.screens,
+      body: SafeArea(
+        child: PageView(
+          controller: _pageController,
+          onPageChanged: (int index) => setState(() {
+            currentIndex = index;
+          }),
+          children: widget.screens,
+          // scrollBehavior: ScrollBehavior,
+        ),
       ),
       bottomNavigationBar: navBar(),
     );
@@ -152,17 +154,6 @@ class _HomeState extends State<Home> {
           label: "Ajustes",
         ),
       ],
-    );
-  }
-
-  AppBar appBar() {
-    return AppBar(
-      title: const Image(
-        image: AssetImage("assets/logos/logo_border_transparent.png"),
-        width: 60.0,
-        height: 60.0,
-      ),
-      centerTitle: true,
     );
   }
 }
