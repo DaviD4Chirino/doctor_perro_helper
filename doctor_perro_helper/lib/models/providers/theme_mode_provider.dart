@@ -1,5 +1,4 @@
 import 'package:doctor_perro_helper/models/use_shared_preferences.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
