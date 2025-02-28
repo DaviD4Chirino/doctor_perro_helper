@@ -22,10 +22,7 @@ final userDataProvider = StreamProvider<UserData>((ref) async* {
     throw Exception('User not logged in');
   }
   try {
-    CollectionReference collection = getCollection(CollectionsPaths.users);
-
-    DocumentReference docRef = collection.doc(authState.uid);
-
+    DocumentReference docRef = await handleAccountLoginAndDatabase(authState);
     yield* docRef.snapshots().map((docSnap) {
       Object? data = docSnap.data();
       if (data == null) {
@@ -41,21 +38,20 @@ final userDataProvider = StreamProvider<UserData>((ref) async* {
     throw Exception('Failed to fetch user data: $e');
   }
 });
-Future<DocumentReference> handleAccountLoginAndDatabase(User? user) async {
-  if (await hasDocument("users", user?.uid ?? "no-id")) {
-    DocumentReference doc =
-        await login(user?.uid as String) as DocumentReference;
+Future<DocumentReference> handleAccountLoginAndDatabase(User user) async {
+  if (await hasDocument("users", user.uid)) {
+    DocumentReference doc = await login(user.uid) as DocumentReference;
     return doc;
   } else {
     // dont look at me
     DocumentReference doc = await createAccount(
       UserDocument(
-        displayName: user?.displayName as String,
-        email: user?.email as String,
-        uid: user?.uid as String,
+        displayName: user.displayName as String,
+        email: user.email as String,
+        uid: user.uid,
       ),
     );
-    await login(doc.id);
+    await login(user.uid);
 
     return doc;
   }
