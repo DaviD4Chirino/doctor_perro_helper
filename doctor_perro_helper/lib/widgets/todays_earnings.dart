@@ -22,7 +22,7 @@ class TodaysEarnings extends StatelessWidget {
                 "15",
                 style: TextStyle(
                   fontSize: 60.0,
-                  color: Colors.green.shade800,
+                  color: Theme.of(context).hintColor,
                 ),
               ),
               const Text(

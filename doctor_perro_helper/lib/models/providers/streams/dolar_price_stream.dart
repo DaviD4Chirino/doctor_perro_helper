@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_perro_helper/models/abstracts/database_paths.dart';
 import 'package:doctor_perro_helper/models/dolar_price_in_bs.dart';

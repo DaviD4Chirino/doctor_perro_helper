@@ -1,10 +1,7 @@
-import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/calculator_button_data.dart';
 import 'package:doctor_perro_helper/models/dolar_price_in_bs.dart';
-import 'package:doctor_perro_helper/models/providers/global_settings.dart';
 import 'package:doctor_perro_helper/models/providers/streams/dolar_price_stream.dart';
 import 'package:doctor_perro_helper/utils/extensions/double_extensions.dart';
-import 'package:doctor_perro_helper/utils/string_math.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,9 +19,7 @@ class CalculatorButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    double globSett =
-        ref.watch(globalSettingsNotifierProvider).dolarPrice?.latestValue ??
-            -10;
+    final ThemeData theme = Theme.of(context);
 
     AsyncValue<DolarPriceInBsDoc> dolarPriceStream =
         ref.watch(dolarPriceProvider);
@@ -36,31 +31,28 @@ class CalculatorButton extends ConsumerWidget {
           )
         : buttonData.text;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: buttonData.color,
-        borderRadius: BorderRadius.circular(Sizes().roundedSmall),
+    return FilledButton(
+      onPressed: () => onTap(text),
+      onLongPress: () => onLongPress!(text),
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.all(buttonData.color),
+        foregroundColor: WidgetStateProperty.all(buttonData.textColor),
       ),
-      child: TextButton(
-        onPressed: () => onTap(text),
-        onLongPress: () => onLongPress!(text),
-        child: Center(
-          child: buttonData.icon != null
-              ? Icon(buttonData.icon,
-                  size: Theme.of(context).textTheme.headlineSmall?.fontSize,
-                  color: buttonData.textColor)
-              : FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Text(
-                    text,
-                    style: TextStyle(
-                      color: buttonData.textColor,
-                      fontSize:
-                          Theme.of(context).textTheme.headlineSmall?.fontSize,
-                    ),
+      child: Center(
+        child: buttonData.icon != null
+            ? Icon(buttonData.icon,
+                size: theme.textTheme.headlineSmall?.fontSize,
+                color: buttonData.textColor)
+            : FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  text,
+                  style: TextStyle(
+                    color: buttonData.textColor,
+                    fontSize: theme.textTheme.headlineSmall?.fontSize,
                   ),
                 ),
-        ),
+              ),
       ),
     );
   }

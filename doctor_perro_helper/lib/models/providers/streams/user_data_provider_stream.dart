@@ -5,7 +5,6 @@ import 'package:doctor_perro_helper/models/user_account.dart';
 import 'package:doctor_perro_helper/utils/database/account_helper.dart';
 import 'package:doctor_perro_helper/utils/database/document_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {

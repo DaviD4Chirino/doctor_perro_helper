@@ -1,6 +1,7 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/consumers/dolar_price_text.dart';
-import 'package:doctor_perro_helper/models/providers/settings.dart';
+import 'package:doctor_perro_helper/models/dolar_price_in_bs.dart';
+import 'package:doctor_perro_helper/models/providers/streams/dolar_price_stream.dart';
 import 'package:doctor_perro_helper/utils/copy_clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -97,8 +98,6 @@ class _QuickDolarCalculatorState extends ConsumerState<QuickDolarCalculator> {
 
   double amount = 0.0;
 
-  double calculatedAmount() => amount * ref.watch(dolarPriceNotifierProvider);
-
   String get textFieldValue {
     return fieldValue;
   }
@@ -113,6 +112,12 @@ class _QuickDolarCalculatorState extends ConsumerState<QuickDolarCalculator> {
 
   @override
   Widget build(BuildContext context) {
+    final AsyncValue<DolarPriceInBsDoc> dolarPriceStream =
+        ref.watch(dolarPriceProvider);
+    double calculatedAmount = dolarPriceStream.maybeWhen(
+      data: (data) => amount * data.latestValue,
+      orElse: () => amount,
+    );
     return AlertDialog(
       title: const Text("Calculadora Rápida"),
       content: ListTile(
@@ -126,9 +131,8 @@ class _QuickDolarCalculatorState extends ConsumerState<QuickDolarCalculator> {
 
           decoration: InputDecoration(
             errorText: isInvalid ? "Monto inválido" : null,
-            helperText: !isInvalid
-                ? "${(calculatedAmount()).toStringAsFixed(2)}bs"
-                : null,
+            helperText:
+                !isInvalid ? "${calculatedAmount.toStringAsFixed(2)}bs" : null,
           ),
           autofocus: true,
           onChanged: (String value) {
@@ -139,9 +143,9 @@ class _QuickDolarCalculatorState extends ConsumerState<QuickDolarCalculator> {
         ),
       ),
       actions: [
-        TextButton(
+        FilledButton(
             onPressed: () {
-              copy("${(calculatedAmount()).toStringAsFixed(2)}bs");
+              copy("${calculatedAmount.toStringAsFixed(2)}bs");
 
               toastification.show(
                 title: const Text("Monto copiado"),

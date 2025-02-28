@@ -1,7 +1,5 @@
 import 'package:doctor_perro_helper/config/themes/app_theme.dart';
-import 'package:doctor_perro_helper/models/providers/global_settings.dart';
 
-import 'package:doctor_perro_helper/models/providers/user.dart';
 import 'package:doctor_perro_helper/models/use_shared_preferences.dart';
 import 'package:doctor_perro_helper/screens/pages/home/home.dart';
 import 'package:doctor_perro_helper/utils/google/google.dart';
@@ -35,14 +33,14 @@ Future main() async {
   );
 }
 
-class MainApp extends ConsumerStatefulWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
 
   @override
-  ConsumerState<MainApp> createState() => _MainAppState();
+  State<MainApp> createState() => _MainAppState();
 }
 
-class _MainAppState extends ConsumerState<MainApp> {
+class _MainAppState extends State<MainApp> {
   @override
   void initState() {
     super.initState();
@@ -54,7 +52,6 @@ class _MainAppState extends ConsumerState<MainApp> {
   /// this repo, and not from dependencies unless necessary.
 
   Future<void> initialization() async {
-    FlutterNativeSplash.remove();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       try {
         await silentSignInWithGoogle();
@@ -63,7 +60,7 @@ class _MainAppState extends ConsumerState<MainApp> {
           print(e);
         }
       }
-      // await ref.watch(globalSettingsNotifierProvider.notifier).init();
+      FlutterNativeSplash.remove();
     });
   }
 
