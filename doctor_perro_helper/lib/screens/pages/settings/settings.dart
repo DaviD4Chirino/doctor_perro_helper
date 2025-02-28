@@ -2,6 +2,7 @@ import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/consumers/dolar_price_text.dart';
 import 'package:doctor_perro_helper/models/providers/settings.dart';
 import 'package:doctor_perro_helper/models/providers/streams/user_data_provider_stream.dart';
+import 'package:doctor_perro_helper/models/providers/theme_mode_provider.dart';
 import 'package:doctor_perro_helper/models/providers/user.dart';
 import 'package:doctor_perro_helper/models/user_role.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/change_dolar_price.dart';
@@ -37,6 +38,7 @@ class SettingsPage extends StatelessWidget {
             ),
           ),
           const ChangeDolarPriceButton(),
+          const ChangeThemeMode(),
         ],
       ),
     );
@@ -51,7 +53,6 @@ class ChangeDolarPriceButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<UserData> userDataStream = ref.watch(userDataProvider);
-    final dolarPriceNotifier = ref.watch(dolarPriceNotifierProvider);
     final ThemeData theme = Theme.of(context);
 
     return ListTile(
@@ -109,6 +110,33 @@ class SettingButton extends StatelessWidget {
                 Theme.of(context).colorScheme.onSurfaceVariant.withAlpha(100),
           )
         ],
+      ),
+    );
+  }
+}
+
+class ChangeThemeMode extends ConsumerWidget {
+  const ChangeThemeMode({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    bool lightMode = ref.watch(themeModeNotifierProvider) == ThemeMode.light;
+    switchTheme() {
+      if (lightMode) {
+        ref.read(themeModeNotifierProvider.notifier).toggleDark();
+      } else {
+        ref.read(themeModeNotifierProvider.notifier).toggleLight();
+      }
+    }
+
+    return ListTile(
+      title: Text("Cambiar a ${lightMode ? "Modo Oscuro" : "Modo Claro"}"),
+      leading: const Icon(Icons.color_lens_outlined),
+      onTap: switchTheme,
+      trailing: Switch(
+        value: lightMode,
+        onChanged: (_) => switchTheme(),
+        padding: const EdgeInsets.all(0.0),
       ),
     );
   }

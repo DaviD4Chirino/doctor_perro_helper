@@ -1,27 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'settings.dart';
+part of 'theme_mode_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$dolarPriceNotifierHash() =>
-    r'115f53881ebe35d357ad0108a4588a7902bf0683';
+String _$themeModeNotifierHash() => r'3852fc1be0cd2d941ceaa815453eeb511f865e3a';
 
-/// See also [DolarPriceNotifier].
-@ProviderFor(DolarPriceNotifier)
-final dolarPriceNotifierProvider =
-    AutoDisposeNotifierProvider<DolarPriceNotifier, double>.internal(
-  DolarPriceNotifier.new,
-  name: r'dolarPriceNotifierProvider',
+/// See also [ThemeModeNotifier].
+@ProviderFor(ThemeModeNotifier)
+final themeModeNotifierProvider =
+    AutoDisposeNotifierProvider<ThemeModeNotifier, ThemeMode>.internal(
+  ThemeModeNotifier.new,
+  name: r'themeModeNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$dolarPriceNotifierHash,
+      : _$themeModeNotifierHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$DolarPriceNotifier = AutoDisposeNotifier<double>;
+typedef _$ThemeModeNotifier = AutoDisposeNotifier<ThemeMode>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

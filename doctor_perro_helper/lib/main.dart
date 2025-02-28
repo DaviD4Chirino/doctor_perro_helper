@@ -1,4 +1,5 @@
 import 'package:doctor_perro_helper/config/themes/app_theme.dart';
+import 'package:doctor_perro_helper/models/providers/theme_mode_provider.dart';
 
 import 'package:doctor_perro_helper/models/use_shared_preferences.dart';
 import 'package:doctor_perro_helper/screens/pages/home/home.dart';
@@ -33,14 +34,14 @@ Future main() async {
   );
 }
 
-class MainApp extends StatefulWidget {
+class MainApp extends ConsumerStatefulWidget {
   const MainApp({super.key});
 
   @override
-  State<MainApp> createState() => _MainAppState();
+  ConsumerState<MainApp> createState() => _MainAppState();
 }
 
-class _MainAppState extends State<MainApp> {
+class _MainAppState extends ConsumerState<MainApp> {
   @override
   void initState() {
     super.initState();
@@ -66,11 +67,13 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeMode themeMode = ref.watch(themeModeNotifierProvider);
+
     return ToastificationWrapper(
       child: MaterialApp(
         theme: AppTheme.light,
         darkTheme: AppTheme.dark,
-        themeMode: ThemeMode.system,
+        themeMode: themeMode,
         title: "Dr.Perro Helper",
         initialRoute: "",
         routes: {
