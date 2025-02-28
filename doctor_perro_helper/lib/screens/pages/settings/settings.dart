@@ -1,6 +1,5 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/consumers/dolar_price_text.dart';
-import 'package:doctor_perro_helper/models/providers/settings.dart';
 import 'package:doctor_perro_helper/models/providers/streams/user_data_provider_stream.dart';
 import 'package:doctor_perro_helper/models/providers/theme_mode_provider.dart';
 import 'package:doctor_perro_helper/models/providers/user.dart';
