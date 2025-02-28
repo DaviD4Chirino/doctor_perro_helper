@@ -1,7 +1,12 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/providers/streams/dolar_price_stream.dart';
+import 'package:doctor_perro_helper/models/providers/streams/user_data_provider_stream.dart';
+import 'package:doctor_perro_helper/models/providers/user.dart';
+import 'package:doctor_perro_helper/models/user_role.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/change_dolar_price.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/manage_account.dart';
+import 'package:doctor_perro_helper/utils/extensions/double_extensions.dart';
+import 'package:doctor_perro_helper/utils/extensions/user_role_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -47,16 +52,22 @@ class ChangeDolarPriceButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dolarPriceStream = ref.watch(dolarPriceProvider);
+    final userDataStream = ref.watch(userDataProvider);
 
-    return SettingButton(
-      child: ListTile(
-        title: const Text("Precio del dolar"),
-        leading: const Icon(Icons.attach_money),
-        trailing: dolarPriceStream.when(
-          data: (data) => Text("${data.latestValue}"),
-          error: (error, stackTrace) => const Text("ERROR"),
-          loading: () => null,
-        ),
+    return ListTile(
+      title: const Text("Precio del dolar"),
+      leading: const Icon(Icons.attach_money),
+      trailing: dolarPriceStream.when(
+        data: (data) => Text(data.latestValue.removePaddingZero()),
+        error: (error, stackTrace) => const Text("ERROR"),
+        loading: () => null,
+      ),
+      subtitle: userDataStream.maybeWhen(
+        data: (UserData data) => data.document?.role != UserRole.admin
+            ? const Text("Solo el admin puede cambiar el valor del dolar")
+            : null,
+        error: (error, stackTrace) => const Text("Debes iniciar sesión"),
+        orElse: () => null,
       ),
       onTap: () {
         showDialog(

@@ -1,6 +1,9 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/calculator_button_data.dart';
+import 'package:doctor_perro_helper/models/dolar_price_in_bs.dart';
 import 'package:doctor_perro_helper/models/providers/global_settings.dart';
+import 'package:doctor_perro_helper/models/providers/streams/dolar_price_stream.dart';
+import 'package:doctor_perro_helper/utils/extensions/double_extensions.dart';
 import 'package:doctor_perro_helper/utils/string_math.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,9 +25,17 @@ class CalculatorButton extends ConsumerWidget {
     double globSett =
         ref.watch(globalSettingsNotifierProvider).dolarPrice?.latestValue ??
             -10;
+
+    AsyncValue<DolarPriceInBsDoc> dolarPriceStream =
+        ref.watch(dolarPriceProvider);
+
     String text = buttonData.dolarPriceMultiplier
-        ? "x${removePaddingZero(globSett.toString())}"
+        ? dolarPriceStream.maybeWhen(
+            data: (data) => "x${data.latestValue.removePaddingZero()}",
+            orElse: () => "x0",
+          )
         : buttonData.text;
+
     return Container(
       decoration: BoxDecoration(
         color: buttonData.color,
