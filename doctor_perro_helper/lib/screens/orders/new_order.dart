@@ -1,6 +1,7 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
 import 'package:doctor_perro_helper/models/ingredient.dart';
+import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
 import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
@@ -18,6 +19,8 @@ class NewOrder extends StatefulWidget {
 }
 
 class _NewOrderState extends State<NewOrder> {
+  MenuOrder order = MenuOrder(plates: [], packs: []);
+
   List<Plate> selectedPlates = [];
   List<PlatePack> selectedPacks = [];
 
@@ -25,13 +28,20 @@ class _NewOrderState extends State<NewOrder> {
     if (plate.quantity.amount <= 0.0) {
       selectedPlates.removeWhere(
           (Plate existingPlate) => existingPlate.code == plate.code);
-      printPlatesPackDebug(plates: selectedPlates);
+      setState(() {
+        order = MenuOrder(packs: selectedPacks, plates: selectedPlates);
+      });
+
+      printPlatesPackDebug(plates: order.plates);
       return;
     }
     selectedPlates
         .removeWhere((Plate existingPlate) => existingPlate.code == plate.code);
     selectedPlates.add(plate);
-    printPlatesPackDebug(plates: selectedPlates);
+    setState(() {
+      order = MenuOrder(packs: selectedPacks, plates: selectedPlates);
+    });
+    printPlatesPackDebug(plates: order.plates);
   }
 
   // ignore: no_leading_underscores_for_local_identifiers
@@ -39,13 +49,19 @@ class _NewOrderState extends State<NewOrder> {
     if (pack.quantity.amount <= 0.0) {
       selectedPacks.removeWhere(
           (PlatePack existingPack) => existingPack.code == pack.code);
-      printPlatesPackDebug(packs: selectedPacks);
+      setState(() {
+        order = MenuOrder(packs: selectedPacks, plates: selectedPlates);
+      });
+      printPlatesPackDebug(packs: order.packs);
       return;
     }
     selectedPacks.removeWhere(
         (PlatePack existingPack) => existingPack.code == pack.code);
     selectedPacks.add(pack);
-    printPlatesPackDebug(packs: selectedPacks);
+    setState(() {
+      order = MenuOrder(packs: selectedPacks, plates: selectedPlates);
+    });
+    printPlatesPackDebug(packs: order.packs);
   }
 
   @override
@@ -61,7 +77,7 @@ class _NewOrderState extends State<NewOrder> {
         ),
         child: ListView(
           children: [
-            const DraftedOrder(),
+            DraftedOrder(order: order),
             Section(
               title: Text(
                 "Combos",
@@ -74,6 +90,7 @@ class _NewOrderState extends State<NewOrder> {
                 children: [
                   ...PlateList.packs.map(
                     (PlatePack pack) => SwipeablePack(
+                      key: Key(pack.code),
                       pack: pack,
                       onPackSwiped: onPackSwipe,
                     ),
@@ -93,6 +110,7 @@ class _NewOrderState extends State<NewOrder> {
                 children: [
                   ...PlateList.plates.map(
                     (Plate plate) => SwipeablePlate(
+                      key: Key(plate.code),
                       plate: plate,
                       onPlateSwiped: onPlateSwipe,
                     ),
@@ -111,8 +129,9 @@ class _NewOrderState extends State<NewOrder> {
               child: Column(
                 children: [
                   ...PlateList.extras.map(
-                    (Plate extras) => SwipeablePlate(
-                      plate: extras,
+                    (Plate extra) => SwipeablePlate(
+                      key: Key(extra.code),
+                      plate: extra,
                       onPlateSwiped: onPlateSwipe,
                     ),
                   )
@@ -126,16 +145,13 @@ class _NewOrderState extends State<NewOrder> {
   }
 }
 
-class DraftedOrder extends ConsumerStatefulWidget {
-  const DraftedOrder({super.key});
+class DraftedOrder extends ConsumerWidget {
+  const DraftedOrder({super.key, required this.order});
+
+  final MenuOrder order;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => DraftedOrderState();
-}
-
-class DraftedOrderState extends ConsumerState<DraftedOrder> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     ThemeData theme = Theme.of(context);
     return Section(
         title: Text(
@@ -152,7 +168,7 @@ class DraftedOrderState extends ConsumerState<DraftedOrder> {
               trailing: DolarAndBolivarPriceText(
                 price: 15.0,
               ),
-              title: Text("4R4 - E1"),
+              title: Text(order.codeList),
               subtitle: Column(
                 children: [
                   ListTile(

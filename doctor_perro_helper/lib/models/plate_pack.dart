@@ -61,6 +61,14 @@ class PlatePack {
     return list.join(", ");
   }
 
+  String get plateCodeList {
+    List<String> list = [];
+    for (var plate in plates) {
+      list.add(plate.code);
+    }
+    return list.join(", ");
+  }
+
   List<String> get extrasTitleList {
     List<String> list = [];
     if (extras == null) {
