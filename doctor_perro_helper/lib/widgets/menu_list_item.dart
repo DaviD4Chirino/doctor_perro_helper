@@ -1,7 +1,10 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
+import 'package:doctor_perro_helper/models/dolar_price_in_bs.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
 import 'package:doctor_perro_helper/models/providers/settings.dart';
+import 'package:doctor_perro_helper/models/providers/streams/dolar_price_stream.dart';
+import 'package:doctor_perro_helper/utils/extensions/double_extensions.dart';
 import 'package:doctor_perro_helper/utils/string_math.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,6 +19,9 @@ class MenuListItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ThemeData theme = Theme.of(context);
+    final AsyncValue<DolarPriceInBsDoc> dolarPriceStream =
+        ref.watch(dolarPriceProvider);
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Sizes().roundedSmall),
@@ -69,14 +75,17 @@ class MenuListItem extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "${removePaddingZero(plate.price.toString())}\$",
+              "${plate.price.removePaddingZero()}\$",
               style: TextStyle(
                 fontSize: theme.textTheme.titleMedium?.fontSize,
                 color: Theme.of(context).colorScheme.primary,
               ),
             ),
             Text(
-              "${removePaddingZero(ref.read(dolarPriceNotifierProvider.notifier).calculate(plate.price).toString())}bs",
+              dolarPriceStream.maybeWhen(
+                  data: (data) =>
+                      "${data.calculate(plate.price).removePaddingZero()}bs",
+                  orElse: () => "0bs"),
               style: TextStyle(
                 fontSize: theme.textTheme.labelSmall?.fontSize,
               ),
@@ -98,6 +107,8 @@ class MenuListItemPack extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ThemeData theme = Theme.of(context);
+    final AsyncValue<DolarPriceInBsDoc> dolarPriceStream =
+        ref.watch(dolarPriceProvider);
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Sizes().roundedSmall),
@@ -158,7 +169,10 @@ class MenuListItemPack extends ConsumerWidget {
               ),
             ),
             Text(
-              "${removePaddingZero(ref.read(dolarPriceNotifierProvider.notifier).calculate(pack.price).toString())}bs",
+              dolarPriceStream.maybeWhen(
+                  data: (data) =>
+                      "${data.calculate(pack.price).removePaddingZero()}bs",
+                  orElse: () => "0bs"),
               style: TextStyle(
                 fontSize: theme.textTheme.labelSmall?.fontSize,
               ),
