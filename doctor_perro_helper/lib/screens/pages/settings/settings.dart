@@ -41,27 +41,25 @@ class SettingsPage extends StatelessWidget {
                 );
               },
             ),
+            Text(
+              "Cuenta",
+              style: TextStyle(
+                fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const ManageAccount(),
+            Text(
+              "Ajustes",
+              style: TextStyle(
+                fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const ChangeDolarPriceButton(),
+            const ChangeThemeMode(),
           ],
         ),
-        children: [
-          Text(
-            "Cuenta",
-            style: TextStyle(
-              fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const ManageAccount(),
-          Text(
-            "Ajustes",
-            style: TextStyle(
-              fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const ChangeDolarPriceButton(),
-          const ChangeThemeMode(),
-        ],
       ),
     );
   }

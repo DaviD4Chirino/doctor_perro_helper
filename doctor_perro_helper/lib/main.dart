@@ -1,8 +1,6 @@
 import 'package:doctor_perro_helper/config/themes/app_theme.dart';
 import 'package:doctor_perro_helper/models/providers/theme_mode_provider.dart';
 
-import 'package:doctor_perro_helper/config/themes/dark_theme.dart';
-import 'package:doctor_perro_helper/config/themes/light_theme.dart';
 import 'package:doctor_perro_helper/models/routes.dart';
 import 'package:doctor_perro_helper/models/use_shared_preferences.dart';
 import 'package:doctor_perro_helper/screens/orders/new_order.dart';

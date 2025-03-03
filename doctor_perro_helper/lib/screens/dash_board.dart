@@ -16,7 +16,6 @@ class DashBoard extends StatelessWidget {
     ThemeData theme = Theme.of(context);
 
     return Scaffold(
-      appBar: appBar(),
       body: ListView(
         padding: const EdgeInsets.all(8.0),
         physics: const BouncingScrollPhysics(),
@@ -97,18 +96,6 @@ class DashBoard extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  AppBar appBar() {
-    return AppBar(
-      title: const Image(
-        image: AssetImage("lib/assets/logos/logo_border_transparent.png"),
-        width: 60.0,
-        height: 60.0,
-      ),
-      toolbarHeight: 50.0,
-      centerTitle: true,
     );
   }
 }
