@@ -1,5 +1,5 @@
 
-set VERSION=0.4.1
+set VERSION=0.4.2
 :: Build the APK
 flutter build apk
 
