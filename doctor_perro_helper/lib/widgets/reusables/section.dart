@@ -16,7 +16,7 @@ class Section extends StatelessWidget {
       padding: EdgeInsets.only(
           // left: sizes.large,
           // right: sizes.large,
-          top: sizes.xxxl),
+          bottom: sizes.xxl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.baseline,
         // mainAxisAlignment: MainAxisAlignment.end,

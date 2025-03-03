@@ -2,6 +2,7 @@ import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/change_dolar_price_button.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/change_theme_mode_button.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/manage_account.dart';
+import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -9,6 +10,7 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return SafeArea(
       child: ListView(
         padding: EdgeInsets.symmetric(
@@ -16,23 +18,33 @@ class SettingsPage extends StatelessWidget {
           horizontal: Sizes().large,
         ),
         children: [
-          Text(
-            "Cuenta",
-            style: TextStyle(
-              fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
-              fontWeight: FontWeight.bold,
+          Section(
+            title: Text(
+              "Cuenta",
+              style: TextStyle(
+                fontSize: theme.textTheme.titleMedium?.fontSize,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            child: Column(
+              children: const [ManageAccountButton()],
             ),
           ),
-          const ManageAccountButton(),
-          Text(
-            "Ajustes",
-            style: TextStyle(
-              fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
-              fontWeight: FontWeight.bold,
+          Section(
+            title: Text(
+              "Ajustes",
+              style: TextStyle(
+                fontSize: theme.textTheme.titleMedium?.fontSize,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            child: Column(
+              children: const [
+                ChangeDolarPriceButton(),
+                ChangeThemeModeButton(),
+              ],
             ),
           ),
-          const ChangeDolarPriceButton(),
-          const ChangeThemeModeButton(),
         ],
       ),
     );
