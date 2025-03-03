@@ -21,7 +21,10 @@ class SwipeablePlate extends ConsumerStatefulWidget {
   ConsumerState<SwipeablePlate> createState() => _SwipeablePlateState();
 }
 
-class _SwipeablePlateState extends ConsumerState<SwipeablePlate> {
+class _SwipeablePlateState extends ConsumerState<SwipeablePlate>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   double _count = 0;
   double get count => _count;
   set count(double value) => _count = clampDouble(
@@ -37,6 +40,7 @@ class _SwipeablePlateState extends ConsumerState<SwipeablePlate> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     ThemeData theme = Theme.of(context);
 
     return SwipeableTile.swipeToTrigger(
@@ -86,7 +90,8 @@ class SwipeablePack extends ConsumerStatefulWidget {
   ConsumerState<SwipeablePack> createState() => _SwipeablePackState();
 }
 
-class _SwipeablePackState extends ConsumerState<SwipeablePack> {
+class _SwipeablePackState extends ConsumerState<SwipeablePack>
+    with AutomaticKeepAliveClientMixin {
   double _count = 0;
   double get count => _count;
   set count(double value) => _count =
@@ -102,6 +107,7 @@ class _SwipeablePackState extends ConsumerState<SwipeablePack> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     ThemeData theme = Theme.of(context);
 
     return SwipeableTile.swipeToTrigger(
@@ -132,6 +138,9 @@ class _SwipeablePackState extends ConsumerState<SwipeablePack> {
       }
     }
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class SharedListTile extends StatelessWidget {

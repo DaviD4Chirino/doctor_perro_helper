@@ -1,6 +1,7 @@
 import 'package:doctor_perro_helper/models/order/menu_order_status.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
+import 'package:doctor_perro_helper/utils/extensions/double_extensions.dart';
 
 /// Order as in; an order of french fries
 class MenuOrder {
@@ -27,7 +28,7 @@ class MenuOrder {
 
   OrderStatus get status => _status;
 
-  get price {
+  double get price {
     double totalAmount = 0.0;
     totalAmount += getPrices(plates);
     totalAmount += getPrices(packs);
@@ -39,17 +40,24 @@ class MenuOrder {
 
     if (plates.isNotEmpty) {
       for (Plate plate in plates) {
-        list.add(plate.code);
+        list.add(plate.quantity.amount <= 1.0
+            ? plate.code
+            : "${plate.code}x${plate.quantity.amount.removePaddingZero()}");
       }
     }
     if (packs.isNotEmpty) {
-      for (PlatePack plate in packs) {
-        list.add(plate.code);
+      for (PlatePack pack in packs) {
+        list.add(pack.quantity.amount <= 1.0
+            ? pack.code
+            : "${pack.code}x${pack.quantity.amount.removePaddingZero()}");
       }
     }
     list.sort();
     return list.join(" - ");
   }
+
+  /// The combined length of [plates] and [packs]
+  int get length => plates.length + packs.length;
 
   MenuOrder create() {
     return MenuOrder(plates: plates, packs: packs);

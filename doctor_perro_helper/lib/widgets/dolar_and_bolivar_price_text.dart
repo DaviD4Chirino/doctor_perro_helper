@@ -1,4 +1,7 @@
+import 'package:doctor_perro_helper/models/dolar_price_in_bs.dart';
 import 'package:doctor_perro_helper/models/providers/settings.dart';
+import 'package:doctor_perro_helper/models/providers/streams/dolar_price_stream.dart';
+import 'package:doctor_perro_helper/utils/extensions/double_extensions.dart';
 import 'package:doctor_perro_helper/utils/string_math.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,20 +19,23 @@ class DolarAndBolivarPriceText extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ThemeData theme = Theme.of(context);
+    final AsyncValue<DolarPriceInBsDoc> dolarPriceStream =
+        ref.watch(dolarPriceProvider);
 
-    double calculatedBs =
-        ref.read(dolarPriceNotifierProvider.notifier).calculate(price);
-    String formattedBs = removePaddingZero(calculatedBs.toString());
+    final String calculatedBs = dolarPriceStream.maybeWhen(
+      data: (data) => data.calculate(price).removePaddingZero(),
+      orElse: () => "...",
+    );
     return Column(
       children: [
         Text(
-          "${removePaddingZero(price.toString())}\$",
+          "${price.removePaddingZero()}\$",
           style: TextStyle(
             fontSize: theme.textTheme.titleLarge?.fontSize,
           ),
         ),
         Text(
-          "${formattedBs}bs",
+          "${calculatedBs}bs",
           style: TextStyle(
             fontSize: theme.textTheme.labelSmall?.fontSize,
           ),

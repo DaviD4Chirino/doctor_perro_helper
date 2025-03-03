@@ -152,69 +152,62 @@ class DraftedOrder extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ThemeData theme = Theme.of(context);
-    return Section(
-        title: Text(
-          "Orden seleccionada",
-          style: TextStyle(
-            fontSize: theme.textTheme.titleLarge?.fontSize,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        child: Column(
-          children: [
-            ListTile(
-              titleAlignment: ListTileTitleAlignment.top,
-              trailing: DolarAndBolivarPriceText(
-                price: 15.0,
-              ),
-              title: Text(order.codeList),
-              subtitle: Column(
-                children: [
-                  ListTile(
-                    title: Text("1R1:"),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: Sizes().xl),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              // First the added things
-                              Text(
-                                "+ 150g de Papas",
-                              ),
-                              // Second the considerations
-                              Text(
-                                "* Poca Mostaza",
-                              ),
-                              // Third the removed
-                              Text(
-                                "- Queso de año",
-                                style: TextStyle(
-                                  decoration: TextDecoration.lineThrough,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: Sizes().medium),
-                        Text(
-                          "Calle Jabonería Casa 11",
-                          style: TextStyle(
-                            fontSize: theme.textTheme.labelMedium?.fontSize,
-                            color: theme.colorScheme.onSurface.withAlpha(150),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+    // ThemeData theme = Theme.of(context);
+    return Column(
+      children: [
+        if (order.length > 0)
+          ListTile(
+            titleAlignment: ListTileTitleAlignment.top,
+            trailing: DolarAndBolivarPriceText(
+              price: order.price,
             ),
-          ],
-        ));
+            title: Text(order.codeList),
+            /* subtitle: Column(
+            children: [
+              ListTile(
+                title: Text("1R1:"),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: Sizes().xl),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          // First the added things
+                          Text(
+                            "+ 150g de Papas",
+                          ),
+                          // Second the considerations
+                          Text(
+                            "* Poca Mostaza",
+                          ),
+                          // Third the removed
+                          Text(
+                            "- Queso de año",
+                            style: TextStyle(
+                              decoration: TextDecoration.lineThrough,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: Sizes().medium),
+                    Text(
+                      "Calle Jabonería Casa 11",
+                      style: TextStyle(
+                        fontSize: theme.textTheme.labelMedium?.fontSize,
+                        color: theme.colorScheme.onSurface.withAlpha(150),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ), */
+          ),
+      ],
+    );
   }
 }
 
