@@ -1,4 +1,4 @@
-import 'package:doctor_perro_helper/models/order/order_status.dart';
+import 'package:doctor_perro_helper/models/order/menu_order_status.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 
 class MenuOrder {
