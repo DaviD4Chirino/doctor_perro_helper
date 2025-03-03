@@ -1,8 +1,11 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
+import 'package:doctor_perro_helper/models/plate.dart';
+import 'package:doctor_perro_helper/models/plate_pack.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/change_dolar_price_button.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/change_theme_mode_button.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/manage_account.dart';
 import 'package:doctor_perro_helper/widgets/reusables/section.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatelessWidget {

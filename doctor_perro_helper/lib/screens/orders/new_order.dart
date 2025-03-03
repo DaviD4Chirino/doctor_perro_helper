@@ -8,6 +8,7 @@ import 'package:doctor_perro_helper/models/plate_pack.dart';
 import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
 import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:doctor_perro_helper/widgets/reusables/swipeable_plate.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,21 +23,31 @@ class _NewOrderState extends State<NewOrder> {
   List<Plate> selectedPlates = [];
   List<PlatePack> selectedPacks = [];
 
-  void onPlateSwipe(Plate plate, bool positive) {
-    if (positive) selectedPlates.add(plate);
-    if (!positive) {
+  void onPlateSwipe(Plate plate, bool positive, double count) {
+    if (plate.quantity.amount <= 0.0) {
       selectedPlates.removeWhere(
           (Plate existingPlate) => existingPlate.code == plate.code);
+      printPlatesPackDebug(plates: selectedPlates);
+      return;
     }
+    selectedPlates
+        .removeWhere((Plate existingPlate) => existingPlate.code == plate.code);
+    selectedPlates.add(plate);
+    printPlatesPackDebug(plates: selectedPlates);
   }
 
   // ignore: no_leading_underscores_for_local_identifiers
   void onPackSwipe(PlatePack pack, bool positive, double count) {
-    log(pack.quantity.amount.toString());
+    if (pack.quantity.amount <= 0.0) {
+      selectedPacks.removeWhere(
+          (PlatePack existingPack) => existingPack.code == pack.code);
+      printPlatesPackDebug(packs: selectedPacks);
+      return;
+    }
     selectedPacks.removeWhere(
         (PlatePack existingPack) => existingPack.code == pack.code);
     selectedPacks.add(pack);
-    // log(pack.quantity.amount.toString());
+    printPlatesPackDebug(packs: selectedPacks);
   }
 
   @override
@@ -85,7 +96,7 @@ class _NewOrderState extends State<NewOrder> {
                   ...PlateList.plates.map(
                     (Plate plate) => SwipeablePlate(
                       plate: plate,
-                      onPlateSwiped: (plate, direction, count) {},
+                      onPlateSwiped: onPlateSwipe,
                     ),
                   )
                 ],
@@ -104,7 +115,7 @@ class _NewOrderState extends State<NewOrder> {
                   ...PlateList.extras.map(
                     (Plate extras) => SwipeablePlate(
                       plate: extras,
-                      onPlateSwiped: (plate, direction, count) {},
+                      onPlateSwiped: onPlateSwipe,
                     ),
                   )
                 ],
@@ -206,5 +217,23 @@ class ReviewPlate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text("");
+  }
+}
+
+void printPlatesPackDebug({List<Plate>? plates, List<PlatePack>? packs}) {
+  if (plates != null) {
+    if (kDebugMode) {
+      for (Plate plate in plates) {
+        print(
+            "Plate: \n code: ${plate.code}\n amount: ${plate.quantity.amount}");
+      }
+    }
+  }
+  if (packs != null) {
+    if (kDebugMode) {
+      for (PlatePack pack in packs) {
+        print("Pack: \n code: ${pack.code}\n amount: ${pack.quantity.amount}");
+      }
+    }
   }
 }
