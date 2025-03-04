@@ -58,7 +58,7 @@ abstract final class AppTheme {
       inputDecoratorBackgroundAlpha: 21,
       inputDecoratorBorderType: FlexInputBorderType.outline,
       inputDecoratorRadius: 12.0,
-      inputDecoratorUnfocusedHasBorder: false,
+      inputDecoratorUnfocusedHasBorder: true,
       inputDecoratorPrefixIconSchemeColor: SchemeColor.primary,
       fabUseShape: true,
       fabAlwaysCircular: true,

@@ -8,6 +8,7 @@ class MenuOrder {
   MenuOrder({
     required this.plates,
     required this.packs,
+    this.direction = "",
   });
 
   OrderStatus _status = OrderStatus.pending;
@@ -65,6 +66,8 @@ class MenuOrder {
 
   List<Plate> plates;
   List<PlatePack> packs;
+
+  String direction;
 
   // this should be controlled by changing the status
   DateTime timeMade = DateTime.timestamp();

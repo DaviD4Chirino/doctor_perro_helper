@@ -18,7 +18,8 @@ class NewOrder extends StatefulWidget {
   State<NewOrder> createState() => _NewOrderState();
 }
 
-class _NewOrderState extends State<NewOrder> {
+class _NewOrderState extends State<NewOrder>
+    with AutomaticKeepAliveClientMixin {
   MenuOrder order = MenuOrder(plates: [], packs: []);
 
   List<Plate> selectedPlates = [];
@@ -66,80 +67,132 @@ class _NewOrderState extends State<NewOrder> {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData themeContext = Theme.of(context);
+    super.build(context);
+    ThemeData theme = Theme.of(context);
+    TextStyle columnTitleStyle = TextStyle(
+      fontSize: theme.textTheme.bodyLarge?.fontSize,
+      fontWeight: FontWeight.bold,
+    );
     return Scaffold(
       appBar: AppBar(
         title: const Text("Nueva orden"),
       ),
+
+      // hide this
+      // bottomNavigationBar: order.length > 0 ? bottomNavigationBar() : null,
+      persistentFooterButtons: [bottomNavigationBar(theme)],
       body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: Sizes().large,
+        padding: EdgeInsets.only(
+          left: Sizes().large,
+          right: Sizes().large,
+          top: Sizes().xxl,
         ),
         child: ListView(
           children: [
-            DraftedOrder(order: order),
-            Section(
-              title: Text(
-                "Combos",
-                style: TextStyle(
-                  fontSize: themeContext.textTheme.titleLarge?.fontSize,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              child: Column(
-                children: [
-                  ...PlateList.packs.map(
-                    (PlatePack pack) => SwipeablePack(
-                      key: Key(pack.code),
-                      pack: pack,
-                      onPackSwiped: onPackSwipe,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Section(
-              title: Text(
-                "Platos",
-                style: TextStyle(
-                  fontSize: themeContext.textTheme.titleLarge?.fontSize,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              child: Column(
-                children: [
-                  ...PlateList.plates.map(
-                    (Plate plate) => SwipeablePlate(
-                      key: Key(plate.code),
-                      plate: plate,
-                      onPlateSwiped: onPlateSwipe,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Section(
-              title: Text(
-                "Extras",
-                style: TextStyle(
-                  fontSize: themeContext.textTheme.titleLarge?.fontSize,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              child: Column(
-                children: [
-                  ...PlateList.extras.map(
-                    (Plate extra) => SwipeablePlate(
-                      key: Key(extra.code),
-                      plate: extra,
-                      onPlateSwiped: onPlateSwipe,
-                    ),
-                  )
-                ],
-              ),
-            ),
+            if (order.length > 0) DraftedOrder(order: order),
+            // InputOrderDirection(),
+            // SizedBox(height: Sizes().xxxl),
+            packSection(columnTitleStyle),
+            plateSection(columnTitleStyle),
+            extrasSection(columnTitleStyle),
           ],
         ),
+      ),
+    );
+  }
+
+  Section packSection(TextStyle columnTitleStyle) {
+    return Section(
+      title: Text(
+        "Combos",
+        style: columnTitleStyle,
+      ),
+      child: Column(
+        children: [
+          ...PlateList.packs.map(
+            (PlatePack pack) => SwipeablePack(
+              key: Key(pack.code),
+              pack: pack,
+              onPackSwiped: onPackSwipe,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Section extrasSection(TextStyle columnTitleStyle) {
+    return Section(
+      title: Text(
+        "Extras",
+        style: columnTitleStyle,
+      ),
+      child: Column(
+        children: [
+          ...PlateList.extras.map(
+            (Plate extra) => SwipeablePlate(
+              key: Key(extra.code),
+              plate: extra,
+              onPlateSwiped: onPlateSwipe,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Section plateSection(TextStyle columnTitleStyle) {
+    return Section(
+      title: Text(
+        "Platos",
+        style: columnTitleStyle,
+      ),
+      child: Column(
+        children: [
+          ...PlateList.plates.map(
+            (Plate plate) => SwipeablePlate(
+              key: Key(plate.code),
+              plate: plate,
+              onPlateSwiped: onPlateSwipe,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget bottomNavigationBar(ThemeData theme) {
+    return Badge(
+      label: Text("${order.length}"),
+      isLabelVisible: order.length > 0,
+      textStyle: TextStyle(
+        fontSize: theme.textTheme.labelLarge?.fontSize,
+        // fontWeight: FontWeight.bold,
+      ),
+      child: SizedBox.expand(
+        child: FilledButton(
+          onPressed: () {},
+          child: Text("Confirmar"),
+        ),
+      ),
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+}
+
+class InputOrderDirection extends StatelessWidget {
+  const InputOrderDirection({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      decoration: InputDecoration(
+        border: UnderlineInputBorder(),
+        label: Text("Dirección"),
       ),
     );
   }
@@ -152,61 +205,63 @@ class DraftedOrder extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // ThemeData theme = Theme.of(context);
-    return Column(
-      children: [
-        if (order.length > 0)
-          ListTile(
-            titleAlignment: ListTileTitleAlignment.top,
-            trailing: DolarAndBolivarPriceText(
-              price: order.price,
-            ),
-            title: Text(order.codeList),
-            /* subtitle: Column(
-            children: [
-              ListTile(
-                title: Text("1R1:"),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: Sizes().xl),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          // First the added things
-                          Text(
-                            "+ 150g de Papas",
+    ThemeData theme = Theme.of(context);
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainer,
+      ),
+      padding: EdgeInsets.only(bottom: Sizes().xl),
+      child: ListTile(
+        titleAlignment: ListTileTitleAlignment.top,
+        trailing: DolarAndBolivarPriceText(
+          price: order.price,
+        ),
+        title: Text(order.codeList),
+
+        /* subtitle: Column(
+          children: [
+            ListTile(
+              title: Text("1R1:"),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: Sizes().xl),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        // First the added things
+                        Text(
+                          "+ 150g de Papas",
+                        ),
+                        // Second the considerations
+                        Text(
+                          "* Poca Mostaza",
+                        ),
+                        // Third the removed
+                        Text(
+                          "- Queso de año",
+                          style: TextStyle(
+                            decoration: TextDecoration.lineThrough,
                           ),
-                          // Second the considerations
-                          Text(
-                            "* Poca Mostaza",
-                          ),
-                          // Third the removed
-                          Text(
-                            "- Queso de año",
-                            style: TextStyle(
-                              decoration: TextDecoration.lineThrough,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    SizedBox(height: Sizes().medium),
-                    Text(
-                      "Calle Jabonería Casa 11",
-                      style: TextStyle(
-                        fontSize: theme.textTheme.labelMedium?.fontSize,
-                        color: theme.colorScheme.onSurface.withAlpha(150),
-                      ),
+                  ),
+                  SizedBox(height: Sizes().medium),
+                  Text(
+                    "Calle Jabonería Casa 11",
+                    style: TextStyle(
+                      fontSize: theme.textTheme.labelMedium?.fontSize,
+                      color: theme.colorScheme.onSurface.withAlpha(150),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ), */
-          ),
-      ],
+            ),
+          ],
+        ), */
+      ),
     );
   }
 }
