@@ -19,15 +19,15 @@ class Orders extends StatelessWidget {
       ),
       body: ListView(
         children: const [
-          OrdenesPendientes(),
+          PendingOrders(),
         ],
       ),
     );
   }
 }
 
-class OrdenesPendientes extends StatelessWidget {
-  const OrdenesPendientes({super.key});
+class PendingOrders extends StatelessWidget {
+  const PendingOrders({super.key});
 
   @override
   Widget build(BuildContext context) {

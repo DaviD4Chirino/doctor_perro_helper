@@ -18,8 +18,7 @@ class NewOrder extends StatefulWidget {
   State<NewOrder> createState() => _NewOrderState();
 }
 
-class _NewOrderState extends State<NewOrder>
-    with AutomaticKeepAliveClientMixin {
+class _NewOrderState extends State<NewOrder> {
   MenuOrder order = MenuOrder(plates: [], packs: []);
 
   List<Plate> selectedPlates = [];
@@ -67,13 +66,21 @@ class _NewOrderState extends State<NewOrder>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     ThemeData theme = Theme.of(context);
     TextStyle columnTitleStyle = TextStyle(
       fontSize: theme.textTheme.bodyLarge?.fontSize,
       fontWeight: FontWeight.bold,
     );
-    return Scaffold(
+    return ListView(
+      children: [
+        if (order.length > 0) DraftedOrder(order: order),
+        // InputOrderDirection(),
+        // SizedBox(height: Sizes().xxxl),
+        packSection(columnTitleStyle),
+        plateSection(columnTitleStyle),
+        extrasSection(columnTitleStyle),
+      ],
+    ); /* Scaffold(
       appBar: AppBar(
         title: const Text("Nueva orden"),
       ),
@@ -81,24 +88,8 @@ class _NewOrderState extends State<NewOrder>
       // hide this
       // bottomNavigationBar: order.length > 0 ? bottomNavigationBar() : null,
       persistentFooterButtons: [bottomNavigationBar(theme)],
-      body: Padding(
-        padding: EdgeInsets.only(
-          left: Sizes().large,
-          right: Sizes().large,
-          top: Sizes().xxl,
-        ),
-        child: ListView(
-          children: [
-            if (order.length > 0) DraftedOrder(order: order),
-            // InputOrderDirection(),
-            // SizedBox(height: Sizes().xxxl),
-            packSection(columnTitleStyle),
-            plateSection(columnTitleStyle),
-            extrasSection(columnTitleStyle),
-          ],
-        ),
-      ),
-    );
+      body:
+    ) */
   }
 
   Section packSection(TextStyle columnTitleStyle) {
@@ -169,11 +160,9 @@ class _NewOrderState extends State<NewOrder>
         fontSize: theme.textTheme.labelLarge?.fontSize,
         // fontWeight: FontWeight.bold,
       ),
-      child: SizedBox.expand(
-        child: FilledButton(
-          onPressed: () {},
-          child: Text("Confirmar"),
-        ),
+      child: FilledButton(
+        onPressed: () {},
+        child: Text("Confirmar"),
       ),
     );
   }
