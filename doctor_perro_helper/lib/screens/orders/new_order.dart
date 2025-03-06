@@ -52,7 +52,7 @@ class _NewOrderState extends State<NewOrder> {
       setState(() {
         order = MenuOrder(packs: selectedPacks, plates: selectedPlates);
       });
-      printPlatesPackDebug(packs: order.packs);
+      // printPlatesPackDebug(packs: order.packs);
       return;
     }
     selectedPacks.removeWhere(
@@ -61,7 +61,7 @@ class _NewOrderState extends State<NewOrder> {
     setState(() {
       order = MenuOrder(packs: selectedPacks, plates: selectedPlates);
     });
-    printPlatesPackDebug(packs: order.packs);
+    // printPlatesPackDebug(packs: order.packs);
   }
 
   @override
@@ -72,8 +72,9 @@ class _NewOrderState extends State<NewOrder> {
       fontWeight: FontWeight.bold,
     );
     return ListView(
+      physics: BouncingScrollPhysics(),
       children: [
-        if (order.length > 0) DraftedOrder(order: order),
+        draftedOrderSection(columnTitleStyle, theme),
         // InputOrderDirection(),
         // SizedBox(height: Sizes().xxxl),
         packSection(columnTitleStyle),
@@ -90,6 +91,27 @@ class _NewOrderState extends State<NewOrder> {
       persistentFooterButtons: [bottomNavigationBar(theme)],
       body:
     ) */
+  }
+
+  Section draftedOrderSection(TextStyle columnTitleStyle, ThemeData theme) {
+    return Section(
+      title: Text(
+        "Orden Seleccionada:",
+        style: columnTitleStyle,
+      ),
+      child: order.length > 0
+          ? DraftedOrder(order: order)
+          : Container(
+              color: theme.colorScheme.surfaceContainer,
+              child: ListTile(
+                // enabled: false,
+                title: Text(
+                    "Desliza hacia la derecha o izquierda en los platos para agregarlos"),
+                subtitle: Text("No has seleccionado ningún plato"),
+                dense: true,
+              ),
+            ),
+    );
   }
 
   Section packSection(TextStyle columnTitleStyle) {
@@ -151,24 +173,6 @@ class _NewOrderState extends State<NewOrder> {
       ),
     );
   }
-
-  Widget bottomNavigationBar(ThemeData theme) {
-    return Badge(
-      label: Text("${order.length}"),
-      isLabelVisible: order.length > 0,
-      textStyle: TextStyle(
-        fontSize: theme.textTheme.labelLarge?.fontSize,
-        // fontWeight: FontWeight.bold,
-      ),
-      child: FilledButton(
-        onPressed: () {},
-        child: Text("Confirmar"),
-      ),
-    );
-  }
-
-  @override
-  bool get wantKeepAlive => true;
 }
 
 class InputOrderDirection extends StatelessWidget {

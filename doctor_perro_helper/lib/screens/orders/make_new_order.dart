@@ -1,6 +1,4 @@
-import 'dart:math';
-import 'dart:ui';
-
+import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/screens/orders/new_order.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,7 +14,7 @@ class MakeNewOrder extends ConsumerStatefulWidget {
 class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
   late PageController? _pageController;
   List<Widget> get steps => [
-        Center(child: Text("Page 1")),
+        NewOrder(),
         Center(child: Text("Page 2")),
         Center(child: Text("Page 3")),
       ];
@@ -72,36 +70,45 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
         },
         child: Text("Continue"),
       ),
-      body: Column(
-        children: [
-          stepper(theme),
-          Expanded(
-            child: PageView(
-              controller: _pageController,
-              physics: NeverScrollableScrollPhysics(),
-              children: steps,
-            ),
-          )
-        ],
+      body: Padding(
+        padding: EdgeInsets.all(Sizes().xl),
+        child: Column(
+          children: [
+            stepper(theme),
+            Expanded(
+              child: PageView(
+                controller: _pageController,
+                physics: NeverScrollableScrollPhysics(),
+                children: steps,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
 
   EasyStepper stepper(ThemeData theme) {
     return EasyStepper(
+      padding: EdgeInsets.all(0),
       activeStep: index,
       lineStyle: LineStyle(
         lineType: LineType.normal,
         lineLength: 70,
         lineSpace: 0,
+        defaultLineColor: theme.colorScheme.onSurface.withAlpha(150),
+        finishedLineColor: theme.colorScheme.primary,
+        activeLineColor: theme.colorScheme.onSurface,
       ),
       activeStepTextColor: theme.colorScheme.onSurface,
       activeStepIconColor: theme.colorScheme.primary,
+
       // activeStepBackgroundColor: theme.colorScheme.onSurface,
       finishedStepTextColor: theme.colorScheme.primary,
       defaultStepBorderType: BorderType.normal,
-      fitWidth: true,
-      stepRadius: 36,
+      fitWidth: false,
+      stepRadius: 32,
+      internalPadding: 18,
       showTitle: true,
       showLoadingAnimation: false,
 
@@ -109,20 +116,20 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
         EasyStep(
           enabled: index > 0,
           topTitle: false,
-          title: "Creación",
-          icon: Icon(Icons.food_bank),
+          title: "Crear",
+          icon: Icon(Icons.add),
         ),
         EasyStep(
           enabled: index > 1,
           topTitle: false,
-          title: "Creación",
-          icon: Icon(Icons.food_bank),
+          title: "Editar",
+          icon: Icon(Icons.edit_note_sharp),
         ),
         EasyStep(
           enabled: index > 2,
           topTitle: false,
-          title: "Revisión",
-          icon: Icon(Icons.food_bank),
+          title: "Revisar",
+          icon: Icon(Icons.checklist_outlined),
         )
       ],
       onStepReached: (int idx) => setState(() => index = idx),
