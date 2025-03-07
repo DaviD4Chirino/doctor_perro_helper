@@ -1,6 +1,7 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
-import 'package:doctor_perro_helper/screens/orders/new_order.dart';
+import 'package:doctor_perro_helper/screens/orders/edit_order_step.dart';
+import 'package:doctor_perro_helper/screens/orders/new_order_step.dart';
 import 'package:doctor_perro_helper/widgets/orders/drafted_order.dart';
 import 'package:doctor_perro_helper/widgets/reusables/Section.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,8 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
   late PageController? _pageController;
 
   List<Widget> get steps => [
-        NewOrder(),
-        Center(child: Text("Page 2")),
+        NewOrderStep(),
+        EditOrderStep(),
         Center(child: Text("Page 3")),
       ];
   int _index = 0;
@@ -64,10 +65,7 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    TextStyle columnTitleStyle = TextStyle(
-      fontSize: theme.textTheme.bodyLarge?.fontSize,
-      fontWeight: FontWeight.bold,
-    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Nuevo Pedido"),

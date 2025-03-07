@@ -11,15 +11,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // ignore: must_be_immutable
-class NewOrder extends ConsumerStatefulWidget {
-  NewOrder({super.key, this.onOrderModified});
+class NewOrderStep extends ConsumerStatefulWidget {
+  NewOrderStep({super.key, this.onOrderModified});
   Function(MenuOrder order)? onOrderModified;
 
   @override
-  ConsumerState<NewOrder> createState() => _NewOrderState();
+  ConsumerState<NewOrderStep> createState() => _NewOrderState();
 }
 
-class _NewOrderState extends ConsumerState<NewOrder> {
+class _NewOrderState extends ConsumerState<NewOrderStep> {
   MenuOrder _order = MenuOrder(plates: [], packs: []);
 
   set order(MenuOrder newOrder) {
