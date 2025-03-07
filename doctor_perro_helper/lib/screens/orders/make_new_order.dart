@@ -1,5 +1,8 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
+import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/screens/orders/new_order.dart';
+import 'package:doctor_perro_helper/widgets/orders/drafted_order.dart';
+import 'package:doctor_perro_helper/widgets/reusables/Section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_stepper/easy_stepper.dart';
@@ -13,12 +16,15 @@ class MakeNewOrder extends ConsumerStatefulWidget {
 
 class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
   late PageController? _pageController;
+
   List<Widget> get steps => [
         NewOrder(),
         Center(child: Text("Page 2")),
         Center(child: Text("Page 3")),
       ];
   int _index = 0;
+
+  MenuOrder order = MenuOrder(plates: [], packs: []);
 
   set index(int idx) {
     _index = idx.clamp(0, steps.length - 1);
@@ -58,6 +64,10 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    TextStyle columnTitleStyle = TextStyle(
+      fontSize: theme.textTheme.bodyLarge?.fontSize,
+      fontWeight: FontWeight.bold,
+    );
     return Scaffold(
       appBar: AppBar(
         title: Text("Nuevo Pedido"),
@@ -75,6 +85,11 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
         child: Column(
           children: [
             stepper(theme),
+            // draftedOrderSection(columnTitleStyle, theme),
+            /* Container(
+              height: 1,
+              color: theme.colorScheme.outline,
+            ), */
             Expanded(
               child: PageView(
                 controller: _pageController,
@@ -133,6 +148,27 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
         )
       ],
       onStepReached: (int idx) => setState(() => index = idx),
+    );
+  }
+
+  Section draftedOrderSection(TextStyle columnTitleStyle, ThemeData theme) {
+    return Section(
+      title: Text(
+        "Orden Seleccionada:",
+        style: columnTitleStyle,
+      ),
+      child: order.length > 0
+          ? DraftedOrder(order: order)
+          : Container(
+              color: theme.colorScheme.surfaceContainer,
+              child: ListTile(
+                // enabled: false,
+                title: Text(
+                    "Desliza hacia la derecha o izquierda en los platos para agregarlos"),
+                subtitle: Text("No has seleccionado ningún plato"),
+                dense: true,
+              ),
+            ),
     );
   }
 }

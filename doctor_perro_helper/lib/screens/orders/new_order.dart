@@ -1,47 +1,54 @@
-import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
-import 'package:doctor_perro_helper/models/ingredient.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
-import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
+import 'package:doctor_perro_helper/models/providers/menu_order_provider.dart';
+import 'package:doctor_perro_helper/widgets/orders/drafted_order.dart';
 import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:doctor_perro_helper/widgets/reusables/swipeable_plate.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class NewOrder extends StatefulWidget {
-  const NewOrder({super.key});
+// ignore: must_be_immutable
+class NewOrder extends ConsumerStatefulWidget {
+  NewOrder({super.key, this.onOrderModified});
+  Function(MenuOrder order)? onOrderModified;
 
   @override
-  State<NewOrder> createState() => _NewOrderState();
+  ConsumerState<NewOrder> createState() => _NewOrderState();
 }
 
-class _NewOrderState extends State<NewOrder> {
-  MenuOrder order = MenuOrder(plates: [], packs: []);
+class _NewOrderState extends ConsumerState<NewOrder> {
+  MenuOrder _order = MenuOrder(plates: [], packs: []);
+
+  set order(MenuOrder newOrder) {
+    _order = newOrder;
+    if (widget.onOrderModified != null) widget.onOrderModified!(_order);
+  }
+
+  MenuOrder get order => _order;
 
   List<Plate> selectedPlates = [];
   List<PlatePack> selectedPacks = [];
+
+  set draftedOrder(MenuOrder order) =>
+      ref.read(menuOrderNotifierProvider.notifier).setDraftedOrder(order);
+
+  MenuOrderData get menuOrder => ref.watch(menuOrderNotifierProvider);
 
   void onPlateSwipe(Plate plate, bool positive, double count) {
     if (plate.quantity.amount <= 0.0) {
       selectedPlates.removeWhere(
           (Plate existingPlate) => existingPlate.code == plate.code);
-      setState(() {
-        order = MenuOrder(packs: selectedPacks, plates: selectedPlates);
-      });
 
-      printPlatesPackDebug(plates: order.plates);
+      draftedOrder = MenuOrder(packs: selectedPacks, plates: selectedPlates);
       return;
     }
     selectedPlates
         .removeWhere((Plate existingPlate) => existingPlate.code == plate.code);
     selectedPlates.add(plate);
-    setState(() {
-      order = MenuOrder(packs: selectedPacks, plates: selectedPlates);
-    });
-    printPlatesPackDebug(plates: order.plates);
+    draftedOrder = MenuOrder(packs: selectedPacks, plates: selectedPlates);
   }
 
   // ignore: no_leading_underscores_for_local_identifiers
@@ -49,18 +56,15 @@ class _NewOrderState extends State<NewOrder> {
     if (pack.quantity.amount <= 0.0) {
       selectedPacks.removeWhere(
           (PlatePack existingPack) => existingPack.code == pack.code);
-      setState(() {
-        order = MenuOrder(packs: selectedPacks, plates: selectedPlates);
-      });
+      draftedOrder = MenuOrder(packs: selectedPacks, plates: selectedPlates);
       // printPlatesPackDebug(packs: order.packs);
       return;
     }
     selectedPacks.removeWhere(
         (PlatePack existingPack) => existingPack.code == pack.code);
     selectedPacks.add(pack);
-    setState(() {
-      order = MenuOrder(packs: selectedPacks, plates: selectedPlates);
-    });
+    draftedOrder = MenuOrder(packs: selectedPacks, plates: selectedPlates);
+
     // printPlatesPackDebug(packs: order.packs);
   }
 
@@ -71,15 +75,23 @@ class _NewOrderState extends State<NewOrder> {
       fontSize: theme.textTheme.bodyLarge?.fontSize,
       fontWeight: FontWeight.bold,
     );
-    return ListView(
-      physics: BouncingScrollPhysics(),
+
+    return Column(
+      mainAxisSize: MainAxisSize.max,
       children: [
         draftedOrderSection(columnTitleStyle, theme),
-        // InputOrderDirection(),
-        // SizedBox(height: Sizes().xxxl),
-        packSection(columnTitleStyle),
-        plateSection(columnTitleStyle),
-        extrasSection(columnTitleStyle),
+        Expanded(
+          child: ListView(
+            physics: BouncingScrollPhysics(),
+            children: [
+              // InputOrderDirection(),
+              // SizedBox(height: Sizes().xxxl),
+              packSection(columnTitleStyle),
+              plateSection(columnTitleStyle),
+              extrasSection(columnTitleStyle),
+            ],
+          ),
+        ),
       ],
     ); /* Scaffold(
       appBar: AppBar(
@@ -94,23 +106,59 @@ class _NewOrderState extends State<NewOrder> {
   }
 
   Section draftedOrderSection(TextStyle columnTitleStyle, ThemeData theme) {
+    Widget draftedSection() {
+      if (menuOrder.draftedOrder != null) {
+        MenuOrder order = menuOrder.draftedOrder as MenuOrder;
+        if (order.length > 0) {
+          return DraftedOrder(order: order);
+        } else {
+          return Container(
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surfaceContainer,
+              border: Border(
+                bottom: BorderSide(
+                  color: theme.colorScheme.outline,
+                  width: 2.0,
+                ),
+              ),
+            ),
+            child: ListTile(
+              // enabled: false,
+              title: Text(
+                  "Desliza hacia la derecha o izquierda en los platos para agregarlos"),
+              subtitle: Text("No has seleccionado ningún plato"),
+              dense: true,
+            ),
+          );
+        }
+      } else {
+        return Container(
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surfaceContainer,
+            border: Border(
+              bottom: BorderSide(
+                color: theme.colorScheme.outline,
+                width: 2.0,
+              ),
+            ),
+          ),
+          child: ListTile(
+            // enabled: false,
+            title: Text(
+                "Desliza hacia la derecha o izquierda en los platos para agregarlos"),
+            subtitle: Text("No has seleccionado ningún plato"),
+            dense: true,
+          ),
+        );
+      }
+    }
+
     return Section(
       title: Text(
         "Orden Seleccionada:",
         style: columnTitleStyle,
       ),
-      child: order.length > 0
-          ? DraftedOrder(order: order)
-          : Container(
-              color: theme.colorScheme.surfaceContainer,
-              child: ListTile(
-                // enabled: false,
-                title: Text(
-                    "Desliza hacia la derecha o izquierda en los platos para agregarlos"),
-                subtitle: Text("No has seleccionado ningún plato"),
-                dense: true,
-              ),
-            ),
+      child: draftedSection(),
     );
   }
 
@@ -188,90 +236,6 @@ class InputOrderDirection extends StatelessWidget {
         label: Text("Dirección"),
       ),
     );
-  }
-}
-
-class DraftedOrder extends ConsumerWidget {
-  const DraftedOrder({super.key, required this.order});
-
-  final MenuOrder order;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    ThemeData theme = Theme.of(context);
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainer,
-      ),
-      padding: EdgeInsets.only(bottom: Sizes().xl),
-      child: ListTile(
-        titleAlignment: ListTileTitleAlignment.top,
-        trailing: DolarAndBolivarPriceText(
-          price: order.price,
-        ),
-        title: Text(order.codeList),
-
-        /* subtitle: Column(
-          children: [
-            ListTile(
-              title: Text("1R1:"),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: Sizes().xl),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        // First the added things
-                        Text(
-                          "+ 150g de Papas",
-                        ),
-                        // Second the considerations
-                        Text(
-                          "* Poca Mostaza",
-                        ),
-                        // Third the removed
-                        Text(
-                          "- Queso de año",
-                          style: TextStyle(
-                            decoration: TextDecoration.lineThrough,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: Sizes().medium),
-                  Text(
-                    "Calle Jabonería Casa 11",
-                    style: TextStyle(
-                      fontSize: theme.textTheme.labelMedium?.fontSize,
-                      color: theme.colorScheme.onSurface.withAlpha(150),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ), */
-      ),
-    );
-  }
-}
-
-class ReviewPlate extends StatelessWidget {
-  const ReviewPlate({
-    super.key,
-    required this.addedIngredients,
-    required this.removedIngredients,
-  });
-
-  final List<Ingredient> addedIngredients;
-  final List<Ingredient> removedIngredients;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text("");
   }
 }
 
