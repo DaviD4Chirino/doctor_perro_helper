@@ -4,7 +4,6 @@ import 'package:doctor_perro_helper/models/providers/theme_mode_provider.dart';
 import 'package:doctor_perro_helper/models/routes.dart';
 import 'package:doctor_perro_helper/models/use_shared_preferences.dart';
 import 'package:doctor_perro_helper/screens/orders/make_new_order.dart';
-import 'package:doctor_perro_helper/screens/orders/new_order.dart';
 import 'package:doctor_perro_helper/screens/pages/home/home.dart';
 import 'package:doctor_perro_helper/utils/google/google.dart';
 import 'package:firebase_core/firebase_core.dart';

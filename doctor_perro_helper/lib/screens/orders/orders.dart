@@ -18,7 +18,10 @@ class Orders extends StatelessWidget {
         ),
       ),
       body: ListView(
-        children: const [
+        children: [
+          SizedBox(
+            height: Sizes().xxxl,
+          ),
           PendingOrders(),
         ],
       ),
