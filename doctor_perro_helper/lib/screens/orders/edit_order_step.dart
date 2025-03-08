@@ -20,7 +20,7 @@ class _EditOrderStepState extends ConsumerState<EditOrderStep> {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        ...draftedOrder.plates.map(
+        ...draftedOrder.platesSpread.map(
           (Plate plate) => ExpansiblePlate(plate: plate),
         ),
       ],

@@ -2,7 +2,6 @@ import 'package:doctor_perro_helper/models/ingredient.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/widgets/reusables/ingredient_list_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:swipeable_tile/swipeable_tile.dart';
 
 class ExpansiblePlate extends StatelessWidget {
   const ExpansiblePlate({super.key, required this.plate});

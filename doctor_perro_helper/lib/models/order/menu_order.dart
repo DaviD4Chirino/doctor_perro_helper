@@ -2,6 +2,7 @@ import 'package:doctor_perro_helper/models/order/menu_order_status.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
 import 'package:doctor_perro_helper/utils/extensions/double_extensions.dart';
+import 'package:doctor_perro_helper/utils/extensions/plate_extensions.dart';
 
 /// Order as in; an order of french fries
 class MenuOrder {
@@ -57,11 +58,33 @@ class MenuOrder {
     return list.join(" - ");
   }
 
-  /// The combined length of [plates] and [packs]
-  int get length => plates.length + packs.length;
+  /// The combined amount of each [Plate] in [plates]
+  /// and [PlatePack] in [packs]
+  int get length {
+    int amount = 0;
+    for (Plate plate in plates) {
+      amount += plate.quantity.amount.toInt();
+    }
+    for (PlatePack pack in packs) {
+      amount += pack.quantity.amount.toInt();
+    }
+    return amount;
+  }
 
   MenuOrder create() {
     return MenuOrder(plates: plates, packs: packs);
+  }
+
+  /// returns the [plate] array but with repeated [Plates]
+  /// for each amount.
+  /// Instead of an R3 plate with the amount of 3,
+  /// Its 3 R3 with the amount of 1.
+  List<Plate> get platesSpread {
+    List<Plate> newPlates = [];
+    for (Plate plate in plates) {
+      newPlates.addAll(plate.spread());
+    }
+    return newPlates;
   }
 
   List<Plate> plates;
