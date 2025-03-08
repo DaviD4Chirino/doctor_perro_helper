@@ -10,13 +10,18 @@ class DolarAndBolivarPriceText extends ConsumerWidget {
   const DolarAndBolivarPriceText({
     super.key,
     required this.price,
+    this.bolivaresTextStyle,
+    this.dolarPriceTextStyle,
   });
 
   final double price;
+  final TextStyle? dolarPriceTextStyle;
+  final TextStyle? bolivaresTextStyle;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ThemeData theme = Theme.of(context);
+
     final AsyncValue<DolarPriceInBsDoc> dolarPriceStream =
         ref.watch(dolarPriceProvider);
 
@@ -28,15 +33,11 @@ class DolarAndBolivarPriceText extends ConsumerWidget {
       children: [
         Text(
           "${price.removePaddingZero()}\$",
-          style: TextStyle(
-            fontSize: theme.textTheme.titleLarge?.fontSize,
-          ),
+          style: dolarPriceTextStyle ?? theme.textTheme.titleLarge,
         ),
         Text(
           "${calculatedBs}bs",
-          style: TextStyle(
-            fontSize: theme.textTheme.labelSmall?.fontSize,
-          ),
+          style: bolivaresTextStyle ?? theme.textTheme.labelSmall,
         ),
       ],
     );

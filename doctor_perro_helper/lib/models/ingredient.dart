@@ -10,8 +10,8 @@ class Ingredient {
   });
 
   /// Returns this same [Ingredient] with the initial amount changed
-  SideDish amount(double amount) {
-    return SideDish(
+  Ingredient amount(double amount) {
+    return Ingredient(
       name: name,
       cost: cost,
       quantity: PlateQuantity(
