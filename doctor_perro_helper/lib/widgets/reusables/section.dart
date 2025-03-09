@@ -19,6 +19,8 @@ class Section extends StatelessWidget {
           bottom: sizes.xxl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.baseline,
+        mainAxisSize: MainAxisSize.max,
+
         // mainAxisAlignment: MainAxisAlignment.end,
         textBaseline: TextBaseline.alphabetic,
         spacing: sizes.large,

@@ -6,6 +6,7 @@ abstract class SideDishList {
     name: "Pepsi Cola",
     cost: 2.5,
     quantity: PlateQuantity(),
+    minName: "Sin Pepsi Cola",
   );
 
   static SideDish frenchFries = SideDish(
@@ -16,6 +17,7 @@ abstract class SideDishList {
       prefix: "",
       suffix: "g",
     ),
+    minName: "Sin Papas Fritas",
   );
 
   static List<SideDish> list = [frenchFries, pepsiCola];

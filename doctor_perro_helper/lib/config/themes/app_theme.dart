@@ -35,7 +35,8 @@ abstract final class AppTheme {
       error: Color(0xFFD50000),
       errorContainer: Color(0xFFFF8A80),
     ),
-    appBarStyle: FlexAppBarStyle.primary,
+    appBarStyle: FlexAppBarStyle.custom,
+    appBarBackground: Color(0xFFFD9D43),
     subThemesData: const FlexSubThemesData(
       interactionEffects: true,
       tintedDisabledControls: true,
@@ -98,6 +99,7 @@ abstract final class AppTheme {
   );
   // The defined dark theme.
   static ThemeData dark = FlexThemeData.dark(
+    blendLevel: 0,
     colors: const FlexSchemeColor(
       // Custom colors
       primary: Color(0xFFFD9D43),
@@ -113,7 +115,8 @@ abstract final class AppTheme {
       error: Color(0xFFB71C1C),
       errorContainer: Color(0xFF440005),
     ),
-    appBarStyle: FlexAppBarStyle.primary,
+    appBarStyle: FlexAppBarStyle.custom,
+    appBarBackground: Color(0xFFFD9D43),
     subThemesData: const FlexSubThemesData(
       interactionEffects: true,
       tintedDisabledControls: true,

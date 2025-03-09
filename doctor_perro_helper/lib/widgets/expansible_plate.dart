@@ -35,7 +35,6 @@ class ExpansiblePlate extends StatelessWidget {
               horizontalTitleGap: 0,
               dense: true,
               title: IngredientListTile(ingredient: ingredient),
-              subtitle: Text("Desliza para añadir o eliminar"),
             ),
             onSwiped: (swipeDirection) {},
           );

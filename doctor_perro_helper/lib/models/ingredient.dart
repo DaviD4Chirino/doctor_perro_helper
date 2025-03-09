@@ -6,6 +6,8 @@ class Ingredient {
   Ingredient({
     required this.name,
     required this.cost,
+    this.maxName = "",
+    this.minName = "",
     this.quantity,
   });
 
@@ -23,6 +25,8 @@ class Ingredient {
         prefix: quantity?.prefix ?? "x",
         suffix: quantity?.suffix ?? "",
       ),
+      minName: minName,
+      maxName: maxName,
     );
   }
 
@@ -36,12 +40,38 @@ class Ingredient {
 
     double quantity = count * amount;
 
+    if (maxName.isNotEmpty &&
+        this.quantity != null &&
+        amount >= this.quantity!.max.toDouble()) {
+      return maxName;
+    }
+    if (minName.isNotEmpty &&
+        this.quantity != null &&
+        amount <= this.quantity!.min.toDouble()) {
+      return minName;
+    }
+
     return amount > 1
         ? "$name $prefix${removePaddingZero(quantity.toString())}$suffix"
         : name;
   }
 
-  String name = "";
+  /// Is the minimum amount posible for this [Ingredient]?
+  bool get isTheMinimum =>
+      quantity != null && quantity!.amount <= quantity!.min;
+
+  /// Is the maximum amount posible for this [Ingredient]?
+  bool get isTheMaximum =>
+      quantity != null && quantity!.amount <= quantity!.max;
+
+  String name;
   double cost;
+
+  /// The name to be displayed when the amount is the maximum
+  String maxName;
+
+  /// The name to be displayed when the amount is the minimum
+  String minName;
+
   PlateQuantity? quantity = PlateQuantity();
 }

@@ -28,7 +28,7 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
   int _index = 0;
 
   bool newOrderStepCompleted = false;
-  bool editOrderStepCompleted = false;
+  bool editOrderStepCompleted = true;
 
   bool get canAdvance =>
       index == 0 && newOrderStepCompleted ||
@@ -59,23 +59,11 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
     super.dispose();
   }
 
-  onStepContinue() {
-    setState(() {
-      index += 1;
-    });
-  }
+  void onStepContinue() => setState(() => index += 1);
 
-  onStepCancel() {
-    setState(() {
-      index -= 1;
-    });
-  }
+  void onStepCancel() => setState(() => index -= 1);
 
-  nextStep() {
-    setState(() {
-      index += 1;
-    });
-  }
+  void nextStep() => setState(() => index += 1);
 
   void onNewOrderStepCompleted(bool completed) {
     setState(() {

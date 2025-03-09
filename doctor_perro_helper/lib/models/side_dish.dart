@@ -6,6 +6,8 @@ class SideDish extends Ingredient {
     required super.name,
     required super.cost,
     required super.quantity,
+    super.maxName,
+    super.minName,
   });
   @override
 
