@@ -19,11 +19,20 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
   late PageController? _pageController;
 
   List<Widget> get steps => [
-        NewOrderStep(),
+        NewOrderStep(
+          onStepCompleted: onNewOrderStepCompleted,
+        ),
         EditOrderStep(),
         Center(child: Text("Page 3")),
       ];
   int _index = 0;
+
+  bool newOrderStepCompleted = false;
+  bool editOrderStepCompleted = false;
+
+  bool get canAdvance =>
+      index == 0 && newOrderStepCompleted ||
+      index == 1 && editOrderStepCompleted;
 
   MenuOrder order = MenuOrder(plates: [], packs: []);
 
@@ -62,6 +71,18 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
     });
   }
 
+  nextStep() {
+    setState(() {
+      index += 1;
+    });
+  }
+
+  void onNewOrderStepCompleted(bool completed) {
+    setState(() {
+      newOrderStepCompleted = completed;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -71,11 +92,7 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
         title: Text("Nuevo Pedido"),
       ),
       bottomNavigationBar: FilledButton(
-        onPressed: () {
-          setState(() {
-            index += 1;
-          });
-        },
+        onPressed: canAdvance ? nextStep : null,
         child: Text("Continue"),
       ),
       body: Padding(

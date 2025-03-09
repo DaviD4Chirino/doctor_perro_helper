@@ -16,7 +16,6 @@ class IngredientListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(Sizes().roundedSmall)),
@@ -26,7 +25,7 @@ class IngredientListTile extends StatelessWidget {
         title: Text(ingredient.title),
         trailing: DolarAndBolivarPriceText(
           price: ingredient.price,
-          dolarPriceTextStyle: theme.textTheme.labelLarge,
+          // dolarPriceTextStyle: theme.textTheme.labelLarge,
         ),
       ),
     );

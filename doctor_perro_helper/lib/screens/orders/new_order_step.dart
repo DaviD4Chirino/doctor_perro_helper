@@ -1,4 +1,5 @@
 import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
+import 'package:doctor_perro_helper/models/mixins/step_screeen_mixin.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
@@ -12,28 +13,33 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // ignore: must_be_immutable
 class NewOrderStep extends ConsumerStatefulWidget {
-  NewOrderStep({super.key, this.onOrderModified});
+  NewOrderStep({
+    super.key,
+    this.onOrderModified,
+    this.onStepCompleted,
+  });
   Function(MenuOrder order)? onOrderModified;
+  void Function(bool completed)? onStepCompleted;
 
   @override
   ConsumerState<NewOrderStep> createState() => _NewOrderState();
 }
 
 class _NewOrderState extends ConsumerState<NewOrderStep> {
-  MenuOrder _order = MenuOrder(plates: [], packs: []);
-
-  set order(MenuOrder newOrder) {
-    _order = newOrder;
-    if (widget.onOrderModified != null) widget.onOrderModified!(_order);
-  }
-
-  MenuOrder get order => _order;
-
   List<Plate> selectedPlates = [];
   List<PlatePack> selectedPacks = [];
 
-  set draftedOrder(MenuOrder order) =>
-      ref.read(menuOrderNotifierProvider.notifier).setDraftedOrder(order);
+  set draftedOrder(MenuOrder order) {
+    ref.read(menuOrderNotifierProvider.notifier).setDraftedOrder(order);
+    if (kDebugMode) {
+      print(order.length);
+      print(order.codeList);
+      print(order.length > 0);
+    }
+    if (widget.onStepCompleted != null) {
+      widget.onStepCompleted!(order.length > 0);
+    }
+  }
 
   MenuOrderData get menuOrder => ref.watch(menuOrderNotifierProvider);
 
@@ -43,6 +49,7 @@ class _NewOrderState extends ConsumerState<NewOrderStep> {
           (Plate existingPlate) => existingPlate.code == plate.code);
 
       draftedOrder = MenuOrder(packs: selectedPacks, plates: selectedPlates);
+
       return;
     }
     selectedPlates
@@ -57,6 +64,7 @@ class _NewOrderState extends ConsumerState<NewOrderStep> {
       selectedPacks.removeWhere(
           (PlatePack existingPack) => existingPack.code == pack.code);
       draftedOrder = MenuOrder(packs: selectedPacks, plates: selectedPlates);
+
       // printPlatesPackDebug(packs: order.packs);
       return;
     }
