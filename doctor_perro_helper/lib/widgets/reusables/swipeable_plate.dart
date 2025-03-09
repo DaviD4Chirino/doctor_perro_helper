@@ -1,7 +1,7 @@
-import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
 import 'package:doctor_perro_helper/utils/string_math.dart';
+import 'package:doctor_perro_helper/widgets/reusables/swipeable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,9 +41,16 @@ class _SwipeablePlateState extends ConsumerState<SwipeablePlate>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    ThemeData theme = Theme.of(context);
 
-    return SwipeableTile.swipeToTrigger(
+    return Swipeable(
+        key: Key(plate.code),
+        onSwiped: onSwiped,
+        child: SharedListTile(
+          count: count,
+          plate: plate,
+        ));
+
+    /* SwipeableTile.swipeToTrigger(
       direction: SwipeDirection.horizontal,
       key: Key(plate.code),
       borderRadius: Sizes().roundedSmall,
@@ -54,7 +61,7 @@ class _SwipeablePlateState extends ConsumerState<SwipeablePlate>
         count: count,
         plate: plate,
       ),
-    );
+    ); */
   }
 
   void onSwiped(SwipeDirection direction) {
@@ -108,9 +115,14 @@ class _SwipeablePackState extends ConsumerState<SwipeablePack>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    ThemeData theme = Theme.of(context);
+    // ThemeData theme = Theme.of(context);
 
-    return SwipeableTile.swipeToTrigger(
+    return Swipeable(
+      key: Key(pack.code),
+      onSwiped: onSwiped,
+      child: SharedListTile(pack: pack, count: count),
+    )
+        /* SwipeableTile.swipeToTrigger(
       direction: SwipeDirection.horizontal,
       key: Key(pack.code),
       borderRadius: Sizes().roundedSmall,
@@ -118,7 +130,8 @@ class _SwipeablePackState extends ConsumerState<SwipeablePack>
       color: theme.colorScheme.surfaceContainer,
       onSwiped: onSwiped,
       child: SharedListTile(pack: pack, count: count),
-    );
+    ) */
+        ;
   }
 
   void onSwiped(SwipeDirection direction) {
@@ -208,39 +221,39 @@ class SharedListTile extends StatelessWidget {
   }
 }
 
-Widget backgroundBuilder(BuildContext context, SwipeDirection direction,
-    AnimationController animationController) {
-  if (direction == SwipeDirection.startToEnd) {
-    return swipeableBackground(
-      Colors.red,
-      Icons.delete_forever,
-      MainAxisAlignment.start,
-    );
-  }
-  return swipeableBackground(
-    Colors.green,
-    Icons.check_circle_sharp,
-    MainAxisAlignment.end,
-  );
-}
+// Widget backgroundBuilder(BuildContext context, SwipeDirection direction,
+//     AnimationController animationController) {
+//   if (direction == SwipeDirection.startToEnd) {
+//     return swipeableBackground(
+//       Colors.red,
+//       Icons.delete_forever,
+//       MainAxisAlignment.start,
+//     );
+//   }
+//   return swipeableBackground(
+//     Colors.green,
+//     Icons.check_circle_sharp,
+//     MainAxisAlignment.end,
+//   );
+// }
 
-Container swipeableBackground(
-    Color color, IconData icon, MainAxisAlignment alignment) {
-  return Container(
-    decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(Sizes().roundedSmall)),
-    child: Padding(
-      padding: EdgeInsets.symmetric(horizontal: Sizes().xl),
-      child: Row(
-        mainAxisAlignment: alignment,
-        children: [
-          Icon(
-            icon,
-            size: Sizes().iconXl,
-          ),
-        ],
-      ),
-    ),
-  );
-}
+// Container swipeableBackground(
+//     Color color, IconData icon, MainAxisAlignment alignment) {
+//   return Container(
+//     decoration: BoxDecoration(
+//         color: color,
+//         borderRadius: BorderRadius.circular(Sizes().roundedSmall)),
+//     child: Padding(
+//       padding: EdgeInsets.symmetric(horizontal: Sizes().xl),
+//       child: Row(
+//         mainAxisAlignment: alignment,
+//         children: [
+//           Icon(
+//             icon,
+//             size: Sizes().iconXl,
+//           ),
+//         ],
+//       ),
+//     ),
+//   );
+// }
