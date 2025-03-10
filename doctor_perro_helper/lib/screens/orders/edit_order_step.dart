@@ -1,6 +1,8 @@
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
+import 'package:doctor_perro_helper/models/plate_pack.dart';
 import 'package:doctor_perro_helper/models/providers/menu_order_provider.dart';
+import 'package:doctor_perro_helper/widgets/expansible_pack.dart';
 import 'package:doctor_perro_helper/widgets/expansible_plate.dart';
 import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +34,8 @@ class _EditOrderStepState extends ConsumerState<EditOrderStep> {
       child: Expanded(
         child: ListView(
           children: [
+            ...draftedOrder.packSpread
+                .map((PlatePack pack) => ExpansiblePack(pack: pack)),
             ...draftedOrder.platesSpread.map(
               (Plate plate) => ExpansiblePlate(plate: plate),
             ),

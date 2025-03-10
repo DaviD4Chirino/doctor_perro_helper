@@ -25,6 +25,7 @@ class _SwipeablePlateState extends ConsumerState<SwipeablePlate>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
+
   double _count = 0;
   double get count => _count;
   set count(double value) => _count = clampDouble(

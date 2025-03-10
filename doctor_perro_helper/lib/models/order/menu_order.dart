@@ -3,6 +3,7 @@ import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
 import 'package:doctor_perro_helper/utils/extensions/double_extensions.dart';
 import 'package:doctor_perro_helper/utils/extensions/plate_extensions.dart';
+import 'package:doctor_perro_helper/utils/extensions/platepack_extensions.dart';
 
 /// Order as in; an order of french fries
 class MenuOrder {
@@ -85,6 +86,14 @@ class MenuOrder {
       newPlates.addAll(plate.spread());
     }
     return newPlates;
+  }
+
+  List<PlatePack> get packSpread {
+    List<PlatePack> newPacks = [];
+    for (PlatePack pack in packs) {
+      newPacks.addAll(pack.spread());
+    }
+    return newPacks;
   }
 
   List<Plate> plates;

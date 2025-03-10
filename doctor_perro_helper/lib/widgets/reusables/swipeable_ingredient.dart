@@ -1,12 +1,11 @@
 import 'package:doctor_perro_helper/models/ingredient.dart';
-import 'package:doctor_perro_helper/utils/extensions/double_extensions.dart';
 import 'package:doctor_perro_helper/widgets/reusables/ingredient_list_tile.dart';
 import 'package:doctor_perro_helper/widgets/reusables/swipeable.dart';
 import 'package:flutter/material.dart';
 import 'package:swipeable_tile/swipeable_tile.dart';
 
-class SwipeableIngredientListTile extends StatefulWidget {
-  const SwipeableIngredientListTile({
+class SwipeableIngredient extends StatefulWidget {
+  const SwipeableIngredient({
     super.key,
     required this.ingredient,
   });
@@ -14,12 +13,10 @@ class SwipeableIngredientListTile extends StatefulWidget {
   final Ingredient ingredient;
 
   @override
-  State<SwipeableIngredientListTile> createState() =>
-      _SwipeableIngredientListTileState();
+  State<SwipeableIngredient> createState() => _SwipeableIngredientState();
 }
 
-class _SwipeableIngredientListTileState
-    extends State<SwipeableIngredientListTile> {
+class _SwipeableIngredientState extends State<SwipeableIngredient> {
   late Ingredient modifiedIngredient;
 
   double get prevAmount => modifiedIngredient.quantity?.amount ?? 1.0;

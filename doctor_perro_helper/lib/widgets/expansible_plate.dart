@@ -1,6 +1,6 @@
 import 'package:doctor_perro_helper/models/ingredient.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
-import 'package:doctor_perro_helper/widgets/reusables/swipeable_ingredient_list_tile.dart';
+import 'package:doctor_perro_helper/widgets/reusables/swipeable_ingredient.dart';
 import 'package:flutter/material.dart';
 
 class ExpansiblePlate extends StatelessWidget {
@@ -26,7 +26,7 @@ class ExpansiblePlate extends StatelessWidget {
       ),
       children: [
         ...plate.ingredients.map((Ingredient ingredient) {
-          return SwipeableIngredientListTile(
+          return SwipeableIngredient(
             ingredient: ingredient,
           );
         }),
