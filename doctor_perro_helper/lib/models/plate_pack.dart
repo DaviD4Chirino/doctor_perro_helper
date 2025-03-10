@@ -1,6 +1,7 @@
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_quantity.dart';
 import 'package:doctor_perro_helper/models/side_dish.dart';
+import 'package:doctor_perro_helper/utils/extensions/plate_extensions.dart';
 
 class PlatePack {
   PlatePack({
@@ -82,6 +83,9 @@ class PlatePack {
     return list;
   }
 
+  /// [Plate] has it and [PlatePack] should too
+  String get title => name;
+
   double get price {
     double totalAmount = cost * quantity.amount;
 
@@ -95,6 +99,14 @@ class PlatePack {
       }
     }
     return totalAmount;
+  }
+
+  List<Plate> get platesSpread {
+    List<Plate> newPlates = [];
+    for (Plate plate in plates) {
+      newPlates.addAll(plate.spread());
+    }
+    return newPlates;
   }
 
   String id;
