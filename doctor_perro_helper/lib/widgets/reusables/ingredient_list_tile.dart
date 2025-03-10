@@ -1,7 +1,6 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/ingredient.dart';
 import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 
 class IngredientListTile extends StatelessWidget {
@@ -27,9 +26,7 @@ class IngredientListTile extends StatelessWidget {
         dense: dense,
         title: Text(
           ingredient.title,
-          style: TextStyle(
-            color: textColor(theme),
-          ),
+          style: textColor(theme),
         ),
         trailing: DolarAndBolivarPriceText(
           price: ingredient.price,
@@ -39,13 +36,22 @@ class IngredientListTile extends StatelessWidget {
     );
   }
 
-  Color textColor(ThemeData theme) {
-    if (ingredient.isTheMaximum) {
-      return Colors.green;
+  TextStyle? textColor(ThemeData theme) {
+    if (ingredient.isTheMaximum
+        //  || ((ingredient.quantity?.amount ?? 1.0) > 1)
+        ) {
+      return TextStyle(
+        color: Colors.green,
+      );
     }
     if (ingredient.isTheMinimum) {
-      return theme.colorScheme.error;
+      return TextStyle(
+        color: theme.colorScheme.error,
+        decoration: TextDecoration.lineThrough,
+        decorationColor: theme.colorScheme.error,
+      );
     }
-    return theme.colorScheme.onSurface;
+
+    return null;
   }
 }
