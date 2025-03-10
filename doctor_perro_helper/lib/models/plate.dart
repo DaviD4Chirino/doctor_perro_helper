@@ -81,6 +81,15 @@ class Plate {
     );
   }
 
+  void replaceIngredient(Ingredient oldIngredient, Ingredient newIngredient) {
+    final index = ingredients
+        .indexWhere((Ingredient ing) => ing.name == oldIngredient.name);
+
+    if (index != -1) {
+      ingredients[index] = newIngredient;
+    }
+  }
+
   // double get price => (quantity.amount) * cost;
 
   String get ingredientsTitles {

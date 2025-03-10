@@ -34,7 +34,11 @@ class ExpansiblePack extends StatelessWidget {
         ...pack.platesSpread.map((Plate plate) {
           return ExpansiblePlate(
             plate: plate,
-            onSwiped: (dir, modifiedPlate) {},
+            onSwiped: (dir, modifiedPlate) {
+              PlatePack newPack = pack;
+              newPack.replacePlate(plate, modifiedPlate);
+              onSwiped(dir, newPack);
+            },
           );
         }),
       ],

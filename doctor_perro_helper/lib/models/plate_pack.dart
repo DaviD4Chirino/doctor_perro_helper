@@ -83,6 +83,13 @@ class PlatePack {
     );
   }
 
+  void replacePlate(Plate oldPlate, Plate newPlate) {
+    final index = plates.indexOf(oldPlate);
+    if (index != -1) {
+      plates[index] = newPlate;
+    }
+  }
+
   String get plateTitleList {
     List<String> list = [];
     for (var plate in plates) {

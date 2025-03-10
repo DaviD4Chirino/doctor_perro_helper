@@ -37,6 +37,8 @@ class _SwipeableIngredientState extends State<SwipeableIngredient> {
         modifiedIngredient = modifiedIngredient.amount(prevAmount - 1);
       });
     }
+
+    widget.onSwiped(dir, modifiedIngredient);
   }
 
   @override

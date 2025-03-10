@@ -29,6 +29,31 @@ class Ingredient {
     );
   }
 
+  Ingredient copyWith({
+    String? name,
+    double? cost,
+    String? maxName,
+    String? minName,
+    PlateQuantity? quantity,
+  }) {
+    return Ingredient(
+      name: name ?? this.name,
+      cost: cost ?? this.cost,
+      maxName: maxName ?? this.maxName,
+      minName: minName ?? this.minName,
+      quantity: quantity != null
+          ? this.quantity!.copyWith(
+                max: quantity.max,
+                min: quantity.min,
+                count: quantity.count,
+                amount: quantity.amount,
+                prefix: quantity.prefix,
+                suffix: quantity.suffix,
+              )
+          : this.quantity,
+    );
+  }
+
   double get price => (quantity?.amount ?? 1) * cost;
 
   String get title {
@@ -62,31 +87,6 @@ class Ingredient {
   /// Is the maximum amount posible for this [Ingredient]?
   bool get isTheMaximum =>
       quantity != null && quantity!.amount >= quantity!.max;
-
-  Ingredient copyWith({
-    String? name,
-    double? cost,
-    String? maxName,
-    String? minName,
-    PlateQuantity? quantity,
-  }) {
-    return Ingredient(
-      name: name ?? this.name,
-      cost: cost ?? this.cost,
-      maxName: maxName ?? this.maxName,
-      minName: minName ?? this.minName,
-      quantity: quantity != null
-          ? this.quantity!.copyWith(
-                max: quantity.max,
-                min: quantity.min,
-                count: quantity.count,
-                amount: quantity.amount,
-                prefix: quantity.prefix,
-                suffix: quantity.suffix,
-              )
-          : this.quantity,
-    );
-  }
 
   String name;
   double cost;

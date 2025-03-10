@@ -31,12 +31,18 @@ class ExpansiblePlate extends StatelessWidget {
         ),
       ),
       children: [
-        ...plate.ingredients.map((Ingredient ingredient) {
-          return SwipeableIngredient(
-            ingredient: ingredient,
-            onSwiped: (dir, modifiedIngredient) {},
-          );
-        }),
+        ...plate.ingredients.map(
+          (Ingredient ingredient) {
+            return SwipeableIngredient(
+              ingredient: ingredient,
+              onSwiped: (dir, modifiedIngredient) {
+                Plate newPlate = plate;
+                newPlate.replaceIngredient(ingredient, modifiedIngredient);
+                onSwiped(dir, newPlate);
+              },
+            );
+          },
+        ),
       ],
     );
   }
