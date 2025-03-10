@@ -52,6 +52,35 @@ class Plate {
     );
   }
 
+  Plate copyWith({
+    String? id,
+    String? code,
+    String? name,
+    List<Ingredient>? ingredients,
+    List<SideDish>? extras,
+    double? cost,
+    PlateQuantity? quantity,
+  }) {
+    return Plate(
+      id: id ?? this.id,
+      code: code ?? this.code,
+      name: name ?? this.name,
+      ingredients: ingredients ?? this.ingredients,
+      extras: extras ?? this.extras,
+      cost: cost ?? this.cost,
+      quantity: quantity != null
+          ? this.quantity.copyWith(
+                max: quantity.max,
+                min: quantity.min,
+                count: quantity.count,
+                amount: quantity.amount,
+                prefix: quantity.prefix,
+                suffix: quantity.suffix,
+              )
+          : this.quantity,
+    );
+  }
+
   // double get price => (quantity.amount) * cost;
 
   String get ingredientsTitles {

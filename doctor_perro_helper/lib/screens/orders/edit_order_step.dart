@@ -34,10 +34,15 @@ class _EditOrderStepState extends ConsumerState<EditOrderStep> {
       child: Expanded(
         child: ListView(
           children: [
-            ...draftedOrder.packSpread
-                .map((PlatePack pack) => ExpansiblePack(pack: pack)),
+            ...draftedOrder.packSpread.map((PlatePack pack) => ExpansiblePack(
+                  pack: pack,
+                  onSwiped: (dir, modifiedPack) {},
+                )),
             ...draftedOrder.platesSpread.map(
-              (Plate plate) => ExpansiblePlate(plate: plate),
+              (Plate plate) => ExpansiblePlate(
+                plate: plate,
+                onSwiped: (dir, modifiedPlate) {},
+              ),
             ),
           ],
         ),

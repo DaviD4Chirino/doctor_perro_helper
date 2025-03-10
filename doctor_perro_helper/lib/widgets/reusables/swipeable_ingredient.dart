@@ -8,9 +8,14 @@ class SwipeableIngredient extends StatefulWidget {
   const SwipeableIngredient({
     super.key,
     required this.ingredient,
+    required this.onSwiped,
   });
 
   final Ingredient ingredient;
+  final Function(
+    SwipeDirection dir,
+    Ingredient modifiedIngredient,
+  ) onSwiped;
 
   @override
   State<SwipeableIngredient> createState() => _SwipeableIngredientState();

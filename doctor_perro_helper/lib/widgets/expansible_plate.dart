@@ -2,21 +2,27 @@ import 'package:doctor_perro_helper/models/ingredient.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/widgets/reusables/swipeable_ingredient.dart';
 import 'package:flutter/material.dart';
+import 'package:swipeable_tile/swipeable_tile.dart';
 
 class ExpansiblePlate extends StatelessWidget {
-  const ExpansiblePlate({super.key, required this.plate});
+  const ExpansiblePlate({
+    super.key,
+    required this.plate,
+    required this.onSwiped,
+  });
 
   final Plate plate;
+
+  final Function(
+    SwipeDirection dir,
+    Plate modifiedPlate,
+  ) onSwiped;
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return ExpansionTile(
-      // minTileHeight: 0,
-      // tilePadding: EdgeInsets.all(0),
-      // childrenPadding: EdgeInsets.all(-15),
       title: Text(plate.title),
-      // childrenPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
       leading: Text(
         plate.code,
         style: TextStyle(
@@ -28,6 +34,7 @@ class ExpansiblePlate extends StatelessWidget {
         ...plate.ingredients.map((Ingredient ingredient) {
           return SwipeableIngredient(
             ingredient: ingredient,
+            onSwiped: (dir, modifiedIngredient) {},
           );
         }),
       ],

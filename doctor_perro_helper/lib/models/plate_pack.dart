@@ -54,6 +54,35 @@ class PlatePack {
       quantity: quantity,
       id: id);
 
+  PlatePack copyWith({
+    String? id,
+    String? code,
+    String? name,
+    List<Plate>? plates,
+    List<SideDish>? extras,
+    double? cost,
+    PlateQuantity? quantity,
+  }) {
+    return PlatePack(
+      id: id ?? this.id,
+      code: code ?? this.code,
+      name: name ?? this.name,
+      plates: plates ?? this.plates,
+      extras: extras ?? this.extras,
+      cost: cost ?? this.cost,
+      quantity: quantity != null
+          ? this.quantity.copyWith(
+                max: quantity.max,
+                min: quantity.min,
+                count: quantity.count,
+                amount: quantity.amount,
+                prefix: quantity.prefix,
+                suffix: quantity.suffix,
+              )
+          : this.quantity,
+    );
+  }
+
   String get plateTitleList {
     List<String> list = [];
     for (var plate in plates) {
