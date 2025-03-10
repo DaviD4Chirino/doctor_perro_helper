@@ -82,7 +82,7 @@ class Plate {
   }
 
   void replaceIngredient(Ingredient oldIngredient, Ingredient newIngredient) {
-    final index = ingredients
+    final int index = ingredients
         .indexWhere((Ingredient ing) => ing.name == oldIngredient.name);
 
     if (index != -1) {

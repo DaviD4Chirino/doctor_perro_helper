@@ -13,6 +13,24 @@ class MenuOrder {
     this.direction = "",
   });
 
+  void replacePlate(Plate oldPlate, Plate newPlate) {
+    final int index =
+        plates.indexWhere((Plate plate) => plate.name == oldPlate.name);
+
+    if (index != -1) {
+      plates[index] = newPlate;
+    }
+  }
+
+  void replacePack(PlatePack oldPack, PlatePack newPack) {
+    final int index =
+        packs.indexWhere((PlatePack pack) => pack.name == oldPack.name);
+
+    if (index != -1) {
+      packs[index] = newPack;
+    }
+  }
+
   OrderStatus _status = OrderStatus.pending;
 
   set status(OrderStatus newStatus) {

@@ -36,12 +36,24 @@ class _EditOrderStepState extends ConsumerState<EditOrderStep> {
           children: [
             ...draftedOrder.packSpread.map((PlatePack pack) => ExpansiblePack(
                   pack: pack,
-                  onSwiped: (dir, modifiedPack) {},
+                  onSwiped: (dir, modifiedPack) {
+                    MenuOrder newOrder = draftedOrder;
+                    newOrder.replacePack(pack, modifiedPack);
+                    ref
+                        .read(menuOrderNotifierProvider.notifier)
+                        .setDraftedOrder(newOrder);
+                  },
                 )),
             ...draftedOrder.platesSpread.map(
               (Plate plate) => ExpansiblePlate(
                 plate: plate,
-                onSwiped: (dir, modifiedPlate) {},
+                onSwiped: (dir, modifiedPlate) {
+                  MenuOrder newOrder = draftedOrder;
+                  newOrder.replacePlate(plate, modifiedPlate);
+                  ref
+                      .read(menuOrderNotifierProvider.notifier)
+                      .setDraftedOrder(newOrder);
+                },
               ),
             ),
           ],
