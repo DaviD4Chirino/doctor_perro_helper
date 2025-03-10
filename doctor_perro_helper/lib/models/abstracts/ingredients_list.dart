@@ -5,6 +5,8 @@ abstract class IngredientsList {
   static Ingredient sausage = Ingredient(
     name: "Salchicha",
     cost: 0.0,
+    minName: "Sin Salchicha",
+    quantity: PlateQuantity(),
   );
   static Ingredient salad = Ingredient(
     name: "Ensalada",
@@ -62,14 +64,19 @@ abstract class IngredientsList {
   static Ingredient patty = Ingredient(
     name: "Carne",
     cost: 0.8,
+    minName: "Sin Carne",
   );
   static Ingredient bacon = Ingredient(
     name: "Tocino",
     cost: 0.5,
+    quantity: PlateQuantity(),
+    minName: "Sin Tocino",
   );
   static Ingredient kraftCheese = Ingredient(
     name: "Queso Kraft",
     cost: 0.5,
+    quantity: PlateQuantity(),
+    minName: "Sin Queso Kraft",
   );
   static Ingredient cowCheese = Ingredient(
     name: "Queso de Res",

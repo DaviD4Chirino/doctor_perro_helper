@@ -26,13 +26,15 @@ class DolarAndBolivarPriceText extends ConsumerWidget {
         ref.watch(dolarPriceProvider);
 
     final String calculatedBs = dolarPriceStream.maybeWhen(
-      data: (data) => data.calculate(price).removePaddingZero(),
+      data: (data) => data
+          .calculate(double.parse(price.toStringAsFixed(2)))
+          .removePaddingZero(),
       orElse: () => "...",
     );
     return Column(
       children: [
         Text(
-          "${price.removePaddingZero()}\$",
+          "${double.parse(price.toStringAsFixed(2)).removePaddingZero()}\$",
           style: dolarPriceTextStyle ?? theme.textTheme.titleLarge,
         ),
         Text(
