@@ -31,6 +31,8 @@ class _EditOrderStepState extends ConsumerState<EditOrderStep> {
           ),
           subtitle: Text(
             "Desliza los ingredientes para añadir o eliminar",
+
+
           ),
           dense: true,
         ),

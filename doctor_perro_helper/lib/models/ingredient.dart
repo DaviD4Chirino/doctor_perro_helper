@@ -1,4 +1,5 @@
 import 'package:doctor_perro_helper/models/plate_quantity.dart';
+import 'package:doctor_perro_helper/models/side_dish.dart';
 import 'package:doctor_perro_helper/utils/string_math.dart';
 
 class Ingredient {
@@ -26,6 +27,16 @@ class Ingredient {
       ),
       minName: minName,
       maxName: maxName,
+    );
+  }
+
+  SideDish toSideDish() {
+    return SideDish(
+      name: name,
+      cost: cost,
+      quantity: quantity,
+      maxName: maxName,
+      minName: minName,
     );
   }
 

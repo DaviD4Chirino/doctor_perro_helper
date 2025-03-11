@@ -90,6 +90,14 @@ class PlatePack {
     }
   }
 
+  void replaceExtra(SideDish oldExtra, SideDish newExtra) {
+    if (extras == null) return;
+    final index = extras!.indexOf(oldExtra);
+    if (index != -1) {
+      extras![index] = newExtra;
+    }
+  }
+
   String get plateTitleList {
     List<String> list = [];
     for (var plate in plates) {

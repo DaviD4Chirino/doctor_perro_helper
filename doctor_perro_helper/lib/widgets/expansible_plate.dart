@@ -1,5 +1,6 @@
 import 'package:doctor_perro_helper/models/ingredient.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
+import 'package:doctor_perro_helper/models/side_dish.dart';
 import 'package:doctor_perro_helper/widgets/reusables/swipeable_ingredient.dart';
 import 'package:flutter/material.dart';
 import 'package:swipeable_tile/swipeable_tile.dart';
@@ -43,6 +44,20 @@ class ExpansiblePlate extends StatelessWidget {
             );
           },
         ),
+        if (plate.extras != null)
+          ...plate.extras!.map(
+            (SideDish sideDish) {
+              return SwipeableIngredient(
+                ingredient: sideDish,
+                onSwiped: (dir, modifiedIngredient) {
+                  Plate newPlate = plate;
+                  newPlate.replaceExtra(
+                      sideDish, modifiedIngredient.toSideDish());
+                  onSwiped(dir, newPlate);
+                },
+              );
+            },
+          ),
       ],
     );
   }

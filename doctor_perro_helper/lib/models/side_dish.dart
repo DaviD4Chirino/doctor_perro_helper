@@ -9,6 +9,17 @@ class SideDish extends Ingredient {
     super.maxName,
     super.minName,
   });
+
+  Ingredient toIngredient() {
+    return Ingredient(
+      name: name,
+      cost: cost,
+      quantity: quantity,
+      maxName: maxName,
+      minName: minName,
+    );
+  }
+
   @override
 
   /// Returns this same [Ingredient] with the initial amount changed

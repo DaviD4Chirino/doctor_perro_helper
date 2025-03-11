@@ -90,6 +90,17 @@ class Plate {
     }
   }
 
+  void replaceExtra(SideDish oldExtra, SideDish newExtra) {
+    if (extras == null) return;
+
+    final int index =
+        extras!.indexWhere((SideDish ext) => ext.name == oldExtra.name);
+
+    if (index != -1) {
+      extras![index] = newExtra;
+    }
+  }
+
   // double get price => (quantity.amount) * cost;
 
   String get ingredientsTitles {
