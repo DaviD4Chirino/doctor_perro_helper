@@ -43,7 +43,7 @@ class _ChangePriceTextFieldState extends ConsumerState<ChangePriceTextField> {
       autofocus: true,
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
-        suffix: DolarPriceText(
+        suffix: CurrentDolarPriceText(
           text: (String latestValue) => "${latestValue}bs",
           style: TextStyle(
             fontSize: theme.textTheme.labelLarge?.fontSize,

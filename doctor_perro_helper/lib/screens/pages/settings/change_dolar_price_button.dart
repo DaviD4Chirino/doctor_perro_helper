@@ -19,7 +19,7 @@ class ChangeDolarPriceButton extends ConsumerWidget {
     return ListTile(
       title: const Text("Precio del dolar"),
       leading: const Icon(Icons.attach_money),
-      trailing: DolarPriceText(
+      trailing: CurrentDolarPriceText(
         text: (String latestValue) => "${latestValue}bs",
         style: TextStyle(
           fontSize: theme.textTheme.labelLarge?.fontSize,

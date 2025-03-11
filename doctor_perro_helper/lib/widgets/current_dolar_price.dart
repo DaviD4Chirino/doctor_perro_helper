@@ -24,7 +24,7 @@ class CurrentDolarPrice extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.baseline,
                 textBaseline: TextBaseline.alphabetic,
                 children: [
-                  DolarPriceText(
+                  CurrentDolarPriceText(
                     style: TextStyle(
                       fontSize: 60.0,
                       color: Theme.of(context).colorScheme.primary,
