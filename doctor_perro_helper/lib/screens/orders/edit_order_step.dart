@@ -21,15 +21,19 @@ class _EditOrderStepState extends ConsumerState<EditOrderStep> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Section(
-      title: ListTile(
-        title: Text(
-          "Editar orden",
+      title: Container(
+        color: theme.colorScheme.surfaceContainer,
+        child: ListTile(
+          title: Text(
+            "Editar orden",
+          ),
+          subtitle: Text(
+            "Desliza los ingredientes para añadir o eliminar",
+          ),
+          dense: true,
         ),
-        subtitle: Text(
-          "Desliza los ingredientes para añadir o eliminar",
-        ),
-        dense: true,
       ),
       child: Expanded(
         child: ListView(
