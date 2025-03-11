@@ -2,17 +2,20 @@ import 'package:doctor_perro_helper/models/ingredient.dart';
 import 'package:doctor_perro_helper/models/plate_quantity.dart';
 import 'package:doctor_perro_helper/models/side_dish.dart';
 import 'package:doctor_perro_helper/utils/string_math.dart';
+import 'package:uuid/uuid.dart';
 
 class Plate {
   Plate({
+    required this.id,
     required this.code,
     required this.name,
     required this.ingredients,
     required this.cost,
     required this.quantity,
     this.extras,
-    this.id,
   });
+  String get uid => Uuid().v4();
+
   Plate amount(double amount) {
     // to add the extras with the same amount as the plate
     List<SideDish>? newExtras;
@@ -24,6 +27,7 @@ class Plate {
     }
 
     return Plate(
+      id: id,
       code: code,
       name: name,
       cost: cost,
@@ -38,6 +42,28 @@ class Plate {
         suffix: quantity.suffix,
       ),
       extras: newExtras,
+    );
+  }
+
+  Plate withNewId() {
+    // to add the extras with the same amount as the plate
+
+    return Plate(
+      id: uid,
+      code: code,
+      name: name,
+      cost: cost,
+      ingredients: ingredients,
+      quantity: PlateQuantity(
+        // count: quantity != null ? quantity?.count as double : 1,
+        count: quantity.count,
+        amount: quantity.amount,
+        max: quantity.max,
+        min: quantity.min,
+        prefix: quantity.prefix,
+        suffix: quantity.suffix,
+      ),
+      extras: extras,
     );
   }
 
@@ -115,6 +141,7 @@ class Plate {
 
   /// The cost of the plate + their extras, ingredient cost are ignore bc
   /// Kory is an lazy MF
+  /// ????????
   double get price {
     double amount = cost * quantity.amount;
 
@@ -122,6 +149,11 @@ class Plate {
       for (var extra in extras!) {
         amount += extra.price;
       }
+    }
+
+    /// TODO: FIX THE PRICES IN THE LIST
+    for (var ing in ingredients) {
+      amount += ing.price;
     }
 
     return amount;
@@ -153,7 +185,7 @@ class Plate {
     return list;
   }
 
-  String? id = "";
+  String id = "";
   String code;
   String name;
   List<Ingredient> ingredients;

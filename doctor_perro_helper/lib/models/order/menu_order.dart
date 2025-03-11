@@ -15,7 +15,7 @@ class MenuOrder {
 
   void replacePlate(Plate oldPlate, Plate newPlate) {
     final int index =
-        plates.indexWhere((Plate plate) => plate.name == oldPlate.name);
+        plates.indexWhere((Plate plate) => plate.id == oldPlate.id);
 
     if (index != -1) {
       plates[index] = newPlate;
@@ -24,7 +24,7 @@ class MenuOrder {
 
   void replacePack(PlatePack oldPack, PlatePack newPack) {
     final int index =
-        packs.indexWhere((PlatePack pack) => pack.name == oldPack.name);
+        packs.indexWhere((PlatePack pack) => pack.id == oldPack.id);
 
     if (index != -1) {
       packs[index] = newPack;

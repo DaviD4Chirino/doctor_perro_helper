@@ -219,11 +219,13 @@ class _NewOrderState extends ConsumerState<NewOrderStep> {
       child: Column(
         children: [
           ...PlateList.plates.map(
-            (Plate plate) => SwipeablePlate(
-              key: Key(plate.code),
-              plate: plate,
-              onPlateSwiped: onPlateSwipe,
-            ),
+            (Plate plate) {
+              return SwipeablePlate(
+                key: Key(plate.id),
+                plate: plate,
+                onPlateSwiped: onPlateSwipe,
+              );
+            },
           )
         ],
       ),

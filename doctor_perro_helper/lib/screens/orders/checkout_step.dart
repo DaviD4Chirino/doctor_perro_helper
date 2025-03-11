@@ -1,8 +1,11 @@
 import 'package:data_table_2/data_table_2.dart';
+import 'package:doctor_perro_helper/models/consumers/bolivar_price_text.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
+import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/providers/menu_order_provider.dart';
 import 'package:doctor_perro_helper/utils/extensions/double_extensions.dart';
 import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
+import 'package:doctor_perro_helper/widgets/dolar_price_text.dart';
 import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +16,7 @@ class CheckoutStep extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     MenuOrderData menuOrderData = ref.watch(menuOrderNotifierProvider);
-    MenuOrder drafted_order =
+    MenuOrder draftedOrder =
         menuOrderData.draftedOrder ?? MenuOrder(plates: [], packs: []);
 
     ThemeData theme = Theme.of(context);
@@ -26,101 +29,33 @@ class CheckoutStep extends ConsumerWidget {
       ),
       child: Expanded(
         child: DataTable2(
-          columns: const [
+          dataTextStyle: theme.textTheme.titleSmall,
+          headingTextStyle: theme.textTheme.titleMedium,
+          columns: [
             DataColumn2(
-              label: Text('Column A'),
+              label: Text("Total\nTotal en bolivares"),
               size: ColumnSize.L,
+              headingRowAlignment: MainAxisAlignment.spaceBetween,
             ),
             DataColumn2(
-              label: Text('Column B'),
+              label: DolarAndBolivarPriceText(price: draftedOrder.price),
               size: ColumnSize.S,
-              headingRowAlignment: MainAxisAlignment.end,
               numeric: true,
             ),
           ],
           rows: [
-            DataRow(
-              cells: [
-                DataCell(Text("TOTAL")),
-                DataCell(
-                  DolarAndBolivarPriceText(
-                    price: drafted_order.price,
-                  ),
-                ),
-              ],
-            ),
-            DataRow(
-              cells: [
-                DataCell(Text("TOTAL")),
-                DataCell(Text("20\$")),
-              ],
-            ),
-            DataRow(
-              cells: [
-                DataCell(Text("TOTAL")),
-                DataCell(Text("20\$")),
-              ],
-            ),
-            DataRow(
-              cells: [
-                DataCell(Text("TOTAL")),
-                DataCell(Text("20\$")),
-              ],
-            ),
-            DataRow(
-              cells: [
-                DataCell(Text("TOTAL")),
-                DataCell(Text("20\$")),
-              ],
-            ),
-            DataRow(
-              cells: [
-                DataCell(Text("TOTAL")),
-                DataCell(Text("20\$")),
-              ],
-            ),
-            DataRow(
-              cells: [
-                DataCell(Text("TOTAL")),
-                DataCell(Text("20\$")),
-              ],
-            ),
-            DataRow(
-              cells: [
-                DataCell(Text("TOTAL")),
-                DataCell(Text("20\$")),
-              ],
-            ),
-            DataRow(
-              cells: [
-                DataCell(Text("TOTAL")),
-                DataCell(Text("20\$")),
-              ],
-            ),
-            DataRow(
-              cells: [
-                DataCell(Text("TOTAL")),
-                DataCell(Text("20\$")),
-              ],
-            ),
-            DataRow(
-              cells: [
-                DataCell(Text("TOTAL")),
-                DataCell(Text("20\$")),
-              ],
-            ),
-            DataRow(
-              cells: [
-                DataCell(Text("TOTAL")),
-                DataCell(Text("20\$")),
-              ],
-            ),
-            DataRow(
-              cells: [
-                DataCell(Text("TOTAL")),
-                DataCell(Text("20\$")),
-              ],
-            ),
+            ...draftedOrder.plates.map(
+              (Plate plate) {
+                return DataRow(
+                  cells: [
+                    DataCell(Text(plate.title)),
+                    DataCell(
+                      Text("${plate.price.removePaddingZero()}\$"),
+                    ),
+                  ],
+                );
+              },
+            )
           ],
         ),
       ),

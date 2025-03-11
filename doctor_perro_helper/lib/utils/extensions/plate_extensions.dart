@@ -9,7 +9,7 @@ extension PlateExtensions on Plate {
     List<Plate> list = [];
 
     for (var i = 0; i < quantity.amount; i++) {
-      list.add(amount(1));
+      list.add(withNewId().amount(1));
     }
 
     return list;

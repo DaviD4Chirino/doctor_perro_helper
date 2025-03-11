@@ -84,7 +84,8 @@ class PlatePack {
   }
 
   void replacePlate(Plate oldPlate, Plate newPlate) {
-    final index = plates.indexOf(oldPlate);
+    final index = plates.indexWhere((Plate plate) => plate.id == oldPlate.id);
+
     if (index != -1) {
       plates[index] = newPlate;
     }
@@ -92,7 +93,8 @@ class PlatePack {
 
   void replaceExtra(SideDish oldExtra, SideDish newExtra) {
     if (extras == null) return;
-    final index = extras!.indexOf(oldExtra);
+    final index =
+        extras!.indexWhere((SideDish extra) => extra.name == oldExtra.name);
     if (index != -1) {
       extras![index] = newExtra;
     }
@@ -153,7 +155,7 @@ class PlatePack {
     return newPlates;
   }
 
-  String id;
+  String id = "";
   String code;
   String name;
   List<Plate> plates;
