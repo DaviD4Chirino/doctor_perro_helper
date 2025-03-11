@@ -1,5 +1,6 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
+import 'package:doctor_perro_helper/screens/orders/checkout_step.dart';
 import 'package:doctor_perro_helper/screens/orders/edit_order_step.dart';
 import 'package:doctor_perro_helper/screens/orders/new_order_step.dart';
 import 'package:doctor_perro_helper/widgets/orders/drafted_order.dart';
@@ -23,7 +24,7 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
           onStepCompleted: onNewOrderStepCompleted,
         ),
         EditOrderStep(),
-        Center(child: Text("Page 3")),
+        CheckoutStep(),
       ];
   int _index = 0;
 
