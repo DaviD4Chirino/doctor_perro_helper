@@ -1,12 +1,13 @@
 import 'package:doctor_perro_helper/models/dolar_price_in_bs.dart';
 import 'package:doctor_perro_helper/models/providers/streams/dolar_price_stream.dart';
 import 'package:doctor_perro_helper/utils/extensions/double_extensions.dart';
+import 'package:doctor_perro_helper/widgets/bolivar_price_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// This widget gives you the presented dolar and it calculates the bs price
 /// below it
-class DolarAndBolivarPriceText extends ConsumerWidget {
+class DolarAndBolivarPriceText extends StatelessWidget {
   const DolarAndBolivarPriceText({
     super.key,
     required this.price,
@@ -19,27 +20,18 @@ class DolarAndBolivarPriceText extends ConsumerWidget {
   final TextStyle? bolivaresTextStyle;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
 
-    final AsyncValue<DolarPriceInBsDoc> dolarPriceStream =
-        ref.watch(dolarPriceProvider);
-
-    final String calculatedBs = dolarPriceStream.maybeWhen(
-      data: (data) => data
-          .calculate(double.parse(price.toStringAsFixed(2)))
-          .removePaddingZero(),
-      orElse: () => "...",
-    );
     return Column(
       children: [
         Text(
-          "${double.parse(price.toStringAsFixed(2)).removePaddingZero()}\$",
+          "${price.removePaddingZero()}\$",
           style: dolarPriceTextStyle ?? theme.textTheme.titleLarge,
         ),
-        Text(
-          "${calculatedBs}bs",
-          style: bolivaresTextStyle ?? theme.textTheme.labelSmall,
+        BolivarPriceText(
+          price: price,
+          textStyle: bolivaresTextStyle,
         ),
       ],
     );
