@@ -72,8 +72,8 @@ abstract class PlateList {
     return [...packs.map((PlatePack pack) => pack.amount(amount))];
   }
 
-  static List<Plate> platesWithNewId() =>
-      [...plates.map((Plate p) => p.withNewId())];
+  static List<Plate> plateswithUniqueId() =>
+      [...plates.map((Plate p) => p.withUniqueId())];
 
   static Plate r1 = Plate(
     id: uid,

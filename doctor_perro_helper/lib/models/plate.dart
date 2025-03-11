@@ -45,24 +45,16 @@ class Plate {
     );
   }
 
-  Plate withNewId() {
-    // to add the extras with the same amount as the plate
-
+  Plate withUniqueId({
+    List<SideDish>? extras,
+  }) {
     return Plate(
-      id: uid,
+      id: Uuid().v4(),
       code: code,
       name: name,
-      cost: cost,
       ingredients: ingredients,
-      quantity: PlateQuantity(
-        // count: quantity != null ? quantity?.count as double : 1,
-        count: quantity.count,
-        amount: quantity.amount,
-        max: quantity.max,
-        min: quantity.min,
-        prefix: quantity.prefix,
-        suffix: quantity.suffix,
-      ),
+      cost: cost,
+      quantity: quantity,
       extras: extras,
     );
   }

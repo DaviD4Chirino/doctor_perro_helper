@@ -50,7 +50,7 @@ class ExpansiblePlate extends StatelessWidget {
               return SwipeableIngredient(
                 ingredient: sideDish,
                 onSwiped: (dir, modifiedIngredient) {
-                  Plate newExtra = plate.withNewId();
+                  Plate newExtra = plate.withUniqueId();
                   newExtra.replaceExtra(
                       sideDish, modifiedIngredient.toSideDish());
                   onSwiped(dir, newExtra);
