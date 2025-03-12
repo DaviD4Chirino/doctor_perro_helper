@@ -4,6 +4,8 @@ import 'package:doctor_perro_helper/models/side_dish.dart';
 import 'package:doctor_perro_helper/utils/string_math.dart';
 import 'package:uuid/uuid.dart';
 
+String get uid => Uuid().v4();
+
 class Plate {
   Plate({
     required this.id,
@@ -14,7 +16,6 @@ class Plate {
     required this.quantity,
     this.extras,
   });
-  String get uid => Uuid().v4();
 
   Plate amount(double amount) {
     List<Ingredient> newIngredients = ingredients.map((ingredient) {
@@ -29,76 +30,26 @@ class Plate {
       }).toList();
     }
 
-    return Plate(
-      id: id,
-      code: code,
-      name: name,
-      cost: cost,
+    return copyWith(
       ingredients: newIngredients,
-      quantity: PlateQuantity(
-        // count: quantity != null ? quantity?.count as double : 1,
-        count: quantity.count,
-        amount: amount,
-        max: quantity.max,
-        min: quantity.min,
-        prefix: quantity.prefix,
-        suffix: quantity.suffix,
-      ),
       extras: newExtras,
+      quantity: PlateQuantity(
+        amount: amount,
+      ),
     );
   }
 
   Plate withUniqueId({
     List<SideDish>? extras,
   }) {
-    return Plate(
-      id: Uuid().v4(),
-      code: code,
-      name: name,
-      ingredients: ingredients,
-      cost: cost,
-      quantity: quantity,
-      extras: extras,
+    return copyWith(
+      id: uid,
     );
   }
 
   Plate withoutExtras() {
-    return Plate(
-      code: code,
-      name: name,
-      ingredients: ingredients,
-      cost: cost,
-      quantity: quantity,
-      id: id,
-    );
-  }
-
-  Plate copyWith({
-    String? id,
-    String? code,
-    String? name,
-    List<Ingredient>? ingredients,
-    List<SideDish>? extras,
-    double? cost,
-    PlateQuantity? quantity,
-  }) {
-    return Plate(
-      id: id ?? this.id,
-      code: code ?? this.code,
-      name: name ?? this.name,
-      ingredients: ingredients ?? this.ingredients,
-      extras: extras ?? this.extras,
-      cost: cost ?? this.cost,
-      quantity: quantity != null
-          ? this.quantity.copyWith(
-                max: quantity.max,
-                min: quantity.min,
-                count: quantity.count,
-                amount: quantity.amount,
-                prefix: quantity.prefix,
-                suffix: quantity.suffix,
-              )
-          : this.quantity,
+    return copyWith(
+      extras: [],
     );
   }
 
@@ -182,6 +133,35 @@ class Plate {
     }
 
     return list;
+  }
+
+  Plate copyWith({
+    String? id,
+    String? code,
+    String? name,
+    List<Ingredient>? ingredients,
+    List<SideDish>? extras,
+    double? cost,
+    PlateQuantity? quantity,
+  }) {
+    return Plate(
+      id: id ?? this.id,
+      code: code ?? this.code,
+      name: name ?? this.name,
+      ingredients: ingredients ?? this.ingredients,
+      extras: extras ?? this.extras,
+      cost: cost ?? this.cost,
+      quantity: quantity != null
+          ? this.quantity.copyWith(
+                max: quantity.max,
+                min: quantity.min,
+                count: quantity.count,
+                amount: quantity.amount,
+                prefix: quantity.prefix,
+                suffix: quantity.suffix,
+              )
+          : this.quantity,
+    );
   }
 
   String id = "";

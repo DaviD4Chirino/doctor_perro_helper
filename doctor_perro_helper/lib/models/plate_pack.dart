@@ -2,6 +2,9 @@ import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_quantity.dart';
 import 'package:doctor_perro_helper/models/side_dish.dart';
 import 'package:doctor_perro_helper/utils/extensions/plate_extensions.dart';
+import 'package:uuid/uuid.dart';
+
+String get uid => Uuid().v4();
 
 class PlatePack {
   PlatePack({
@@ -16,44 +19,49 @@ class PlatePack {
 
   PlatePack amount(double amount) {
     List<SideDish>? newExtras;
-    List<Plate> newPlates = [];
-
     if (extras != null) {
-      newExtras = [];
-      for (var extra in extras!) {
-        newExtras.add(extra.amount((extra.quantity?.amount ?? 1) * amount));
-      }
+      newExtras = extras!.map((extra) {
+        return extra.amount((extra.quantity?.amount ?? 1.0) * amount);
+      }).toList();
     }
 
-    for (Plate plate in plates) {
-      newPlates.add(plate.amount(plate.quantity.amount * amount));
-    }
+    List<Plate> newPlates = plates.map((plate) {
+      return plate.amount(plate.quantity.amount * amount);
+    }).toList();
 
-    return PlatePack(
-      code: code,
-      name: name,
-      cost: cost,
+    return copyWith(
       plates: newPlates,
-      quantity: PlateQuantity(
-        count: quantity.count,
-        amount: amount,
-        max: quantity.max,
-        min: quantity.min,
-        prefix: quantity.prefix,
-        suffix: quantity.suffix,
-      ),
       extras: newExtras,
+      quantity: PlateQuantity(
+        amount: amount,
+      ),
     );
   }
 
-  PlatePack withoutExtras() => PlatePack(
-      code: code,
-      name: name,
-      plates: plates,
-      cost: cost,
-      quantity: quantity,
-      id: id);
+  PlatePack withoutExtras() => copyWith(extras: []);
 
+  PlatePack withUniqueId() {
+    return copyWith(id: uid);
+  }
+
+  void replacePlate(Plate oldPlate, Plate newPlate) {
+    final index = plates.indexWhere((Plate plate) => plate.id == oldPlate.id);
+
+    if (index != -1) {
+      plates[index] = newPlate;
+    }
+  }
+
+  void replaceExtra(SideDish oldExtra, SideDish newExtra) {
+    if (extras == null) return;
+    final index =
+        extras!.indexWhere((SideDish extra) => extra.name == oldExtra.name);
+    if (index != -1) {
+      extras![index] = newExtra;
+    }
+  }
+
+  //* If anything goes wrong, look here
   PlatePack copyWith({
     String? id,
     String? code,
@@ -81,23 +89,6 @@ class PlatePack {
               )
           : this.quantity,
     );
-  }
-
-  void replacePlate(Plate oldPlate, Plate newPlate) {
-    final index = plates.indexWhere((Plate plate) => plate.id == oldPlate.id);
-
-    if (index != -1) {
-      plates[index] = newPlate;
-    }
-  }
-
-  void replaceExtra(SideDish oldExtra, SideDish newExtra) {
-    if (extras == null) return;
-    final index =
-        extras!.indexWhere((SideDish extra) => extra.name == oldExtra.name);
-    if (index != -1) {
-      extras![index] = newExtra;
-    }
   }
 
   String get plateTitleList {
@@ -152,6 +143,7 @@ class PlatePack {
     for (Plate plate in plates) {
       newPlates.addAll(plate.spread());
     }
+    id = uid;
     return newPlates;
   }
 
