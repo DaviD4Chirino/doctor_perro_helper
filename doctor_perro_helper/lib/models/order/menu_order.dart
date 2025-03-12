@@ -2,7 +2,7 @@ import 'package:doctor_perro_helper/models/order/menu_order_status.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
 import 'package:doctor_perro_helper/utils/extensions/double_extensions.dart';
-import 'package:doctor_perro_helper/utils/extensions/plate_extensions.dart';
+import 'package:doctor_perro_helper/utils/extensions/plate/plate_extensions.dart';
 import 'package:doctor_perro_helper/utils/extensions/platepack_extensions.dart';
 
 /// Order as in; an order of french fries

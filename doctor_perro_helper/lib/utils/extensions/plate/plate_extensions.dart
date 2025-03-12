@@ -16,5 +16,3 @@ extension PlateExtensions on Plate {
     return list;
   }
 }
-
-extension IngredientExtensions on List<Ingredient> {}

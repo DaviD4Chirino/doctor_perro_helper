@@ -1,7 +1,7 @@
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_quantity.dart';
 import 'package:doctor_perro_helper/models/side_dish.dart';
-import 'package:doctor_perro_helper/utils/extensions/plate_extensions.dart';
+import 'package:doctor_perro_helper/utils/extensions/plate/plate_extensions.dart';
 import 'package:uuid/uuid.dart';
 
 String get uid => Uuid().v4();

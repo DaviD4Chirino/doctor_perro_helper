@@ -1,6 +1,7 @@
 import 'package:doctor_perro_helper/models/ingredient.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/side_dish.dart';
+import 'package:doctor_perro_helper/utils/extensions/ingredient_list_extensions.dart';
 import 'package:doctor_perro_helper/widgets/reusables/swipeable_ingredient.dart';
 import 'package:flutter/material.dart';
 import 'package:swipeable_tile/swipeable_tile.dart';
@@ -33,34 +34,46 @@ class ExpansiblePlate extends StatelessWidget {
       ),
       subtitle: Text(plate.id),
       children: [
-        ...plate.ingredients.map(
-          (Ingredient ingredient) {
-            return SwipeableIngredient(
-              key: Key(ingredient.name),
-              ingredient: ingredient,
-              onSwiped: (dir, modifiedIngredient) {
-                Plate newPlate = plate;
-                newPlate.replaceIngredient(ingredient, modifiedIngredient);
-                onSwiped(dir, newPlate);
-              },
-            );
-          },
-        ),
-        if (plate.extras != null)
-          ...plate.extras!.map(
-            (SideDish sideDish) {
-              return SwipeableIngredient(
-                ingredient: sideDish,
-                onSwiped: (dir, modifiedIngredient) {
-                  Plate newExtra = plate.withUniqueId();
-                  newExtra.replaceExtra(
-                      sideDish, modifiedIngredient.toSideDish());
-                  onSwiped(dir, newExtra);
-                },
-              );
-            },
-          ),
+        ...ingredientsSection(),
+        if (plate.extras != null) ...extrasSection(),
       ],
+    );
+  }
+
+  Iterable<Widget> extrasSection() {
+    return plate.extras!.map(
+      (SideDish sideDish) {
+        return SwipeableIngredient(
+          ingredient: sideDish,
+          onSwiped: (dir, modifiedIngredient) {
+            Plate newExtra = plate.copyWith(
+              extras: plate.extras!.replaceWhere(
+                sideDish,
+                modifiedIngredient.toSideDish(),
+              ),
+            );
+            onSwiped(dir, newExtra);
+          },
+        );
+      },
+    );
+  }
+
+  Iterable<Widget> ingredientsSection() {
+    return plate.ingredients.map(
+      (Ingredient ingredient) {
+        return SwipeableIngredient(
+          key: Key(ingredient.name),
+          ingredient: ingredient,
+          onSwiped: (dir, modifiedIngredient) {
+            Plate newPlate = plate.copyWith(
+              ingredients: plate.ingredients
+                  .replaceWhere(ingredient, modifiedIngredient),
+            );
+            onSwiped(dir, newPlate);
+          },
+        );
+      },
     );
   }
 }
