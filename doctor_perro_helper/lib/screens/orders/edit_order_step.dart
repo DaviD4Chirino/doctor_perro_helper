@@ -19,6 +19,17 @@ class _EditOrderStepState extends ConsumerState<EditOrderStep> {
   MenuOrder get draftedOrder =>
       ref.watch(menuOrderNotifierProvider).draftedOrder as MenuOrder;
 
+  MenuOrderNotifier get read => ref.read(menuOrderNotifierProvider.notifier);
+
+  late List<Plate> plates;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    plates = (ref.watch(menuOrderNotifierProvider).draftedOrder as MenuOrder)
+        .platesSpread;
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -38,25 +49,40 @@ class _EditOrderStepState extends ConsumerState<EditOrderStep> {
       child: Expanded(
         child: ListView(
           children: [
+            ListTile(
+                // title: Text(plate.),
+                ),
             ...draftedOrder.packSpread.map((PlatePack pack) => ExpansiblePack(
                   pack: pack,
                   onSwiped: (dir, modifiedPack) {
                     MenuOrder newOrder = draftedOrder;
                     newOrder.replacePack(pack, modifiedPack);
-                    ref
+                    /* ref
                         .read(menuOrderNotifierProvider.notifier)
-                        .setDraftedOrder(newOrder);
+                        .setDraftedOrder(newOrder); */
                   },
                 )),
-            ...draftedOrder.platesSpread.map(
+            ...plates.map(
               (Plate plate) => ExpansiblePlate(
+                key: Key(plate.id),
                 plate: plate,
                 onSwiped: (dir, modifiedPlate) {
                   MenuOrder newOrder = draftedOrder;
                   newOrder.replacePlate(plate, modifiedPlate);
-                  ref
+                  setState(() {
+                    final int index =
+                        plates.indexWhere((Plate p) => p.id == plate.id);
+
+                    if (index != -1) {
+                      plates[index] = modifiedPlate;
+                    }
+                    read.setDraftedOrder(
+                      MenuOrder(packs: draftedOrder.packs, plates: plates),
+                    );
+                  });
+                  /*  ref
                       .read(menuOrderNotifierProvider.notifier)
-                      .setDraftedOrder(newOrder);
+                      .setDraftedOrder(newOrder); */
                 },
               ),
             ),

@@ -17,13 +17,16 @@ class Plate {
   String get uid => Uuid().v4();
 
   Plate amount(double amount) {
-    // to add the extras with the same amount as the plate
+    List<Ingredient> newIngredients = ingredients.map((ingredient) {
+      return ingredient.amount(ingredient.quantity?.amount ?? 1.0 * amount);
+    }).toList();
+
+    // Update extras with the same multiplier
     List<SideDish>? newExtras;
     if (extras != null) {
-      newExtras = [];
-      for (var extra in extras!) {
-        newExtras.add(extra.amount((extra.quantity?.amount ?? 1) * amount));
-      }
+      newExtras = extras!.map((extra) {
+        return extra.amount((extra.quantity?.amount ?? 1.0) * amount);
+      }).toList();
     }
 
     return Plate(
@@ -31,7 +34,7 @@ class Plate {
       code: code,
       name: name,
       cost: cost,
-      ingredients: ingredients,
+      ingredients: newIngredients,
       quantity: PlateQuantity(
         // count: quantity != null ? quantity?.count as double : 1,
         count: quantity.count,
@@ -100,11 +103,13 @@ class Plate {
   }
 
   void replaceIngredient(Ingredient oldIngredient, Ingredient newIngredient) {
-    final int index = ingredients
-        .indexWhere((Ingredient ing) => ing.name == oldIngredient.name);
+    final int index = ingredients.indexOf(oldIngredient);
 
     if (index != -1) {
-      ingredients[index] = newIngredient;
+      // Create a new list to ensure immutability
+      List<Ingredient> newIngredients = List.from(ingredients);
+      newIngredients[index] = newIngredient;
+      ingredients = newIngredients;
     }
   }
 
@@ -115,7 +120,10 @@ class Plate {
         extras!.indexWhere((SideDish ext) => ext.name == oldExtra.name);
 
     if (index != -1) {
-      extras![index] = newExtra;
+      // Create a new list to ensure immutability
+      List<SideDish> newExtras = List.from(extras!);
+      newExtras[index] = newExtra;
+      extras = newExtras;
     }
   }
 
@@ -143,7 +151,6 @@ class Plate {
       }
     }
 
-    /// TODO: FIX THE PRICES IN THE LIST
     for (var ing in ingredients) {
       amount += ing.price;
     }

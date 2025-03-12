@@ -7,6 +7,7 @@ abstract class IngredientsList {
     cost: 0.0,
     minName: "Sin Salchicha",
     quantity: PlateQuantity(),
+    quantifiable: false,
   );
   static Ingredient salad = Ingredient(
     name: "Ensalada",
@@ -16,6 +17,7 @@ abstract class IngredientsList {
     ),
     maxName: "Extra Ensalada",
     minName: "Sin Ensalada",
+    quantifiable: false,
   );
   static Ingredient potatoes = Ingredient(
     name: "Papas",
@@ -24,6 +26,7 @@ abstract class IngredientsList {
     quantity: PlateQuantity(
       max: 2,
     ),
+    quantifiable: false,
   );
   static Ingredient corn = Ingredient(
     name: "Maíz",
@@ -33,6 +36,7 @@ abstract class IngredientsList {
     quantity: PlateQuantity(
       max: 2,
     ),
+    quantifiable: false,
   );
   static Ingredient tomatoSauce = Ingredient(
     name: "Salsa de Tomate",
@@ -42,6 +46,7 @@ abstract class IngredientsList {
     quantity: PlateQuantity(
       max: 2,
     ),
+    quantifiable: false,
   );
   static Ingredient garlicSauce = Ingredient(
     name: "Salsa de Ajo",
@@ -51,6 +56,7 @@ abstract class IngredientsList {
     quantity: PlateQuantity(
       max: 2,
     ),
+    quantifiable: false,
   );
   static Ingredient burgerSauce = Ingredient(
     name: "Salsa de Hamburguesa",
@@ -60,6 +66,7 @@ abstract class IngredientsList {
     quantity: PlateQuantity(
       max: 2,
     ),
+    quantifiable: false,
   );
   static Ingredient patty = Ingredient(
     name: "Carne",
@@ -86,6 +93,7 @@ abstract class IngredientsList {
     quantity: PlateQuantity(
       max: 2,
     ),
+    quantifiable: false,
   );
 
   static List<Ingredient> get list => [

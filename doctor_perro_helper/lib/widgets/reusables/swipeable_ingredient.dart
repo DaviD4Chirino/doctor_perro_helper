@@ -44,7 +44,7 @@ class _SwipeableIngredientState extends State<SwipeableIngredient> {
   @override
   void initState() {
     super.initState();
-    modifiedIngredient = widget.ingredient;
+    modifiedIngredient = widget.ingredient.copyWith();
   }
 
   @override

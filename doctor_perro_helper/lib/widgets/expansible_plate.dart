@@ -25,16 +25,18 @@ class ExpansiblePlate extends StatelessWidget {
     return ExpansionTile(
       title: Text(plate.title),
       leading: Text(
-        plate.id,
+        plate.code,
         style: TextStyle(
           fontSize: theme.textTheme.titleMedium?.fontSize,
           fontWeight: FontWeight.bold,
         ),
       ),
+      subtitle: Text(plate.id),
       children: [
         ...plate.ingredients.map(
           (Ingredient ingredient) {
             return SwipeableIngredient(
+              key: Key(ingredient.name),
               ingredient: ingredient,
               onSwiped: (dir, modifiedIngredient) {
                 Plate newPlate = plate;

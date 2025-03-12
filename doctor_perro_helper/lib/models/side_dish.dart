@@ -6,6 +6,7 @@ class SideDish extends Ingredient {
     required super.name,
     required super.cost,
     required super.quantity,
+    super.quantifiable,
     super.maxName,
     super.minName,
   });
@@ -23,7 +24,7 @@ class SideDish extends Ingredient {
   @override
 
   /// Returns this same [Ingredient] with the initial amount changed
-  SideDish amount(double amount) {
+  SideDish amount(double amount, {bool exponential = false}) {
     return SideDish(
       name: name,
       cost: cost,

@@ -1,10 +1,13 @@
 import 'package:doctor_perro_helper/config/themes/app_theme.dart';
+import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
+import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/providers/theme_mode_provider.dart';
 
 import 'package:doctor_perro_helper/models/routes.dart';
 import 'package:doctor_perro_helper/models/use_shared_preferences.dart';
 import 'package:doctor_perro_helper/screens/orders/make_new_order.dart';
 import 'package:doctor_perro_helper/screens/pages/home/home.dart';
+import 'package:doctor_perro_helper/utils/extensions/plate_extensions.dart';
 import 'package:doctor_perro_helper/utils/google/google.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -48,6 +51,12 @@ class _MainAppState extends ConsumerState<MainApp> {
   void initState() {
     super.initState();
     initialization();
+    /* if (kDebugMode) {
+      var pl1 = PlateList.r1.amount(1).spread();
+      var pl2 = PlateList.r4.amount(2).spread();
+      print(pl1);
+      print(pl2);
+    } */
   }
 
   /// Put here anything that you need to initialize in the app,

@@ -9,10 +9,12 @@ class Ingredient {
     this.maxName = "",
     this.minName = "",
     this.quantity,
+    this.quantifiable = true,
   });
 
   /// Returns this same [Ingredient] with the initial amount changed
-  Ingredient amount(double amount) {
+  Ingredient amount(double amount, {bool exponential = false}) {
+    // double prevAmount = quantity?.amount ?? 1.0;
     return Ingredient(
       name: name,
       cost: cost,
@@ -27,6 +29,7 @@ class Ingredient {
       ),
       minName: minName,
       maxName: maxName,
+      quantifiable: quantifiable,
     );
   }
 
@@ -109,4 +112,8 @@ class Ingredient {
   String minName;
 
   PlateQuantity? quantity = PlateQuantity();
+
+  /// this dictates if, when you call [Plate.amount()]
+  /// the quantity should increase as well
+  bool quantifiable = true;
 }
