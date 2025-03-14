@@ -1,3 +1,4 @@
+import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
 
 extension PlatePackExtensions on PlatePack {
@@ -9,7 +10,10 @@ extension PlatePackExtensions on PlatePack {
     List<PlatePack> list = [];
 
     for (var i = 0; i < quantity.amount; i++) {
-      list.add(amount(1));
+      // we know for sure its a pack
+      list.add(
+        (PlateList.getPackByCode(code) as PlatePack).withUniqueId(),
+      );
     }
 
     return list;

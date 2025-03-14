@@ -60,7 +60,7 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
     super.dispose();
   }
 
-  void onStepContinue() => setState(() => index += 1);
+  void onStepContinue() => nextStep;
 
   void onStepCancel() => setState(() => index -= 1);
 

@@ -72,8 +72,24 @@ abstract class PlateList {
     return [...packs.map((PlatePack pack) => pack.amount(amount))];
   }
 
-  static List<Plate> plateswithUniqueId() =>
+  static List<Plate> platesWithUniqueId() =>
       [...plates.map((Plate p) => p.withUniqueId())];
+
+  static Plate? getPlateByCode(String code) {
+    try {
+      return plates.firstWhere((plate) => plate.code == code);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static PlatePack? getPackByCode(String code) {
+    try {
+      return packs.firstWhere((pack) => pack.code == code);
+    } catch (e) {
+      return null;
+    }
+  }
 
   static Plate r1 = Plate(
     id: uid,

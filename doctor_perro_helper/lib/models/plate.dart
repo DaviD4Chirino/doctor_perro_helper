@@ -19,7 +19,7 @@ class Plate {
 
   Plate amount(double amount) {
     List<Ingredient> newIngredients = ingredients.map((ingredient) {
-      return ingredient.amount(ingredient.quantity?.amount ?? 1.0 * amount);
+      return ingredient.amount((ingredient.quantity?.amount ?? 1.0) * amount);
     }).toList();
 
     // Update extras with the same multiplier
