@@ -121,9 +121,9 @@ abstract class PlateList {
       IngredientsList.bacon, //0.5
       IngredientsList.kraftCheese, //0.5
     ],
-    /* extras: [
+    extras: [
       SideDishList.frenchFries, //0.5
-    ], */
+    ],
     cost: 1.5,
     quantity: PlateQuantity(),
   );
@@ -166,12 +166,12 @@ abstract class PlateList {
     name: "Salchipapas",
     ingredients: [
       SideDishList.frenchFries.amount(12),
-      IngredientsList.bacon,
+      IngredientsList.bacon.amount(2),
       IngredientsList.corn,
       IngredientsList.kraftCheese,
       IngredientsList.cowCheese,
     ],
-    cost: -2,
+    cost: -2.5,
     quantity: PlateQuantity(),
   );
 
@@ -179,7 +179,7 @@ abstract class PlateList {
     id: uid,
     code: "C1",
     name: "Combo de Perros",
-    plates: [r1.amount(4).withoutExtras()],
+    plates: [r1.withoutExtras().amount(4)],
     extras: [
       SideDishList.pepsiCola,
       SideDishList.frenchFries.amount(4),
@@ -196,10 +196,10 @@ abstract class PlateList {
     plates: [
       r2.withoutExtras().amount(4),
     ],
-    /* extras: [
+    extras: [
       SideDishList.pepsiCola,
       SideDishList.frenchFries.amount(4),
-    ], */
+    ],
     cost: 0.5,
     quantity: PlateQuantity(),
   );

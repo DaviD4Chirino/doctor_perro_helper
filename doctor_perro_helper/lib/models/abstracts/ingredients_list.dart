@@ -72,6 +72,7 @@ abstract class IngredientsList {
     name: "Carne",
     cost: 0.8,
     minName: "Sin Carne",
+    quantity: PlateQuantity(),
   );
   static Ingredient bacon = Ingredient(
     name: "Tocino",
