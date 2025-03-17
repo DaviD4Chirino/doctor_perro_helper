@@ -4,19 +4,12 @@ class PlateQuantity {
     this.max = double.maxFinite,
     this.min = 0,
     this.count = 1,
-    double amount = 1,
+    this.amount = 1,
     this.prefix = "x",
     this.suffix = "",
-  }) : _amount = amount;
+  });
 
-  double _amount = 1.0;
-  double get amount {
-    return _amount.clamp(min, max);
-  }
-
-  set amount(double value) {
-    _amount = value;
-  }
+  double amount = 1.0;
 
   PlateQuantity copyWith({
     double? max,

@@ -85,7 +85,7 @@ abstract class PlateList {
 
   static PlatePack? getPackByCode(String code) {
     try {
-      return packs.firstWhere((pack) => pack.code == code);
+      return packs.firstWhere((pack) => pack.code == code).copyWith();
     } catch (e) {
       return null;
     }
@@ -121,9 +121,9 @@ abstract class PlateList {
       IngredientsList.bacon, //0.5
       IngredientsList.kraftCheese, //0.5
     ],
-    extras: [
+    /* extras: [
       SideDishList.frenchFries, //0.5
-    ],
+    ], */
     cost: 1.5,
     quantity: PlateQuantity(),
   );
@@ -193,14 +193,16 @@ abstract class PlateList {
     id: uid,
     code: "C2",
     name: "Combo de Perros Especiales",
-    plates: [r2.withoutExtras().amount(4)],
+    plates: [
+      r2.withoutExtras().amount(4),
+    ],
     extras: [
       SideDishList.pepsiCola,
       SideDishList.frenchFries.amount(4),
     ],
     cost: 0.5,
     quantity: PlateQuantity(),
-  ).amount(1);
+  );
   // (2.5 * 4)+ (0.5*4) + 2.5 = 14.5
   // Extras
   static Plate e1 = Plate(
@@ -208,7 +210,7 @@ abstract class PlateList {
     code: "E1",
     name: "Servicio de Papas Fritas",
     ingredients: [
-      SideDishList.frenchFries.amount(6),
+      SideDishList.frenchFries,
     ],
     cost: 0.0,
     quantity: PlateQuantity(),

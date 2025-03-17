@@ -1,11 +1,14 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
+import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/providers/menu_order_provider.dart';
 import 'package:doctor_perro_helper/screens/orders/checkout_step.dart';
 import 'package:doctor_perro_helper/screens/orders/edit_order_step.dart';
 import 'package:doctor_perro_helper/screens/orders/new_order_step.dart';
+import 'package:doctor_perro_helper/utils/extensions/platepack_extensions.dart';
 import 'package:doctor_perro_helper/widgets/orders/drafted_order.dart';
 import 'package:doctor_perro_helper/widgets/reusables/Section.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_stepper/easy_stepper.dart';
@@ -60,6 +63,20 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
   void initState() {
     super.initState();
     _pageController = PageController();
+
+    if (kDebugMode) {
+      var basePack = PlateList.c2;
+      var newPack = PlateList.c2.amount(2);
+      print("basePrice: ${basePack.price}");
+      print("newPack price: ${newPack.price}");
+
+      // Verify individual plate amounts
+      var plateFromBasePack = basePack.plates.first;
+      var plateFromNewPack = newPack.plates.first;
+
+      print("Original plate amount: ${plateFromBasePack.quantity.amount}");
+      print("Plate amount in newPack: ${plateFromNewPack.quantity.amount}");
+    }
   }
 
   @override

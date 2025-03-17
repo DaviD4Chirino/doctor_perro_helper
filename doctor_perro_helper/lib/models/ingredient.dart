@@ -13,13 +13,9 @@ class Ingredient {
   });
 
   /// Returns this same [Ingredient] with the initial amount changed
-  Ingredient amount(double amount, {bool exponential = false}) {
-    // double prevAmount = quantity?.amount ?? 1.0;
-    return Ingredient(
-      name: name,
-      cost: cost,
+  Ingredient amount(double amount) {
+    return copyWith(
       quantity: PlateQuantity(
-        // count: quantity != null ? quantity?.count as double : 1,
         count: quantity?.count ?? 1.0,
         amount: amount,
         max: quantity?.max ?? double.maxFinite,
@@ -27,9 +23,6 @@ class Ingredient {
         prefix: quantity?.prefix ?? "x",
         suffix: quantity?.suffix ?? "",
       ),
-      minName: minName,
-      maxName: maxName,
-      quantifiable: quantifiable,
     );
   }
 
@@ -55,20 +48,11 @@ class Ingredient {
       cost: cost ?? this.cost,
       maxName: maxName ?? this.maxName,
       minName: minName ?? this.minName,
-      quantity: quantity != null
-          ? this.quantity!.copyWith(
-                max: quantity.max,
-                min: quantity.min,
-                count: quantity.count,
-                amount: quantity.amount,
-                prefix: quantity.prefix,
-                suffix: quantity.suffix,
-              )
-          : this.quantity,
+      quantity: quantity ?? this.quantity,
     );
   }
 
-  double get price => (quantity?.amount ?? 1) * cost;
+  double get price => cost * (quantity?.amount ?? 1);
 
   String get title {
     String suffix = this.quantity?.suffix ?? "";
