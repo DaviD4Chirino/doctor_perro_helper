@@ -1,11 +1,10 @@
 import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
-import 'package:doctor_perro_helper/models/mixins/step_screeen_mixin.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
-import 'package:doctor_perro_helper/models/providers/menu_order_provider.dart';
 import 'package:doctor_perro_helper/widgets/orders/drafted_order.dart';
 import 'package:doctor_perro_helper/widgets/reusables/section.dart';
+import 'package:doctor_perro_helper/widgets/reusables/swipeable_pack.dart';
 import 'package:doctor_perro_helper/widgets/reusables/swipeable_plate.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +18,7 @@ class NewOrderStep extends ConsumerStatefulWidget {
     this.onStepCompleted,
   });
   Function(MenuOrder order)? onOrderModified;
-  void Function(bool completed)? onStepCompleted;
+  void Function(MenuOrder modifiedOrder)? onStepCompleted;
 
   @override
   ConsumerState<NewOrderStep> createState() => _NewOrderState();
@@ -29,50 +28,50 @@ class _NewOrderState extends ConsumerState<NewOrderStep> {
   List<Plate> selectedPlates = [];
   List<PlatePack> selectedPacks = [];
 
+  MenuOrder _draftedOrder = MenuOrder(packs: [], plates: []);
+
+  MenuOrder get draftedOrder => _draftedOrder;
+
   set draftedOrder(MenuOrder order) {
-    ref.read(menuOrderNotifierProvider.notifier).setDraftedOrder(order);
-    if (kDebugMode) {
-      print(order.length);
-      print(order.codeList);
-      print(order.length > 0);
-    }
-    if (widget.onStepCompleted != null) {
-      widget.onStepCompleted!(order.length > 0);
+    _draftedOrder = order;
+    if (widget.onStepCompleted != null && order.length > 0) {
+      widget.onStepCompleted!(_draftedOrder);
     }
   }
 
-  MenuOrderData get menuOrder => ref.watch(menuOrderNotifierProvider);
-
   void onPlateSwipe(Plate plate, bool positive, double count) {
-    if (plate.quantity.amount <= 0.0) {
-      selectedPlates.removeWhere(
-          (Plate existingPlate) => existingPlate.code == plate.code);
+    setState(() {
+      if (plate.quantity.amount <= 0.0) {
+        selectedPlates
+            .removeWhere((Plate existingPlate) => existingPlate.id == plate.id);
 
+        draftedOrder = MenuOrder(packs: selectedPacks, plates: selectedPlates);
+
+        return;
+      }
+      selectedPlates
+          .removeWhere((Plate existingPlate) => existingPlate.id == plate.id);
+      selectedPlates.add(plate);
       draftedOrder = MenuOrder(packs: selectedPacks, plates: selectedPlates);
-
-      return;
-    }
-    selectedPlates
-        .removeWhere((Plate existingPlate) => existingPlate.code == plate.code);
-    selectedPlates.add(plate);
-    draftedOrder = MenuOrder(packs: selectedPacks, plates: selectedPlates);
+    });
   }
 
   // ignore: no_leading_underscores_for_local_identifiers
   void onPackSwipe(PlatePack pack, bool positive, double count) {
-    if (pack.quantity.amount <= 0.0) {
-      selectedPacks.removeWhere(
-          (PlatePack existingPack) => existingPack.code == pack.code);
+    setState(() {
+      if (pack.quantity.amount <= 0.0) {
+        selectedPacks.removeWhere(
+            (PlatePack existingPack) => existingPack.id == pack.id);
+        draftedOrder = MenuOrder(packs: selectedPacks, plates: selectedPlates);
+
+        // printPlatesPackDebug(packs: order.packs);
+        return;
+      }
+      selectedPacks
+          .removeWhere((PlatePack existingPack) => existingPack.id == pack.id);
+      selectedPacks.add(pack);
       draftedOrder = MenuOrder(packs: selectedPacks, plates: selectedPlates);
-
-      // printPlatesPackDebug(packs: order.packs);
-      return;
-    }
-    selectedPacks.removeWhere(
-        (PlatePack existingPack) => existingPack.code == pack.code);
-    selectedPacks.add(pack);
-    draftedOrder = MenuOrder(packs: selectedPacks, plates: selectedPlates);
-
+    });
     // printPlatesPackDebug(packs: order.packs);
   }
 
@@ -115,30 +114,8 @@ class _NewOrderState extends ConsumerState<NewOrderStep> {
 
   Section draftedOrderSection(TextStyle columnTitleStyle, ThemeData theme) {
     Widget draftedSection() {
-      if (menuOrder.draftedOrder != null) {
-        MenuOrder order = menuOrder.draftedOrder as MenuOrder;
-        if (order.length > 0) {
-          return DraftedOrder(order: order);
-        } else {
-          return Container(
-            decoration: BoxDecoration(
-              color: theme.colorScheme.surfaceContainer,
-              border: Border(
-                bottom: BorderSide(
-                  color: theme.colorScheme.outline,
-                  width: 2.0,
-                ),
-              ),
-            ),
-            child: ListTile(
-              // enabled: false,
-              title: Text(
-                  "Desliza hacia la derecha o izquierda en los platos para agregarlos"),
-              subtitle: Text("No has seleccionado ningún plato"),
-              dense: true,
-            ),
-          );
-        }
+      if (draftedOrder.length >= 1) {
+        return DraftedOrder(order: draftedOrder);
       } else {
         return Container(
           decoration: BoxDecoration(
@@ -150,7 +127,7 @@ class _NewOrderState extends ConsumerState<NewOrderStep> {
               ),
             ),
           ),
-          child: ListTile(
+          child: const ListTile(
             // enabled: false,
             title: Text(
                 "Desliza hacia la derecha o izquierda en los platos para agregarlos"),

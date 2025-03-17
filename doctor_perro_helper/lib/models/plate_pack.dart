@@ -1,3 +1,4 @@
+import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_quantity.dart';
 import 'package:doctor_perro_helper/models/side_dish.dart';
@@ -18,14 +19,17 @@ class PlatePack {
   });
 
   PlatePack amount(double amount) {
+    // This should always be non null
+    PlatePack thisPack = PlateList.getPackByCode(code) as PlatePack;
+
     List<SideDish>? newExtras;
-    if (extras != null) {
-      newExtras = extras!.map((extra) {
+    if (thisPack.extras != null) {
+      newExtras = thisPack.extras!.map((extra) {
         return extra.amount((extra.quantity?.amount ?? 1.0) * amount);
       }).toList();
     }
 
-    List<Plate> newPlates = plates.map((plate) {
+    List<Plate> newPlates = thisPack.plates.map((plate) {
       return plate.amount(plate.quantity.amount * amount);
     }).toList();
 

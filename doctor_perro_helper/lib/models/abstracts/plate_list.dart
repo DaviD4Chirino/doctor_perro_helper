@@ -193,14 +193,14 @@ abstract class PlateList {
     id: uid,
     code: "C2",
     name: "Combo de Perros Especiales",
-    plates: [r2.amount(4).withoutExtras()],
+    plates: [r2.withoutExtras().amount(4)],
     extras: [
       SideDishList.pepsiCola,
       SideDishList.frenchFries.amount(4),
     ],
-    cost: 3.5,
+    cost: 0.5,
     quantity: PlateQuantity(),
-  );
+  ).amount(1);
   // (2.5 * 4)+ (0.5*4) + 2.5 = 14.5
   // Extras
   static Plate e1 = Plate(

@@ -1,5 +1,6 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
+import 'package:doctor_perro_helper/models/providers/menu_order_provider.dart';
 import 'package:doctor_perro_helper/screens/orders/checkout_step.dart';
 import 'package:doctor_perro_helper/screens/orders/edit_order_step.dart';
 import 'package:doctor_perro_helper/screens/orders/new_order_step.dart';
@@ -17,7 +18,14 @@ class MakeNewOrder extends ConsumerStatefulWidget {
 }
 
 class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
+  MenuOrderNotifier get menuOrderNotifier =>
+      ref.read(menuOrderNotifierProvider.notifier);
+
+  MenuOrderData get menuOrderProvider => ref.watch(menuOrderNotifierProvider);
+
   late PageController? _pageController;
+
+  MenuOrder drafted_order = MenuOrder(packs: [], plates: []);
 
   List<Widget> get steps => [
         NewOrderStep(
@@ -66,9 +74,9 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
 
   void nextStep() => setState(() => index += 1);
 
-  void onNewOrderStepCompleted(bool completed) {
+  void onNewOrderStepCompleted(MenuOrder modifiedOrder) {
     setState(() {
-      newOrderStepCompleted = completed;
+      newOrderStepCompleted = true;
     });
   }
 
