@@ -32,7 +32,7 @@ class ExpansiblePlate extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
-      subtitle: Text(plate.id),
+      // subtitle: Text(plate.id),
       children: [
         ...ingredientsSection(),
         if (plate.extras != null) ...extrasSection(),

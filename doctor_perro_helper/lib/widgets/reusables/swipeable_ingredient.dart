@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:doctor_perro_helper/models/ingredient.dart';
 import 'package:doctor_perro_helper/widgets/reusables/ingredient_list_tile.dart';
 import 'package:doctor_perro_helper/widgets/reusables/swipeable.dart';
@@ -24,7 +26,10 @@ class SwipeableIngredient extends StatefulWidget {
 class _SwipeableIngredientState extends State<SwipeableIngredient> {
   late Ingredient modifiedIngredient;
 
-  double get prevAmount => modifiedIngredient.quantity?.amount ?? 1.0;
+  double get prevAmount => clampDouble(
+      modifiedIngredient.quantity?.amount ?? 1.0,
+      modifiedIngredient.quantity?.min ?? 0.0,
+      modifiedIngredient.quantity?.max ?? double.infinity);
 
   void onSwiped(SwipeDirection dir) {
     if (dir == SwipeDirection.endToStart) {

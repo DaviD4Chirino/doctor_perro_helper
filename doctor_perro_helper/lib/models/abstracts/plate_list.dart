@@ -215,6 +215,7 @@ abstract class PlateList {
     cost: 0.0,
     quantity: PlateQuantity(),
   );
+
   static Plate e2 = Plate(
     id: uid,
     code: "E2",

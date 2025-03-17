@@ -20,20 +20,23 @@ class MakeNewOrder extends ConsumerStatefulWidget {
 }
 
 class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
-  MenuOrderNotifier get menuOrderNotifier =>
+  /*  MenuOrderNotifier get menuOrderNotifier =>
       ref.read(menuOrderNotifierProvider.notifier);
 
   MenuOrderData get menuOrderProvider => ref.watch(menuOrderNotifierProvider);
-
+ */
   late PageController? _pageController;
 
-  MenuOrder drafted_order = MenuOrder(packs: [], plates: []);
+  MenuOrder draftedOrder = MenuOrder(packs: [], plates: []);
 
   List<Widget> get steps => [
         NewOrderStep(
           onStepCompleted: onNewOrderStepCompleted,
         ),
-        EditOrderStep(),
+        EditOrderStep(
+          draftedOrder: draftedOrder,
+          onStepCompleted: (MenuOrder modifiedOrder) {},
+        ),
         CheckoutStep(),
       ];
   int _index = 0;
@@ -94,6 +97,7 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
 
   void onNewOrderStepCompleted(MenuOrder modifiedOrder) {
     setState(() {
+      draftedOrder = modifiedOrder;
       newOrderStepCompleted = true;
     });
   }
