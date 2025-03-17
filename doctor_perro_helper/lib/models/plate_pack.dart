@@ -17,26 +17,21 @@ class PlatePack {
     this.id = "",
   });
 
-  PlatePack amount(double amount) {
+  PlatePack amount(double amount, {bool exponential = false}) {
     // This should always be non null
-    // PlatePack thisPack = PlateList.getPackByCode(code) as PlatePack;
+    // PlatePack thisPack = PlateList.getPackByCode(code) as PlatePack;s
 
-    List<SideDish>? newExtras;
-    if (extras != null) {
-      newExtras = extras!.map((extra) {
-        return extra.amount(amount);
-      }).toList();
-    }
-
-    List<Plate> newPlates = plates.map((plate) {
-      return plate.amount(plate.quantity.amount * amount);
-    }).toList();
+    double prevAmount = quantity.amount;
 
     return copyWith(
-      plates: newPlates,
-      extras: newExtras,
-      quantity: PlateQuantity(
-        amount: amount,
+      plates: plates
+          .map((Plate plate) => plate.amount(amount, exponential: true))
+          .toList(),
+      extras: extras
+          ?.map((SideDish extra) => extra.amount(amount, exponential: true))
+          .toList(),
+      quantity: quantity.copyWith(
+        amount: exponential ? prevAmount * amount : amount,
       ),
     );
   }

@@ -13,16 +13,12 @@ class Ingredient {
   });
 
   /// Returns this same [Ingredient] with the initial amount changed
-  Ingredient amount(double amount) {
+  Ingredient amount(double amount, {bool exponential = false}) {
+    double prevAmount = quantity?.amount ?? 1.0;
+
     return copyWith(
-      quantity: PlateQuantity(
-        count: quantity?.count ?? 1.0,
-        amount: amount,
-        max: quantity?.max ?? double.maxFinite,
-        min: quantity?.min ?? 0,
-        prefix: quantity?.prefix ?? "x",
-        suffix: quantity?.suffix ?? "",
-      ),
+      quantity: quantity?.copyWith(
+          amount: exponential ? prevAmount * amount : amount),
     );
   }
 

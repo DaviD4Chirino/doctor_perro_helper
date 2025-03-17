@@ -17,8 +17,8 @@ class Plate {
     this.extras,
   });
 
-  Plate amount(double amount) {
-    List<Ingredient> newIngredients = ingredients.map((ingredient) {
+  Plate amount(double amount, {bool exponential = false}) {
+    /* List<Ingredient> newIngredients = ingredients.map((ingredient) {
       return ingredient.amount((ingredient.quantity?.amount ?? 1.0) * amount);
     }).toList();
 
@@ -28,13 +28,19 @@ class Plate {
       newExtras = extras!.map((extra) {
         return extra.amount((extra.quantity?.amount ?? 1.0) * amount);
       }).toList();
-    }
+    } */
+
+    double prevAmount = quantity.amount;
 
     return copyWith(
-      ingredients: newIngredients,
-      extras: newExtras,
+      ingredients: ingredients
+          .map((Ingredient ing) => ing.amount(amount, exponential: true))
+          .toList(),
+      extras: extras
+          ?.map((SideDish ing) => ing.amount(amount, exponential: true))
+          .toList(),
       quantity: PlateQuantity(
-        amount: amount,
+        amount: exponential ? prevAmount * amount : amount,
       ),
     );
   }

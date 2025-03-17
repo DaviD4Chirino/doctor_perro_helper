@@ -59,14 +59,14 @@ class _SwipeablePackState extends ConsumerState<SwipeablePack>
         count -= widget.pack.quantity.count;
       });
       if (widget.onPackSwiped != null) {
-        widget.onPackSwiped!(pack.altAmount(count), false, count);
+        widget.onPackSwiped!(pack.amount(count), false, count);
       }
     } else {
       setState(() {
         count += widget.pack.quantity.count;
       });
       if (widget.onPackSwiped != null) {
-        widget.onPackSwiped!(pack.altAmount(count), true, count);
+        widget.onPackSwiped!(pack.amount(count), true, count);
       }
     }
   }

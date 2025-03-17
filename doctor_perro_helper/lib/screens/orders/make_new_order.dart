@@ -66,16 +66,18 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
 
     if (kDebugMode) {
       var basePack = PlateList.c2;
-      var newPack = PlateList.c2.amount(2);
+      var newPack = PlateList.c2.amount(3);
       print("basePrice: ${basePack.price}");
       print("newPack price: ${newPack.price}");
 
       // Verify individual plate amounts
-      var plateFromBasePack = basePack.plates.first;
-      var plateFromNewPack = newPack.plates.first;
+      if (basePack.plates.isNotEmpty || newPack.plates.isNotEmpty) {
+        var plateFromBasePack = basePack.plates.first;
+        var plateFromNewPack = newPack.plates.first;
 
-      print("Original plate amount: ${plateFromBasePack.quantity.amount}");
-      print("Plate amount in newPack: ${plateFromNewPack.quantity.amount}");
+        print("Original plate amount: ${plateFromBasePack.quantity.amount}");
+        print("Plate amount in newPack: ${plateFromNewPack.quantity.amount}");
+      }
     }
   }
 

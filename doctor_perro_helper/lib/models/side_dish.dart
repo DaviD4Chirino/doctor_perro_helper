@@ -21,22 +21,30 @@ class SideDish extends Ingredient {
     );
   }
 
+  /// Returns this same [SideDish] with the initial amount changed
   @override
-
-  /// Returns this same [Ingredient] with the initial amount changed
   SideDish amount(double amount, {bool exponential = false}) {
+    double prevAmount = quantity?.amount ?? 1.0;
+    return copyWith(
+      quantity: quantity?.copyWith(
+          amount: exponential ? prevAmount * amount : amount),
+    );
+  }
+
+  @override
+  SideDish copyWith({
+    String? name,
+    double? cost,
+    String? maxName,
+    String? minName,
+    PlateQuantity? quantity,
+  }) {
     return SideDish(
-      name: name,
-      cost: cost,
-      quantity: PlateQuantity(
-        // count: quantity != null ? quantity?.count as double : 1,
-        count: quantity?.count ?? 1.0,
-        amount: amount,
-        max: quantity?.max ?? double.maxFinite,
-        min: quantity?.min ?? 0,
-        prefix: quantity?.prefix ?? "x",
-        suffix: quantity?.suffix ?? "",
-      ),
+      name: name ?? this.name,
+      cost: cost ?? this.cost,
+      maxName: maxName ?? this.maxName,
+      minName: minName ?? this.minName,
+      quantity: quantity ?? this.quantity,
     );
   }
 }

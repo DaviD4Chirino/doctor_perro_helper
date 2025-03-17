@@ -196,10 +196,10 @@ abstract class PlateList {
     plates: [
       r2.withoutExtras().amount(4),
     ],
-    extras: [
+    /* extras: [
       SideDishList.pepsiCola,
       SideDishList.frenchFries.amount(4),
-    ],
+    ], */
     cost: 0.5,
     quantity: PlateQuantity(),
   );
