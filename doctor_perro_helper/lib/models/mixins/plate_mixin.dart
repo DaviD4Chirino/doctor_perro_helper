@@ -1,5 +1,4 @@
 import 'package:doctor_perro_helper/models/plate.dart';
-import 'package:doctor_perro_helper/models/plate_quantity.dart';
 
 mixin PlateMixin {
   /// Combines the same plates into a single play of the correct amount,

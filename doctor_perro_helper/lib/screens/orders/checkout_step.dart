@@ -21,7 +21,7 @@ class CheckoutStep extends ConsumerWidget with PlateMixin {
 
     List<Plate> plates = draftedOrder.plates;
 
-    final List<Plate> mergedPlates = merge(plates);
+    final List<Plate> mergedPlates = plates;
 
     ThemeData theme = Theme.of(context);
 

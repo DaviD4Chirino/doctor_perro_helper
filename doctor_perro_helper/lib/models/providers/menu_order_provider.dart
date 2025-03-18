@@ -13,7 +13,7 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
   addOrder(MenuOrder newOrder) {}
 
   void setDraftedOrder(MenuOrder newOrder) {
-    state = state.copyWith(newDraftedOder: newOrder);
+    state = state.copyWith(draftedOrder: newOrder);
   }
 }
 
@@ -24,12 +24,12 @@ class MenuOrderData {
   List<MenuOrder>? history = [];
 
   MenuOrderData copyWith({
-    MenuOrder? newDraftedOder,
-    List<MenuOrder>? newHistory,
+    MenuOrder? draftedOrder,
+    List<MenuOrder>? history,
   }) {
     return MenuOrderData(
-      draftedOrder: draftedOrder ?? newDraftedOder,
-      history: history ?? newHistory,
+      draftedOrder: draftedOrder ?? this.draftedOrder,
+      history: history ?? this.history,
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
+import 'package:doctor_perro_helper/models/mixins/plate_mixin.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
@@ -18,6 +19,7 @@ class NewOrderStep extends ConsumerStatefulWidget {
     this.onOrderModified,
     this.onStepCompleted,
   });
+
   Function(MenuOrder order)? onOrderModified;
   void Function(
     MenuOrder modifiedOrder,
@@ -27,7 +29,7 @@ class NewOrderStep extends ConsumerStatefulWidget {
   ConsumerState<NewOrderStep> createState() => _NewOrderState();
 }
 
-class _NewOrderState extends ConsumerState<NewOrderStep> {
+class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
   MenuOrderNotifier get menuOrderNotifier =>
       ref.read(menuOrderNotifierProvider.notifier);
 

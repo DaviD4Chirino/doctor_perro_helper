@@ -38,7 +38,7 @@ extension PlatePackExtensions on PlatePack {
     for (var i = 0; i < quantity.amount; i++) {
       // we know for sure its a pack
       list.add(
-        (PlateList.getPackByCode(code) as PlatePack).amount(1).withUniqueId(),
+        amount(1).withUniqueId(),
       );
     }
 

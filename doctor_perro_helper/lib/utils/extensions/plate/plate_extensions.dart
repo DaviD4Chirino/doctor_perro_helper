@@ -14,7 +14,7 @@ extension PlateExtensions on Plate {
     for (var i = 0; i < quantity.amount; i++) {
       // We know this is a real plate
       list.add(
-        (PlateList.getPlateByCode(code) as Plate).amount(1).withUniqueId(),
+        PlateList.getPlateByCode(code)!.amount(1).withUniqueId(),
       );
     }
 

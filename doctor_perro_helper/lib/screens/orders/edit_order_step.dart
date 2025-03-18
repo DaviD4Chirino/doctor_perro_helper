@@ -80,11 +80,12 @@ class _EditOrderStepState extends ConsumerState<EditOrderStep> {
                 key: Key(plate.id),
                 plate: plate,
                 onSwiped: (dir, modifiedPlate) {
-                  menuOrderNotifier.setDraftedOrder(
-                    MenuOrder(
-                        plates: plates.replaceWhere(plate, modifiedPlate),
-                        packs: packs),
-                  );
+                  setState(() {
+                    plates = plates.replaceWhere(plate, modifiedPlate);
+                    menuOrderNotifier.setDraftedOrder(
+                      MenuOrder(plates: plates, packs: packs),
+                    );
+                  });
                   // maybe we dont need to set the new plates
                 },
               ),
