@@ -1,4 +1,5 @@
 import 'package:data_table_2/data_table_2.dart';
+import 'package:doctor_perro_helper/models/mixins/plate_mixin.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/providers/menu_order_provider.dart';
@@ -8,7 +9,7 @@ import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CheckoutStep extends ConsumerWidget {
+class CheckoutStep extends ConsumerWidget with PlateMixin {
   const CheckoutStep({super.key});
 
   @override
@@ -20,7 +21,7 @@ class CheckoutStep extends ConsumerWidget {
 
     List<Plate> plates = draftedOrder.plates;
 
-    final List<Plate> mergedPlates = mergePlates(plates);
+    final List<Plate> mergedPlates = merge(plates);
 
     ThemeData theme = Theme.of(context);
 
@@ -65,36 +66,4 @@ class CheckoutStep extends ConsumerWidget {
       ),
     );
   }
-}
-
-List<Plate> mergePlates(List<Plate> plates) {
-  List<Plate> mergedPlates = [];
-
-  for (Plate plate in plates) {
-    bool found = false;
-    for (int i = 0; i < mergedPlates.length; i++) {
-      Plate mergedPlate = mergedPlates[i];
-
-      if (plate.ingredientsTitles == mergedPlate.ingredientsTitles) {
-        mergedPlates[i].quantity.amount += 1;
-        found = true;
-        break;
-      }
-    }
-
-    /* for (Plate mergedPlate in mergedPlates) {
-      if (_arePlatesEqual(plate, mergedPlate)) {
-        mergedPlate = mergedPlate
-            .amount(mergedPlate.quantity.amount + plate.quantity.amount);
-        found = true;
-        break;
-      }
-    } */
-
-    if (!found) {
-      mergedPlates.add(plate);
-    }
-  }
-
-  return mergedPlates;
 }

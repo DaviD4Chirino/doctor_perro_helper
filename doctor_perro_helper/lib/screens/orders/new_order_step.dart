@@ -2,6 +2,7 @@ import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
+import 'package:doctor_perro_helper/models/providers/menu_order_provider.dart';
 import 'package:doctor_perro_helper/widgets/orders/drafted_order.dart';
 import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:doctor_perro_helper/widgets/reusables/swipeable_pack.dart';
@@ -18,13 +19,20 @@ class NewOrderStep extends ConsumerStatefulWidget {
     this.onStepCompleted,
   });
   Function(MenuOrder order)? onOrderModified;
-  void Function(MenuOrder modifiedOrder)? onStepCompleted;
+  void Function(
+    MenuOrder modifiedOrder,
+  )? onStepCompleted;
 
   @override
   ConsumerState<NewOrderStep> createState() => _NewOrderState();
 }
 
 class _NewOrderState extends ConsumerState<NewOrderStep> {
+  MenuOrderNotifier get menuOrderNotifier =>
+      ref.read(menuOrderNotifierProvider.notifier);
+
+  MenuOrderData get menuOrderProvider => ref.watch(menuOrderNotifierProvider);
+
   List<Plate> selectedPlates = [];
   List<PlatePack> selectedPacks = [];
 
@@ -34,9 +42,16 @@ class _NewOrderState extends ConsumerState<NewOrderStep> {
 
   set draftedOrder(MenuOrder order) {
     _draftedOrder = order;
+
+    if (widget.onOrderModified != null) {
+      widget.onOrderModified!(_draftedOrder);
+    }
+
     if (widget.onStepCompleted != null && order.length > 0) {
       widget.onStepCompleted!(_draftedOrder);
     }
+
+    ref.read(menuOrderNotifierProvider.notifier).setDraftedOrder(_draftedOrder);
   }
 
   void onPlateSwipe(Plate plate, bool positive, double count) {
@@ -114,8 +129,9 @@ class _NewOrderState extends ConsumerState<NewOrderStep> {
 
   Section draftedOrderSection(TextStyle columnTitleStyle, ThemeData theme) {
     Widget draftedSection() {
-      if (draftedOrder.length >= 1) {
-        return DraftedOrder(order: draftedOrder);
+      if (menuOrderProvider.draftedOrder != null &&
+          menuOrderProvider.draftedOrder!.length >= 1) {
+        return DraftedOrder(order: menuOrderProvider.draftedOrder as MenuOrder);
       } else {
         return Container(
           decoration: BoxDecoration(
