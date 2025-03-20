@@ -5,6 +5,7 @@ extension PlateListExtensions on List<Plate> {
     final int index = indexWhere((Plate plate) => plate.id == oldPlate.id);
 
     if (index != -1) {
+      newPlate.modified = true;
       this[index] = newPlate;
       return this;
     }

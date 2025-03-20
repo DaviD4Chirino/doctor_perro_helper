@@ -15,6 +15,7 @@ class Plate {
     required this.cost,
     required this.quantity,
     this.extras,
+    this.modified = false,
   });
 
   Plate amount(double amount, {bool exponential = false}) {
@@ -179,4 +180,7 @@ class Plate {
   /// The monetary cost that takes to make this plate, not counting the extras
   double cost;
   PlateQuantity quantity;
+
+  /// To be set manually when modifying this plate
+  bool modified;
 }

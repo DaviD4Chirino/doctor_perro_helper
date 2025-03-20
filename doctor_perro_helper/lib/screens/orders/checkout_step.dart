@@ -9,22 +9,34 @@ import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CheckoutStep extends ConsumerWidget with PlateMixin {
+class CheckoutStep extends ConsumerStatefulWidget {
   const CheckoutStep({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    MenuOrderData menuOrderData = ref.watch(menuOrderNotifierProvider);
+  ConsumerState<CheckoutStep> createState() => _CheckoutStepState();
+}
 
-    MenuOrder draftedOrder =
-        menuOrderData.draftedOrder ?? MenuOrder(plates: [], packs: []);
+class _CheckoutStepState extends ConsumerState<CheckoutStep> with PlateMixin {
+  MenuOrderData get menuOrderData => ref.watch(menuOrderNotifierProvider);
 
-    List<Plate> plates = draftedOrder.plates;
+  late MenuOrder draftedOrder;
 
-    final List<Plate> mergedPlates = plates;
+  late Map<String, List<Plate>> mergedPlates = merge(draftedOrder.plates);
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (menuOrderData.draftedOrder == null) {
+      throw Exception("menuOrderData.draftedOrder is null");
+    }
+
+    draftedOrder = menuOrderData.draftedOrder!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-
     return Section(
       title: Container(
         color: theme.colorScheme.surfaceContainer,
@@ -49,7 +61,7 @@ class CheckoutStep extends ConsumerWidget with PlateMixin {
             ),
           ],
           rows: [
-            ...mergedPlates.map(
+            ...mergedPlates["merged_plates"]!.map(
               (Plate plate) {
                 return DataRow(
                   cells: [
@@ -60,7 +72,20 @@ class CheckoutStep extends ConsumerWidget with PlateMixin {
                   ],
                 );
               },
-            )
+            ),
+            /* ...mergedPlates["merged_plates"]!.map(
+              (Plate plate) {
+                return DataRow(
+                  cells: [
+                    DataCell(Text(plate.title)),
+                    DataCell(
+                      Text("${plate.price.removePaddingZero()}\$"),
+                    ),
+                  ],
+                );
+              },
+            ),
+           */
           ],
         ),
       ),
