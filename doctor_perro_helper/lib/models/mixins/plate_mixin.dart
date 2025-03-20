@@ -1,4 +1,3 @@
-import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 
 mixin PlateMixin {
@@ -53,16 +52,45 @@ mixin PlateMixin {
     if (plates.isEmpty) {
       return plates;
     }
-    Map<String, List<Plate>> collectedPlates = {};
 
-    List<Plate> flattenedPlates = [];
+    List<Plate> flattenedPlates = [plates.first.base.amount(0)];
+    List<Plate> platesToAdd = [];
 
     for (Plate plate in plates) {
-      Plate? existingPlate = PlateList.getPlateByCode(plate.code);
-      if (existingPlate == null) continue;
+      bool found = false;
 
-      collectedPlates[existingPlate.code]?.add(existingPlate);
+      for (int i = 0; i < flattenedPlates.length; i++) {
+        Plate flatPlate = flattenedPlates[i];
+
+        if (flatPlate.code == plate.code) {
+          flattenedPlates[i] = flatPlate.base
+              .amount(flatPlate.quantity.amount + (plate.quantity.amount));
+          found = true;
+          break;
+        }
+      }
+
+      // a second check
+      /*  if (!found) {
+        bool foundInPlatesToAdd = false;
+        for (int j = 0; j < platesToAdd.length; j++) {
+          if (platesToAdd[j].code == plate.code) {
+            platesToAdd[j] = platesToAdd[j].base.amount(
+                platesToAdd[j].quantity.amount + (plate.quantity.amount + 1));
+            foundInPlatesToAdd = true;
+            break;
+          }
+        }
+        if (!foundInPlatesToAdd) {
+          platesToAdd.add(plate.base);
+        }
+      } */
+
+      if (!found) {
+        flattenedPlates.add(plate);
+      }
     }
+    flattenedPlates.addAll(platesToAdd);
 
     return flattenedPlates;
   }

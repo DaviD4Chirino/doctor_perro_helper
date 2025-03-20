@@ -21,7 +21,7 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep> with PlateMixin {
 
   late MenuOrder draftedOrder;
 
-  late Map<String, List<Plate>> mergedPlates = merge(draftedOrder.plates);
+  late List<Plate> mergedPlates = flatten(draftedOrder.plates);
 
   @override
   void didChangeDependencies() {
@@ -61,7 +61,7 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep> with PlateMixin {
             ),
           ],
           rows: [
-            ...mergedPlates["merged_plates"]!.map(
+            ...mergedPlates.map(
               (Plate plate) {
                 return DataRow(
                   cells: [

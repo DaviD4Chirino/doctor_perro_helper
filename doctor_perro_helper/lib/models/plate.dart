@@ -1,3 +1,4 @@
+import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
 import 'package:doctor_perro_helper/models/ingredient.dart';
 import 'package:doctor_perro_helper/models/plate_quantity.dart';
 import 'package:doctor_perro_helper/models/side_dish.dart';
@@ -83,6 +84,16 @@ class Plate {
       newExtras[index] = newExtra;
       extras = newExtras;
     }
+  }
+
+  /// Returns this same plate as its written on the [PlateList]
+  Plate get base {
+    Plate? basePlate = PlateList.getPlateByCode(code);
+
+    if (basePlate == null) {
+      throw Exception("This plate of code: $code does not exist in PlateList");
+    }
+    return basePlate;
   }
 
   // double get price => (quantity.amount) * cost;
