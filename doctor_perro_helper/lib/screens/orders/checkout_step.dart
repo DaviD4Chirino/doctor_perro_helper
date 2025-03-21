@@ -69,12 +69,15 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep> with PlateMixin {
           rows: [
             ...mergedPlates2.map(
               (Plate plate) {
-                Plate dif = plate.getDifferences(plate.base);
+                String difIngListTitles = plate.modifiedIngredients
+                    .map(
+                      (e) => e.title,
+                    )
+                    .join("\n");
 
                 return DataRow(
                   cells: [
-                    DataCell(Text(
-                        "${plate.title}\n${dif.ingredientsTitles.replaceAll(",", "\n")}")),
+                    DataCell(Text("${plate.title}\n$difIngListTitles")),
                     DataCell(
                       Text(plate.price.removePaddingZero()),
                     ),

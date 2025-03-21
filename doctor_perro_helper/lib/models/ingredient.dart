@@ -1,3 +1,4 @@
+import 'package:doctor_perro_helper/models/abstracts/ingredients_list.dart';
 import 'package:doctor_perro_helper/models/plate_quantity.dart';
 import 'package:doctor_perro_helper/models/side_dish.dart';
 import 'package:doctor_perro_helper/utils/string_math.dart';
@@ -47,6 +48,8 @@ class Ingredient {
       quantity: quantity ?? this.quantity,
     );
   }
+
+  Ingredient get base => IngredientsList.getByCode(name)!;
 
   double get price => cost * (quantity?.amount ?? 1);
 

@@ -230,6 +230,16 @@ class Plate {
     return list;
   }
 
+  List<Ingredient> get modifiedIngredients {
+    List<Ingredient> modifiedIng = [];
+    for (Ingredient ingredient in ingredients) {
+      if (ingredient.title != ingredient.base.title) {
+        modifiedIng.add(ingredient);
+      }
+    }
+    return modifiedIng;
+  }
+
   Plate copyWith({
     String? id,
     String? code,

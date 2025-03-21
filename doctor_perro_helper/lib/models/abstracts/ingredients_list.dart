@@ -2,6 +2,14 @@ import 'package:doctor_perro_helper/models/ingredient.dart';
 import 'package:doctor_perro_helper/models/plate_quantity.dart';
 
 abstract class IngredientsList {
+  static Ingredient? getByCode(String name) {
+    try {
+      return list.firstWhere((ing) => ing.name == name);
+    } catch (e) {
+      return null;
+    }
+  }
+
   static Ingredient sausage = Ingredient(
     name: "Salchicha",
     cost: 0.0,
