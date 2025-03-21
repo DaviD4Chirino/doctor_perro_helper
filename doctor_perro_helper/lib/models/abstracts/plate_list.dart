@@ -9,56 +9,34 @@ import 'package:uuid/uuid.dart';
 
 /// A class with every single plate in the restaurant
 abstract class PlateList {
+  /// Compares the plate with their "base" counterpart i.e
+  /// the plate in [plates] if theres any and
+  /// returns a new [Plate] with only the differences
   static Plate getDifferences(Plate plate) {
-    // Find the matching plate in the list
-    Plate? matchingPlate = plates.firstWhere(
-      (p) => p.code == plate.code,
-      orElse: () => Plate(
-        id: "",
-        code: "",
-        name: "",
-        ingredients: [],
-        cost: 0.0,
-        quantity: PlateQuantity(),
-      ),
+    Plate emptyPlate = Plate(
+      id: plate.id,
+      code: plate.code,
+      name: plate.name,
+      ingredients: [],
+      cost: -99,
+      quantity: PlateQuantity(),
     );
 
-    if (matchingPlate.code == "") {
-      // If no matching plate is found, return the original plate
-      return plate;
+    Plate? basePlate = getPlateByCode(plate.code);
+
+    if (basePlate == null) return emptyPlate;
+
+    for (Ingredient ingredient in basePlate.ingredients) {
+      if (basePlate.ingredients
+              .indexWhere((newIng) => newIng.title == ingredient.title) ==
+          -1) {
+        emptyPlate.ingredients.add(ingredient);
+      }
     }
 
-    // Compare the properties and return a new Plate with the differences
-    // String? id = plate.id != matchingPlate.id ? plate.id : null;
-    String? code = plate.code != matchingPlate.code ? plate.code : null;
-    String? name = plate.name != matchingPlate.name ? plate.name : null;
-    List<Ingredient>? ingredients;
-    if (plate.ingredients.length != matchingPlate.ingredients.length ||
-        !plate.ingredients.every(
-          (ingredient) => matchingPlate.ingredients
-              .any((ing) => ing.name == ingredient.name),
-        )) {
-      ingredients = plate.ingredients;
-    }
-    List<SideDish>? extras;
-    if ((plate.extras?.length ?? 0) != (matchingPlate.extras?.length ?? 0) ||
-        !plate.extras!.every((extra) =>
-            matchingPlate.extras!.any((ext) => ext.name == extra.name))) {
-      extras = plate.extras;
-    }
-    double? cost = plate.cost != matchingPlate.cost ? plate.cost : null;
-    PlateQuantity? quantity =
-        plate.quantity != matchingPlate.quantity ? plate.quantity : null;
+    // if(basePlate.code )
 
-    return Plate(
-      id: uid,
-      code: code ?? matchingPlate.code,
-      name: name ?? matchingPlate.name,
-      ingredients: ingredients ?? matchingPlate.ingredients,
-      extras: extras ?? matchingPlate.extras,
-      cost: cost ?? matchingPlate.cost,
-      quantity: quantity ?? matchingPlate.quantity,
-    );
+    return emptyPlate;
   }
 
   static String get uid => Uuid().v4();

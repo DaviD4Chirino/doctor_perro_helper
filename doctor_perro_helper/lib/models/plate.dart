@@ -61,6 +61,83 @@ class Plate {
     );
   }
 
+  Plate getDifferences(Plate otherPlate) {
+    List<Ingredient> ingredientDifferences = [];
+    List<SideDish>? extraDifferences;
+
+    // Map ingredients by title for quick lookup
+    /* Map<String, Ingredient> ingredientMap = {
+      for (var ingredient in ingredients) ingredient.title: ingredient
+    }; */
+    Map<String, Ingredient> otherIngredientMap = {
+      for (var ingredient in otherPlate.ingredients)
+        ingredient.title: ingredient
+    };
+
+    // Find ingredients that are in this plate but not in the other plate
+    for (var ingredient in ingredients) {
+      if (!otherIngredientMap.containsKey(ingredient.title) ||
+          (ingredient.quantity?.amount ?? 1.0) !=
+              otherIngredientMap[ingredient.title]?.quantity?.amount) {
+        ingredientDifferences.add(ingredient);
+      }
+    }
+
+    // Find ingredients that are in the other plate but not in this plate
+    /* for (var ingredient in otherPlate.ingredients) {
+      if (!ingredientMap.containsKey(ingredient.title) ||
+          (ingredient.quantity?.amount ?? 1.0) !=
+              ingredientMap[ingredient.title]?.quantity?.amount) {
+        ingredientDifferences.add(ingredient);
+      }
+    } */
+
+    if (extras != null && otherPlate.extras != null) {
+      extraDifferences = [];
+
+      // Map extras by name for quick lookup
+      /*  Map<String, SideDish> extraMap = {
+        for (var extra in extras!) extra.name: extra
+      }; */
+      Map<String, SideDish> otherExtraMap = {
+        for (var extra in otherPlate.extras!) extra.name: extra
+      };
+
+      // Find extras that are in this plate but not in the other plate
+      for (var extra in extras!) {
+        if (!otherExtraMap.containsKey(extra.name) ||
+            (extra.quantity?.amount ?? 1.0) !=
+                otherExtraMap[extra.name]?.quantity?.amount) {
+          extraDifferences.add(extra);
+        }
+      }
+
+      // Find extras that are in the other plate but not in this plate
+      /*  for (var extra in otherPlate.extras!) {
+        if (!extraMap.containsKey(extra.name) ||
+            (extra.quantity?.amount ?? 1.0) !=
+                extraMap[extra.name]?.quantity?.amount) {
+          extraDifferences.add(extra);
+        }
+      } */
+    } else if (extras != null) {
+      extraDifferences = List.from(extras!);
+    } else if (otherPlate.extras != null) {
+      extraDifferences = List.from(otherPlate.extras!);
+    }
+
+    return Plate(
+      id: otherPlate.id,
+      code: otherPlate.code,
+      name: otherPlate.name,
+      ingredients: ingredientDifferences,
+      extras: extraDifferences,
+      cost:
+          0.0, // Cost can be set to 0.0 or calculated based on the differences
+      quantity: otherPlate.quantity, // Default quantity
+    );
+  }
+
   void replaceIngredient(Ingredient oldIngredient, Ingredient newIngredient) {
     final int index = ingredients.indexOf(oldIngredient);
 

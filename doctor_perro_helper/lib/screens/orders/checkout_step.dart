@@ -1,4 +1,6 @@
 import 'package:data_table_2/data_table_2.dart';
+import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
+import 'package:doctor_perro_helper/models/ingredient.dart';
 import 'package:doctor_perro_helper/models/mixins/plate_mixin.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
@@ -49,6 +51,9 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep> with PlateMixin {
         child: DataTable2(
           dataTextStyle: theme.textTheme.titleSmall,
           headingTextStyle: theme.textTheme.titleMedium,
+          headingRowHeight: 100,
+          // lmRatio: 0.1,
+          dataRowHeight: 150,
           columns: [
             DataColumn2(
               label: Text("Total\nTotal en bolivares"),
@@ -62,41 +67,16 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep> with PlateMixin {
             ),
           ],
           rows: [
-            const DataRow(
-              cells: [
-                DataCell(Text("Same Plates")),
-                DataCell(
-                  Text(""),
-                ),
-              ],
-            ),
-            ...mergedPlates["same_plates"]!.map(
-              (Plate plate) {
-                return DataRow(
-                  cells: [
-                    DataCell(Text(plate.title)),
-                    DataCell(
-                      Text("${plate.price.removePaddingZero()}\$"),
-                    ),
-                  ],
-                );
-              },
-            ),
-            const DataRow(
-              cells: [
-                DataCell(Text("Unique Plates")),
-                DataCell(
-                  Text(""),
-                ),
-              ],
-            ),
             ...mergedPlates2.map(
               (Plate plate) {
+                Plate dif = plate.getDifferences(plate.base);
+
                 return DataRow(
                   cells: [
-                    DataCell(Text(plate.title)),
+                    DataCell(Text(
+                        "${plate.title}\n${dif.ingredientsTitles.replaceAll(",", "\n")}")),
                     DataCell(
-                      Text("${plate.price.removePaddingZero()}\$"),
+                      Text(plate.price.removePaddingZero()),
                     ),
                   ],
                 );
