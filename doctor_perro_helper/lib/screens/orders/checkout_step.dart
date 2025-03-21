@@ -7,6 +7,7 @@ import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/providers/menu_order_provider.dart';
 import 'package:doctor_perro_helper/utils/extensions/double_extensions.dart';
 import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
+import 'package:doctor_perro_helper/widgets/reusables/differences_in_plate.dart';
 import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,8 +24,7 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep> with PlateMixin {
 
   late MenuOrder draftedOrder;
 
-  late Map<String, List<Plate>> mergedPlates = merge(draftedOrder.plates);
-  late List<Plate> mergedPlates2 = mergePlates(draftedOrder.plates);
+  // late List<Plate> mergedPlates2 = mergePlates(draftedOrder.plates);
 
   @override
   void didChangeDependencies() {
@@ -48,7 +48,8 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep> with PlateMixin {
         ),
       ),
       child: Expanded(
-        child: DataTable2(
+        child: Container(),
+        /* child: DataTable2(
           dataTextStyle: theme.textTheme.titleSmall,
           headingTextStyle: theme.textTheme.titleMedium,
           headingRowHeight: 100,
@@ -69,11 +70,35 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep> with PlateMixin {
           rows: [
             ...mergedPlates2.map(
               (Plate plate) {
+                // Get the differences plate
+
+                return DataRow(
+                  cells: [
+                    DataCell(Text(plate.title)),
+                    DataCell(
+                      DifferencesInPlate(
+                        plate: plate,
+                      ),
+                    ),
+                  ],
+                ); /*
+
                 String difIngListTitles = plate.modifiedIngredients
                     .map(
                       (e) => e.title,
                     )
                     .join("\n");
+
+                if (plate.quantity.amount > 1) {
+                  return DataRow(
+                    cells: [
+                      DataCell(Text(plate.title)),
+                      DataCell(
+                        Text(plate.price.removePaddingZero()),
+                      ),
+                    ],
+                  );
+                }
 
                 return DataRow(
                   cells: [
@@ -82,7 +107,7 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep> with PlateMixin {
                       Text(plate.price.removePaddingZero()),
                     ),
                   ],
-                );
+                ); */
               },
             ),
             /* ...mergedPlates["merged_plates"]!.map(
@@ -99,7 +124,7 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep> with PlateMixin {
             ),
            */
           ],
-        ),
+        ), */
       ),
     );
   }

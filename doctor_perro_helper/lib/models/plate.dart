@@ -134,7 +134,7 @@ class Plate {
       extras: extraDifferences,
       cost:
           0.0, // Cost can be set to 0.0 or calculated based on the differences
-      quantity: otherPlate.quantity, // Default quantity
+      quantity: PlateQuantity(amount: 1), // Default quantity
     );
   }
 
