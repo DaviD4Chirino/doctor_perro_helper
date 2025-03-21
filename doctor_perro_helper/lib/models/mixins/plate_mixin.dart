@@ -1,37 +1,78 @@
 import 'package:doctor_perro_helper/models/plate.dart';
+import 'package:doctor_perro_helper/models/plate_quantity.dart';
 
 mixin PlateMixin {
-  /// Combines the same plates into a single plate of the correct amount,
-  /// and makes a new plate on the array if its different
-  List<Plate> merge(List<Plate> plates) {
-    if (plates.isEmpty) {
-      return plates;
+  List<Plate> mergePlates(List<Plate> plates) {
+    Map<String, Plate> plateMap = {};
+
+    for (var plate in plates) {
+      Plate? existingPlate = plateMap[plate.ingredientsTitles];
+      if (existingPlate != null) {
+        double newAmount =
+            existingPlate.quantity.amount + plate.quantity.amount;
+        plateMap[plate.ingredientsTitles] = existingPlate.amount(newAmount);
+      } else {
+        plateMap[plate.ingredientsTitles] = plate;
+      }
     }
 
+    return plateMap.values.toList();
+  }
+
+  /// Combines the same plates into a single plate of the correct amount,
+  /// and makes a new plate on the array if its different
+  Map<String, List<Plate>> merge(List<Plate> plates) {
     /// Plates that haven't changed compared on their base
     List<Plate> samePlates = [];
 
     /// Plates that have changed
     List<Plate> uniquePlates = [];
 
-    for (Plate plate in plates) {
-      Plate basePlate = plate.base;
+    if (hasChanges(plates.first, plates.first.base)) {
+      uniquePlates.add(plates.first);
+    } else {
+      samePlates.add(plates.first);
+    }
 
-      for (Plate uniquePlate in uniquePlates) {}
+    for (int k = 1; k < plates.length; k++) {
+      Plate plate = plates[k];
+      for (int i = 0; i < uniquePlates.length; i++) {
+        Plate uniquePlate = uniquePlates[i];
+        if (uniquePlate.ingredientsTitles == plate.ingredientsTitles) {
+          uniquePlates[i] = uniquePlate
+              .amount(uniquePlate.quantity.amount + plate.quantity.amount);
+          break;
+        }
+      }
 
-      if (hasChanges(basePlate, plate)) {
-        uniquePlates.add(plate);
-      } else {
-        samePlates.add(plate);
+      for (int j = 0; j < samePlates.length; j++) {
+        Plate samePlate = samePlates[j];
+
+        if (samePlate.ingredientsTitles == plate.ingredientsTitles) {
+          samePlates[j] = samePlate
+              .amount(samePlate.quantity.amount + plate.quantity.amount);
+          break;
+        }
       }
     }
 
-    return uniquePlates;
+    return {
+      "unique_plates": uniquePlates,
+      "same_plates": samePlates,
+    };
+  }
+
+  bool arePlatesSame(Plate plate1, Plate plate2) {
+    return plate1.code == plate2.code &&
+        plate1.ingredientsTitles == plate2.ingredientsTitles &&
+        ((plate1.extras?.length ?? 0) == (plate2.extras?.length ?? 0) &&
+            plate1.extras!.every((extra) =>
+                plate2.extras!.any((ext) => ext.name == extra.name)));
   }
 
   /// Combines all the plates with the same code into a single plate
   /// with the numbered amount
-  List<Plate> flatten(List<Plate> plates) {
+  List<Plate> flattenPlates(List<Plate> plates) {
     if (plates.isEmpty) {
       return plates;
     }
@@ -46,7 +87,7 @@ mixin PlateMixin {
 
         if (flatPlate.code == plate.code) {
           flattenedPlates[i] = flatPlate.base
-              .amount(flatPlate.quantity.amount + (plate.quantity.amount));
+              .amount(flatPlate.quantity.amount + plate.quantity.amount);
           found = true;
           break;
         }

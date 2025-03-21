@@ -21,7 +21,8 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep> with PlateMixin {
 
   late MenuOrder draftedOrder;
 
-  late List<Plate> mergedPlates = flatten(draftedOrder.plates);
+  late Map<String, List<Plate>> mergedPlates = merge(draftedOrder.plates);
+  late List<Plate> mergedPlates2 = mergePlates(draftedOrder.plates);
 
   @override
   void didChangeDependencies() {
@@ -61,7 +62,35 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep> with PlateMixin {
             ),
           ],
           rows: [
-            ...mergedPlates.map(
+            const DataRow(
+              cells: [
+                DataCell(Text("Same Plates")),
+                DataCell(
+                  Text(""),
+                ),
+              ],
+            ),
+            ...mergedPlates["same_plates"]!.map(
+              (Plate plate) {
+                return DataRow(
+                  cells: [
+                    DataCell(Text(plate.title)),
+                    DataCell(
+                      Text("${plate.price.removePaddingZero()}\$"),
+                    ),
+                  ],
+                );
+              },
+            ),
+            const DataRow(
+              cells: [
+                DataCell(Text("Unique Plates")),
+                DataCell(
+                  Text(""),
+                ),
+              ],
+            ),
+            ...mergedPlates2.map(
               (Plate plate) {
                 return DataRow(
                   cells: [
