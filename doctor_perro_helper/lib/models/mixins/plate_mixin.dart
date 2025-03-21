@@ -3,47 +3,30 @@ import 'package:doctor_perro_helper/models/plate.dart';
 mixin PlateMixin {
   /// Combines the same plates into a single plate of the correct amount,
   /// and makes a new plate on the array if its different
-  Map<String, List<Plate>> merge(List<Plate> plates) {
+  List<Plate> merge(List<Plate> plates) {
+    if (plates.isEmpty) {
+      return plates;
+    }
+
+    /// Plates that haven't changed compared on their base
     List<Plate> samePlates = [];
+
+    /// Plates that have changed
     List<Plate> uniquePlates = [];
 
     for (Plate plate in plates) {
-      for (int i = 0; i < samePlates.length; i++) {
-        Plate samePlate = samePlates[i];
-        // safety
-        if (samePlate.code != plate.code) continue;
-        if (samePlate.title != plate.title) continue;
-        if (samePlate.ingredientsTitles != plate.ingredientsTitles) continue;
+      Plate basePlate = plate.base;
 
-        Plate newPlate = samePlate
-            .withUniqueId()
-            .amount(samePlate.quantity.amount + plate.quantity.amount);
-        samePlates.removeAt(i);
-        samePlates[i] = newPlate;
-      }
-      /* bool found = false;
-      for (int i = 0; i < samePlates.length; i++) {
-        Plate mergedPlate = samePlates[i];
+      for (Plate uniquePlate in uniquePlates) {}
 
-        if (plate.ingredientsTitles == mergedPlate.ingredientsTitles) {
-          Plate newPlate = samePlates
-              .removeAt(i)
-              .amount(mergedPlate.quantity.amount + plate.quantity.amount);
-          samePlates.add(newPlate);
-          found = true;
-          break;
-        }
-      }
-
-      if (!found) {
+      if (hasChanges(basePlate, plate)) {
         uniquePlates.add(plate);
-      } */
+      } else {
+        samePlates.add(plate);
+      }
     }
 
-    return {
-      'merged_plates': samePlates,
-      'unique_plates': flatten(uniquePlates),
-    };
+    return uniquePlates;
   }
 
   /// Combines all the plates with the same code into a single plate
@@ -54,7 +37,6 @@ mixin PlateMixin {
     }
 
     List<Plate> flattenedPlates = [plates.first.base.amount(0)];
-    List<Plate> platesToAdd = [];
 
     for (Plate plate in plates) {
       bool found = false;
@@ -90,8 +72,35 @@ mixin PlateMixin {
         flattenedPlates.add(plate);
       }
     }
-    flattenedPlates.addAll(platesToAdd);
 
     return flattenedPlates;
+  }
+
+  bool hasChanges(Plate plate1, Plate plate2) {
+    if (plate1.code != plate2.code ||
+            plate1.name != plate2.name ||
+            plate1.cost != plate2.cost
+        // quantity needs their own function
+        // || plate1.quantity != plate2.quantity
+        ) {
+      return true;
+    }
+
+    if (plate1.ingredients.length != plate2.ingredients.length ||
+        !plate1.ingredients.every(
+          (ingredient) =>
+              plate2.ingredients.any((ing) => ing.name == ingredient.name),
+        )) {
+      return true;
+    }
+
+    if ((plate1.extras?.length ?? 0) != (plate2.extras?.length ?? 0) ||
+        !plate1.extras!.every(
+          (extra) => plate2.extras!.any((ext) => ext.name == extra.name),
+        )) {
+      return true;
+    }
+
+    return false;
   }
 }
