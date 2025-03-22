@@ -51,6 +51,11 @@ class Ingredient {
 
   Ingredient get base => IngredientsList.getByCode(name)!;
 
+  bool get hasChanged => IngredientsList.getByCode(name) != null
+      ? (IngredientsList.getByCode(name)!.quantity?.amount ?? 1.0) !=
+          (quantity?.amount ?? 1.0)
+      : false;
+
   double get price => cost * (quantity?.amount ?? 1);
 
   String get title {

@@ -185,6 +185,42 @@ class Plate {
     return list.join(", ");
   }
 
+  Plate increaseAmount(double increment) {
+    return copyWith(
+      ingredients: ingredients
+          .map((Ingredient ing) => ing.amount(
+                (ing.quantity?.amount ?? 1.0) + increment,
+              ))
+          .toList(),
+      extras: extras
+          ?.map((SideDish ing) => ing.amount(
+                (ing.quantity?.amount ?? 1.0) + increment,
+              ))
+          .toList(),
+      quantity: PlateQuantity(
+        amount: quantity.amount + increment,
+      ),
+    );
+  }
+
+  Plate decreaseAmount(double decrement) {
+    return copyWith(
+      ingredients: ingredients
+          .map((Ingredient ing) => ing.amount(
+                (ing.quantity?.amount ?? 1.0) - decrement,
+              ))
+          .toList(),
+      extras: extras
+          ?.map((SideDish ing) => ing.amount(
+                (ing.quantity?.amount ?? 1.0) - decrement,
+              ))
+          .toList(),
+      quantity: PlateQuantity(
+        amount: quantity.amount - decrement,
+      ),
+    );
+  }
+
   /// The cost of the plate + their extras, ingredient cost are ignore bc
   /// Kory is an lazy MF
   /// ????????

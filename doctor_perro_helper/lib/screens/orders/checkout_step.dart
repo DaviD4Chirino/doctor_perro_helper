@@ -24,7 +24,7 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep> with PlateMixin {
 
   late MenuOrder draftedOrder;
 
-  // late List<Plate> mergedPlates2 = mergePlates(draftedOrder.plates);
+  late List<Plate> mergedPlates = mergePlates(draftedOrder.plates);
 
   @override
   void didChangeDependencies() {
@@ -48,7 +48,21 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep> with PlateMixin {
         ),
       ),
       child: Expanded(
-        child: Container(),
+        child: Column(
+          children: [
+            ...mergedPlates.map((plate) {
+              return Column(
+                children: [
+                  Text(plate.title),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Text(plate.ingredientsTitles.replaceAll(", ", "\n")),
+                ],
+              );
+            })
+          ],
+        ),
         /* child: DataTable2(
           dataTextStyle: theme.textTheme.titleSmall,
           headingTextStyle: theme.textTheme.titleMedium,
