@@ -1,6 +1,8 @@
+import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_quantity.dart';
 import 'package:doctor_perro_helper/models/side_dish.dart';
+import 'package:doctor_perro_helper/utils/extensions/double_extensions.dart';
 import 'package:doctor_perro_helper/utils/extensions/plate/plate_extensions.dart';
 import 'package:uuid/uuid.dart';
 
@@ -57,6 +59,15 @@ class PlatePack {
     if (index != -1) {
       extras![index] = newExtra;
     }
+  }
+
+  PlatePack get base {
+    PlatePack? basePack = PlateList.getPackByCode(code);
+
+    if (basePack == null) {
+      throw Exception("This plate of code: $code does not exist in PlateList");
+    }
+    return basePack;
   }
 
   //* If anything goes wrong, look here
@@ -119,7 +130,18 @@ class PlatePack {
   }
 
   /// [Plate] has it and [PlatePack] should too
-  String get title => name;
+  String get title {
+    String suffix = this.quantity.suffix;
+    String prefix = this.quantity.prefix;
+    double amount = this.quantity.amount;
+    double count = this.quantity.count;
+
+    double quantity = count * amount;
+
+    return amount > 1
+        ? "$name $prefix${quantity.removePaddingZero()}$suffix"
+        : name;
+  }
 
   double get price {
     double totalAmount = cost * quantity.amount;

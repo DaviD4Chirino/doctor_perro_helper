@@ -1,13 +1,13 @@
 import 'package:data_table_2/data_table_2.dart';
-import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
-import 'package:doctor_perro_helper/models/ingredient.dart';
+import 'package:doctor_perro_helper/models/mixins/pack_mixin.dart';
 import 'package:doctor_perro_helper/models/mixins/plate_mixin.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
+import 'package:doctor_perro_helper/models/plate_pack.dart';
 import 'package:doctor_perro_helper/models/providers/menu_order_provider.dart';
 import 'package:doctor_perro_helper/utils/extensions/double_extensions.dart';
 import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
-import 'package:doctor_perro_helper/widgets/reusables/differences_in_plate.dart';
+import 'package:doctor_perro_helper/widgets/dolar_price_text.dart';
 import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,12 +19,14 @@ class CheckoutStep extends ConsumerStatefulWidget {
   ConsumerState<CheckoutStep> createState() => _CheckoutStepState();
 }
 
-class _CheckoutStepState extends ConsumerState<CheckoutStep> with PlateMixin {
+class _CheckoutStepState extends ConsumerState<CheckoutStep>
+    with PlateMixin, PackMixin {
   MenuOrderData get menuOrderData => ref.watch(menuOrderNotifierProvider);
 
   late MenuOrder draftedOrder;
 
-  late List<Plate> mergedPlates = mergePlates(draftedOrder.plates);
+  late List<Plate> flattenedPlates = flattenPlates(draftedOrder.plates);
+  late List<PlatePack> flattenedPack = flattenPack(draftedOrder.packs);
 
   @override
   void didChangeDependencies() {
@@ -40,6 +42,7 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep> with PlateMixin {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+
     return Section(
       title: Container(
         color: theme.colorScheme.surfaceContainer,
@@ -48,22 +51,45 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep> with PlateMixin {
         ),
       ),
       child: Expanded(
-        child: Column(
-          children: [
-            ...mergedPlates.map((plate) {
-              return Column(
-                children: [
-                  Text(plate.title),
-                  SizedBox(
-                    height: 8,
+          child: DataTable2(
+        columns: [
+          DataColumn2(
+            label: Text("Costo en dólares:\nCosto en Bolivares:"),
+            size: ColumnSize.L,
+          ),
+          DataColumn2(
+            label: DolarAndBolivarPriceText(price: draftedOrder.price),
+            numeric: true,
+          )
+        ],
+        rows: [
+          ...flattenedPack.map(
+            (PlatePack pack) {
+              return DataRow2(cells: [
+                DataCell(Text(pack.title)),
+                DataCell(
+                  DolarPriceText(
+                    price: pack.price,
                   ),
-                  Text(plate.ingredientsTitles.replaceAll(", ", "\n")),
-                ],
-              );
-            })
-          ],
-        ),
-        /* child: DataTable2(
+                ),
+              ]);
+            },
+          ),
+          ...flattenedPlates.map(
+            (Plate plate) {
+              return DataRow2(cells: [
+                DataCell(Text(plate.title)),
+                DataCell(
+                  DolarPriceText(
+                    price: plate.price,
+                  ),
+                ),
+              ]);
+            },
+          ),
+        ],
+      )
+          /* child: DataTable2(
           dataTextStyle: theme.textTheme.titleSmall,
           headingTextStyle: theme.textTheme.titleMedium,
           headingRowHeight: 100,
@@ -139,7 +165,7 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep> with PlateMixin {
            */
           ],
         ), */
-      ),
+          ),
     );
   }
 }
