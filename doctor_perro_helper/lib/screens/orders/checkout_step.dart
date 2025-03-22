@@ -50,45 +50,52 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep>
         ),
       ),
       child: Expanded(
-          child: DataTable2(
-        columns: [
-          DataColumn2(
-            label: Text("Costo en dólares:\nCosto en Bolivares:"),
-            size: ColumnSize.L,
-          ),
-          DataColumn2(
-            label: DolarAndBolivarPriceText(price: draftedOrder.price),
-            numeric: true,
-          )
-        ],
-        rows: [
-          ...packs.map(
-            (PlatePack pack) {
-              return DataRow2(cells: [
-                DataCell(Text(pack.title)),
-                DataCell(
-                  DolarPriceText(
-                    price: pack.price,
+        child: DataTable2(
+          lmRatio: 0.8,
+          columns: [
+            DataColumn2(
+              label: Text("Costo en dólares:\nCosto en Bolivares:"),
+              size: ColumnSize.L,
+            ),
+            DataColumn2(
+              label: DolarAndBolivarPriceText(price: draftedOrder.price),
+              numeric: true,
+            )
+          ],
+          rows: [
+            DataRow2(cells: [
+              DataCell(Text("Dirección:")),
+              DataCell(
+                Text(draftedOrder.direction),
+              ),
+            ]),
+            ...packs.map(
+              (PlatePack pack) {
+                return DataRow2(cells: [
+                  DataCell(Text(pack.title)),
+                  DataCell(
+                    DolarPriceText(
+                      price: pack.price,
+                    ),
                   ),
-                ),
-              ]);
-            },
-          ),
-          ...plates.map(
-            (Plate plate) {
-              return DataRow2(cells: [
-                DataCell(Text(plate.title)),
-                DataCell(
-                  DolarPriceText(
-                    price: plate.price,
+                ]);
+              },
+            ),
+            ...plates.map(
+              (Plate plate) {
+                return DataRow2(cells: [
+                  DataCell(Text(plate.title)),
+                  DataCell(
+                    DolarPriceText(
+                      price: plate.price,
+                    ),
                   ),
-                ),
-              ]);
-            },
-          ),
-        ],
-      )
-          /* child: DataTable2(
+                ]);
+              },
+            ),
+          ],
+        ),
+        /* child: DataTable2(
           dataTextStyle: theme.textTheme.titleSmall,
           headingTextStyle: theme.textTheme.titleMedium,
           headingRowHeight: 100,
@@ -164,7 +171,7 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep>
            */
           ],
         ), */
-          ),
+      ),
     );
   }
 }

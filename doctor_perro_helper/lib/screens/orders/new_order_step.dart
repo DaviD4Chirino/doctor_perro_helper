@@ -109,7 +109,12 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
           child: ListView(
             physics: BouncingScrollPhysics(),
             children: [
-              InputOrderDirection(),
+              InputOrderDirection(
+                onSubmitted: (text) {
+                  draftedOrder = draftedOrder.copyWith(direction: text);
+                  /* draftedOrder = MenuOrder(packs: selectedPacks, plates: selectedPlates); */
+                },
+              ),
               // SizedBox(height: Sizes().xxxl),
               packSection(columnTitleStyle),
               plateSection(columnTitleStyle),
