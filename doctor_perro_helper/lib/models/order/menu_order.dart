@@ -1,3 +1,5 @@
+import 'package:doctor_perro_helper/models/mixins/pack_mixin.dart';
+import 'package:doctor_perro_helper/models/mixins/plate_mixin.dart';
 import 'package:doctor_perro_helper/models/order/menu_order_status.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
@@ -6,7 +8,7 @@ import 'package:doctor_perro_helper/utils/extensions/plate/plate_extensions.dart
 import 'package:doctor_perro_helper/utils/extensions/platepack_extensions.dart';
 
 /// Order as in; an order of french fries
-class MenuOrder {
+class MenuOrder with PlateMixin, PackMixin {
   MenuOrder({
     required this.plates,
     required this.packs,
@@ -93,6 +95,11 @@ class MenuOrder {
   MenuOrder create() {
     return MenuOrder(plates: plates, packs: packs);
   }
+
+  MenuOrder get flatOrder => MenuOrder(
+        packs: flattenPack(packs),
+        plates: flattenPlates(plates),
+      );
 
   /// returns the [plate] array but with repeated [Plates]
   /// for each amount.

@@ -1,5 +1,4 @@
 import 'package:doctor_perro_helper/models/plate.dart';
-import 'package:doctor_perro_helper/models/plate_quantity.dart';
 
 mixin PlateMixin {
   List<Plate> mergePlates(List<Plate> plates) {

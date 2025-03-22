@@ -1,8 +1,5 @@
 import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
-import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
-import 'package:doctor_perro_helper/models/plate_quantity.dart';
-import 'package:doctor_perro_helper/models/side_dish.dart';
 
 extension PlatePackExtensions on PlatePack {
   List<PlatePack> spread() {

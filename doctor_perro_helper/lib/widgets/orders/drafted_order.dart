@@ -2,15 +2,15 @@ import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DraftedOrder extends ConsumerWidget {
+class DraftedOrder extends StatelessWidget {
   const DraftedOrder({super.key, required this.order});
 
   final MenuOrder order;
+  MenuOrder get flatOrder => order.flatOrder;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
@@ -26,9 +26,9 @@ class DraftedOrder extends ConsumerWidget {
       child: ListTile(
         titleAlignment: ListTileTitleAlignment.top,
         trailing: DolarAndBolivarPriceText(
-          price: order.price,
+          price: flatOrder.price,
         ),
-        title: Text(order.codeList),
+        title: Text(flatOrder.codeList),
 
         /* subtitle: Column(
           children: [

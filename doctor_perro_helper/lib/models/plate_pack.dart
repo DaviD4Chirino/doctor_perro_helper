@@ -22,7 +22,6 @@ class PlatePack {
   PlatePack amount(
     double amount, {
     bool exponential = false,
-    bool exponentialPlate = true,
     bool exponentialIngredient = true,
 
     /// If true, the ingredients (and extras) will be treated as if
@@ -30,20 +29,19 @@ class PlatePack {
     bool ingredientsAsSinglePlate = false,
   }) {
     double prevAmount = quantity.amount;
-    double newAmount = exponential ? prevAmount * amount : amount;
 
     return copyWith(
       plates: plates
           .map((Plate plate) => plate.amount(
-                newAmount,
-                exponential: exponential,
-                exponentialIngredient: exponentialPlate,
-                ingredientsAsSinglePlate: ingredientsAsSinglePlate,
+                ingredientsAsSinglePlate ? plate.quantity.amount : amount,
+                exponential: exponentialIngredient,
               ))
           .toList(),
       extras: extras
           ?.map((SideDish extra) => extra.amount(
-                newAmount,
+                ingredientsAsSinglePlate
+                    ? (extra.quantity?.amount ?? 1.0)
+                    : amount,
                 exponential: exponentialIngredient,
               ))
           .toList(),
