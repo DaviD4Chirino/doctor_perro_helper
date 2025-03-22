@@ -25,8 +25,8 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep>
 
   late MenuOrder draftedOrder;
 
-  late List<Plate> flattenedPlates = flattenPlates(draftedOrder.plates);
-  late List<PlatePack> flattenedPack = flattenPack(draftedOrder.packs);
+  late List<Plate> plates = mergePlates(draftedOrder.plates);
+  late List<PlatePack> packs = draftedOrder.packSpread;
 
   @override
   void didChangeDependencies() {
@@ -63,7 +63,7 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep>
           )
         ],
         rows: [
-          ...flattenedPack.map(
+          ...packs.map(
             (PlatePack pack) {
               return DataRow2(cells: [
                 DataCell(Text(pack.title)),
@@ -75,7 +75,7 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep>
               ]);
             },
           ),
-          ...flattenedPlates.map(
+          ...plates.map(
             (Plate plate) {
               return DataRow2(cells: [
                 DataCell(Text(plate.title)),

@@ -19,20 +19,35 @@ class PlatePack {
     this.id = "",
   });
 
-  PlatePack amount(double amount, {bool exponential = false}) {
-    // This should always be non null
-    // PlatePack thisPack = PlateList.getPackByCode(code) as PlatePack;s
+  PlatePack amount(
+    double amount, {
+    bool exponential = false,
+    bool exponentialPlate = true,
+    bool exponentialIngredient = true,
 
+    /// If true, the ingredients (and extras) will be treated as if
+    /// the amount is 1
+    bool ingredientsAsSinglePlate = false,
+  }) {
     double prevAmount = quantity.amount;
+    double newAmount = exponential ? prevAmount * amount : amount;
 
     return copyWith(
       plates: plates
-          .map((Plate plate) => plate.amount(amount, exponential: true))
+          .map((Plate plate) => plate.amount(
+                newAmount,
+                exponential: exponential,
+                exponentialIngredient: exponentialPlate,
+                ingredientsAsSinglePlate: ingredientsAsSinglePlate,
+              ))
           .toList(),
       extras: extras
-          ?.map((SideDish extra) => extra.amount(amount, exponential: true))
+          ?.map((SideDish extra) => extra.amount(
+                newAmount,
+                exponential: exponentialIngredient,
+              ))
           .toList(),
-      quantity: quantity.copyWith(
+      quantity: PlateQuantity(
         amount: exponential ? prevAmount * amount : amount,
       ),
     );
@@ -162,7 +177,7 @@ class PlatePack {
   List<Plate> get platesSpread {
     List<Plate> newPlates = [];
     for (Plate plate in plates) {
-      newPlates.addAll(plate.spread());
+      newPlates.addAll(plate.spread(withExtras: false));
     }
     id = uid;
     return newPlates;

@@ -4,17 +4,18 @@ import 'package:doctor_perro_helper/models/plate.dart';
 extension PlateExtensions on Plate {
   /// Returns a new list of length of the amount,
   /// and for each amount this plate but brand new
-  List<Plate> spread() {
+  List<Plate> spread({bool withExtras = true}) {
     if (quantity.amount <= 1) {
       return [this];
     }
 
     List<Plate> list = [];
 
-    for (var i = 0; i < quantity.amount; i++) {
+    for (int i = 0; i < quantity.amount; i++) {
+      Plate plate = PlateList.getPlateByCode(code)!;
       // We know this is a real plate
       list.add(
-        PlateList.getPlateByCode(code)!.amount(1).withUniqueId(),
+        (withExtras ? plate : plate.withoutExtras()).amount(1).withUniqueId(),
       );
     }
 

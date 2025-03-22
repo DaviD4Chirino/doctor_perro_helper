@@ -6,13 +6,16 @@ mixin PlateMixin {
     Map<String, Plate> plateMap = {};
 
     for (var plate in plates) {
-      Plate? existingPlate = plateMap[plate.ingredientsTitles];
+      String searchString =
+          "${plate.ingredientsTitles}${plate.extrasTitleList}";
+
+      Plate? existingPlate = plateMap[searchString];
       if (existingPlate != null) {
         double newAmount =
             existingPlate.quantity.amount + plate.quantity.amount;
-        plateMap[plate.ingredientsTitles] = existingPlate.amount(newAmount);
+        plateMap[searchString] = existingPlate.amount(newAmount);
       } else {
-        plateMap[plate.ingredientsTitles] = plate;
+        plateMap[searchString] = plate;
       }
     }
 
