@@ -5,6 +5,7 @@ import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
 import 'package:doctor_perro_helper/models/providers/menu_order_provider.dart';
 import 'package:doctor_perro_helper/widgets/orders/drafted_order.dart';
+import 'package:doctor_perro_helper/widgets/orders/input_order_direction.dart';
 import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:doctor_perro_helper/widgets/reusables/swipeable_pack.dart';
 import 'package:doctor_perro_helper/widgets/reusables/swipeable_plate.dart';
@@ -108,7 +109,7 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
           child: ListView(
             physics: BouncingScrollPhysics(),
             children: [
-              // InputOrderDirection(),
+              InputOrderDirection(),
               // SizedBox(height: Sizes().xxxl),
               packSection(columnTitleStyle),
               plateSection(columnTitleStyle),
@@ -223,22 +224,6 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
             },
           )
         ],
-      ),
-    );
-  }
-}
-
-class InputOrderDirection extends StatelessWidget {
-  const InputOrderDirection({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      decoration: InputDecoration(
-        border: UnderlineInputBorder(),
-        label: Text("Dirección"),
       ),
     );
   }
