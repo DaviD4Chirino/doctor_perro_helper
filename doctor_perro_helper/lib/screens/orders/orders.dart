@@ -1,7 +1,12 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
+import 'package:doctor_perro_helper/models/mixins/time_mixin.dart';
+import 'package:doctor_perro_helper/models/order/menu_order.dart';
+import 'package:doctor_perro_helper/models/providers/menu_order_provider.dart';
 import 'package:doctor_perro_helper/models/routes.dart';
+import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
 import 'package:doctor_perro_helper/widgets/reusables/Section.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class Orders extends StatelessWidget {
   const Orders({super.key});
@@ -17,52 +22,66 @@ class Orders extends StatelessWidget {
           size: 32.0,
         ),
       ),
-      body: ListView(
-        children: [
-          SizedBox(
-            height: Sizes().xxxl,
-          ),
-          PendingOrders(),
-        ],
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: Sizes().large),
+        child: ListView(
+          children: [
+            SizedBox(
+              height: Sizes().xxxl,
+            ),
+            PendingOrders(),
+          ],
+        ),
       ),
     );
   }
 }
 
-class PendingOrders extends StatelessWidget {
+class PendingOrders extends ConsumerWidget {
   const PendingOrders({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    var themeContext = Theme.of(context);
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: Sizes().xxl,
-        ),
-        child: Section(
-          title: Text(
-            "Ordenes Pendientes",
-            style: TextStyle(
-              fontSize: themeContext.textTheme.titleLarge?.fontSize,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          child: const ExpansibleOrder(),
+  Widget build(BuildContext context, WidgetRef ref) {
+    MenuOrderData menuOrderProvider = ref.watch(menuOrderNotifierProvider);
+    final ThemeData theme = Theme.of(context);
+
+    return Section(
+      title: Text(
+        "Ordenes Pendientes",
+        style: TextStyle(
+          fontSize: theme.textTheme.titleLarge?.fontSize,
+          fontWeight: FontWeight.bold,
         ),
       ),
+      child: menuOrderProvider.history != null &&
+              menuOrderProvider.history!.isNotEmpty
+          ? Column(
+              children: menuOrderProvider.history!
+                  .map(
+                    (MenuOrder e) => ExpansibleOrder(
+                      order: e,
+                    ),
+                  )
+                  .toList(),
+            )
+          : const Center(
+              child: Text("No pending orders"),
+            ),
     );
   }
 }
 
+// ignore: must_be_immutable
 class ExpansibleOrder extends StatefulWidget {
-  const ExpansibleOrder({super.key});
+  ExpansibleOrder({super.key, required this.order});
+
+  MenuOrder order;
 
   @override
   State<ExpansibleOrder> createState() => _ExpansibleOrderState();
 }
 
-class _ExpansibleOrderState extends State<ExpansibleOrder> {
+class _ExpansibleOrderState extends State<ExpansibleOrder> with TimeMixin {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -72,33 +91,20 @@ class _ExpansibleOrderState extends State<ExpansibleOrder> {
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.max,
       children: [
-        ExpansionTile(
-          enableFeedback: true,
-          expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
-          leading: Column(
-            children: [
-              Text(
-                "12\$",
-                style: TextStyle(
-                  fontSize: theme.textTheme.titleLarge?.fontSize,
-                ),
-              ),
-              Text(
-                "430.5bs",
-                style: TextStyle(
-                  fontSize: theme.textTheme.labelSmall?.fontSize,
-                ),
-              ),
-            ],
+        ListTile(
+          leading: DolarAndBolivarPriceText(price: widget.order.price),
+          title: Text(
+            getRelativeTime(widget.order.timeMade),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          title: const Text("30 minutes ago",
-              style: TextStyle(fontWeight: FontWeight.bold)),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("4R1 - E1 - 2R3 - 1R4"),
+              Text(widget.order.codeList),
               Text(
-                "Calle Jabonería Casa 11",
+                widget.order.direction,
                 style: TextStyle(
                   fontSize: theme.textTheme.labelSmall?.fontSize,
                   color: theme.colorScheme.onSurface.withAlpha(150),
@@ -106,31 +112,6 @@ class _ExpansibleOrderState extends State<ExpansibleOrder> {
               ),
             ],
           ),
-          children: [
-            ListTile(
-              title: const Text("1R1:"),
-              subtitle: Padding(
-                padding: EdgeInsets.only(left: Sizes().xxxl),
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "- Poca Mostaza",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                    Text(
-                      "- Sin Queso",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                    Text(
-                      "+ 150g de Papas",
-                      style: TextStyle(color: Colors.green),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
         ),
         Row(
           mainAxisSize: MainAxisSize.min,

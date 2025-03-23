@@ -52,6 +52,7 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
 
   set index(int idx) {
     if (idx >= 3) {
+      menuOrderNotifier.pushDraftedOrder();
       Navigator.pop(context);
     }
     _index = idx.clamp(0, steps.length - 1);
