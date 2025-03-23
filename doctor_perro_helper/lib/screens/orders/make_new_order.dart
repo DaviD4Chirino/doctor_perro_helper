@@ -73,8 +73,8 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
 
   @override
   void dispose() {
-    _pageController!.dispose();
     super.dispose();
+    _pageController!.dispose();
   }
 
   void onStepContinue() => nextStep;

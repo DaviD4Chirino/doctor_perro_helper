@@ -6,12 +6,12 @@ part of 'menu_order_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$menuOrderNotifierHash() => r'61652840948bd66207953539618b50cb07df66c3';
+String _$menuOrderNotifierHash() => r'4c079b0db52bd49bcfbfd58b9f3d6873ec22149c';
 
 /// See also [MenuOrderNotifier].
 @ProviderFor(MenuOrderNotifier)
 final menuOrderNotifierProvider =
-    AutoDisposeNotifierProvider<MenuOrderNotifier, MenuOrderData>.internal(
+    NotifierProvider<MenuOrderNotifier, MenuOrderData>.internal(
   MenuOrderNotifier.new,
   name: r'menuOrderNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -21,6 +21,6 @@ final menuOrderNotifierProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$MenuOrderNotifier = AutoDisposeNotifier<MenuOrderData>;
+typedef _$MenuOrderNotifier = Notifier<MenuOrderData>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

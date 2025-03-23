@@ -6,15 +6,15 @@ mixin TimeMixin {
     Duration difference = currentTime.difference(timestamp);
 
     if (difference.inSeconds < 60) {
-      return '${difference.inSeconds} seconds ago';
+      return "hace ${difference.inSeconds} segundos";
     } else if (difference.inMinutes < 60) {
-      return '${difference.inMinutes} minutes ago';
+      return "Hace ${difference.inMinutes} ${difference.inMinutes > 1 ? "minutos" : "minuto"}";
     } else if (difference.inHours < 24) {
-      return '${difference.inHours} hours ago';
+      return "Hace ${difference.inHours} ${difference.inHours > 1 ? "horas" : "hora"}";
     } else if (difference.inDays < 7) {
-      return '${difference.inDays} days ago';
+      return "Hace ${difference.inDays} ${difference.inDays > 1 ? "días" : "día"} ";
     } else {
-      return DateFormat('yMMMd').format(timestamp);
+      return DateFormat("yMMMd").format(timestamp);
     }
   }
 }

@@ -53,10 +53,9 @@ class PendingOrders extends ConsumerWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
-      child: menuOrderProvider.history != null &&
-              menuOrderProvider.history!.isNotEmpty
+      child: menuOrderProvider.history.isNotEmpty
           ? Column(
-              children: menuOrderProvider.history!
+              children: menuOrderProvider.history
                   .map(
                     (MenuOrder e) => ExpansibleOrder(
                       order: e,
@@ -123,15 +122,16 @@ class _ExpansibleOrderState extends State<ExpansibleOrder> with TimeMixin {
               ),
             ),
             PopupMenuButton(
-                enableFeedback: true,
-                itemBuilder: (BuildContext context) => [
-                      const PopupMenuItem(
-                        child: Text("Editar orden"),
-                      ),
-                      const PopupMenuItem(
-                        child: Text("Cancelar orden"),
-                      ),
-                    ])
+              enableFeedback: true,
+              itemBuilder: (BuildContext context) => [
+                const PopupMenuItem(
+                  child: Text("Editar orden"),
+                ),
+                const PopupMenuItem(
+                  child: Text("Cancelar orden"),
+                ),
+              ],
+            )
           ],
         ),
       ],

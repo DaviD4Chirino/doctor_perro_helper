@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part "menu_order_provider.g.dart";
 
-@riverpod
+@Riverpod(keepAlive: true)
 class MenuOrderNotifier extends _$MenuOrderNotifier {
   @override
   MenuOrderData build() {
@@ -12,7 +12,7 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
   }
 
   addOrder(MenuOrder newOrder) {
-    List<MenuOrder> newHistory = state.history ?? [];
+    List<MenuOrder> newHistory = state.history;
     MenuOrder order = newOrder;
     order.status = OrderStatus.pending;
     newHistory.add(order);
@@ -34,10 +34,10 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
 }
 
 class MenuOrderData {
-  MenuOrderData({this.draftedOrder, this.history});
+  MenuOrderData({this.draftedOrder, required this.history});
 
   MenuOrder? draftedOrder;
-  List<MenuOrder>? history = [];
+  List<MenuOrder> history = [];
 
   MenuOrderData copyWith({
     MenuOrder? draftedOrder,
