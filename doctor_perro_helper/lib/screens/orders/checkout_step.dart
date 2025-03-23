@@ -11,8 +11,13 @@ import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// ignore: must_be_immutable
 class CheckoutStep extends ConsumerStatefulWidget {
-  const CheckoutStep({super.key});
+  CheckoutStep({super.key, this.onStepCompleted});
+
+  void Function(
+    MenuOrder modifiedOrder,
+  )? onStepCompleted;
 
   @override
   ConsumerState<CheckoutStep> createState() => _CheckoutStepState();
@@ -83,14 +88,16 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep>
             ),
             ...plates.map(
               (Plate plate) {
-                return DataRow2(cells: [
-                  DataCell(Text(plate.title)),
-                  DataCell(
-                    DolarPriceText(
-                      price: plate.price,
+                return DataRow2(
+                  cells: [
+                    DataCell(Text(plate.title)),
+                    DataCell(
+                      DolarPriceText(
+                        price: plate.price,
+                      ),
                     ),
-                  ),
-                ]);
+                  ],
+                );
               },
             ),
           ],

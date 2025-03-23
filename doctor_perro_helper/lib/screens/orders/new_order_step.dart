@@ -50,7 +50,9 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
       widget.onOrderModified!(_draftedOrder);
     }
 
-    if (widget.onStepCompleted != null && order.length > 0) {
+    if (widget.onStepCompleted != null &&
+        order.direction.isNotEmpty &&
+        order.length > 0) {
       widget.onStepCompleted!(_draftedOrder);
     }
 
@@ -63,33 +65,35 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
         selectedPlates
             .removeWhere((Plate existingPlate) => existingPlate.id == plate.id);
 
-        draftedOrder = MenuOrder(packs: selectedPacks, plates: selectedPlates);
+        draftedOrder = draftedOrder.copyWith(plates: selectedPlates);
 
         return;
       }
       selectedPlates
           .removeWhere((Plate existingPlate) => existingPlate.id == plate.id);
       selectedPlates.add(plate);
-      draftedOrder = MenuOrder(packs: selectedPacks, plates: selectedPlates);
+      draftedOrder = draftedOrder.copyWith(plates: selectedPlates);
     });
   }
 
   // ignore: no_leading_underscores_for_local_identifiers
   void onPackSwipe(PlatePack pack, bool positive, double count) {
-    setState(() {
-      if (pack.quantity.amount <= 0.0) {
+    setState(
+      () {
+        if (pack.quantity.amount <= 0.0) {
+          selectedPacks.removeWhere(
+              (PlatePack existingPack) => existingPack.id == pack.id);
+          draftedOrder = draftedOrder.copyWith(packs: selectedPacks);
+
+          // printPlatesPackDebug(packs: order.packs);
+          return;
+        }
         selectedPacks.removeWhere(
             (PlatePack existingPack) => existingPack.id == pack.id);
-        draftedOrder = MenuOrder(packs: selectedPacks, plates: selectedPlates);
-
-        // printPlatesPackDebug(packs: order.packs);
-        return;
-      }
-      selectedPacks
-          .removeWhere((PlatePack existingPack) => existingPack.id == pack.id);
-      selectedPacks.add(pack);
-      draftedOrder = MenuOrder(packs: selectedPacks, plates: selectedPlates);
-    });
+        selectedPacks.add(pack);
+        draftedOrder = draftedOrder.copyWith(packs: selectedPacks);
+      },
+    );
     // printPlatesPackDebug(packs: order.packs);
   }
 
@@ -112,6 +116,9 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
               InputOrderDirection(
                 onSubmitted: (text) {
                   draftedOrder = draftedOrder.copyWith(direction: text);
+                  if (widget.onStepCompleted != null) {
+                    widget.onStepCompleted!(draftedOrder);
+                  }
                   /* draftedOrder = MenuOrder(packs: selectedPacks, plates: selectedPlates); */
                 },
               ),

@@ -1,3 +1,4 @@
+import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:flutter/material.dart';
 
 class InputOrderDirection extends StatefulWidget {
@@ -22,20 +23,22 @@ class _InputOrderDirectionState extends State<InputOrderDirection> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        border: UnderlineInputBorder(),
-        label: Text("Dirección"),
+    return Section(
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          border: UnderlineInputBorder(),
+          label: Text("Dirección"),
+        ),
+        onTapOutside: (event) {
+          widget.onSubmitted(text);
+        },
+        onChanged: (String value) {
+          setState(() {
+            text = value;
+          });
+        },
       ),
-      onTapOutside: (event) {
-        widget.onSubmitted(text);
-      },
-      onChanged: (String value) {
-        setState(() {
-          text = value;
-        });
-      },
     );
   }
 }

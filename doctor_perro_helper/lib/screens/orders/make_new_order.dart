@@ -1,5 +1,4 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
-import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/providers/menu_order_provider.dart';
 import 'package:doctor_perro_helper/screens/orders/checkout_step.dart';
@@ -7,7 +6,6 @@ import 'package:doctor_perro_helper/screens/orders/edit_order_step.dart';
 import 'package:doctor_perro_helper/screens/orders/new_order_step.dart';
 import 'package:doctor_perro_helper/widgets/orders/drafted_order.dart';
 import 'package:doctor_perro_helper/widgets/reusables/Section.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_stepper/easy_stepper.dart';
@@ -32,6 +30,7 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
   List<Widget> get steps => [
         NewOrderStep(
           onOrderModified: onNewOrderStepModified,
+          // onStepCompleted: onNewOrderStepModified,
         ),
         EditOrderStep(
           onStepCompleted: (MenuOrder modifiedOrder) {},
@@ -42,14 +41,19 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
 
   bool newOrderStepCompleted = false;
   bool editOrderStepCompleted = true;
+  bool checkoutStepCompleted = true;
 
   bool get canAdvance =>
       index == 0 && newOrderStepCompleted ||
-      index == 1 && editOrderStepCompleted;
+      index == 1 && editOrderStepCompleted ||
+      index == 2 && checkoutStepCompleted;
 
   MenuOrder order = MenuOrder(plates: [], packs: []);
 
   set index(int idx) {
+    if (idx >= 3) {
+      Navigator.pop(context);
+    }
     _index = idx.clamp(0, steps.length - 1);
     _pageController!.animateToPage(
       _index,
@@ -64,22 +68,6 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
   void initState() {
     super.initState();
     _pageController = PageController();
-
-    if (kDebugMode) {
-      var basePack = PlateList.r5;
-      var newPack = PlateList.r5.amount(2);
-      print("basePrice: ${basePack.price}");
-      print("newPack price: ${newPack.price}");
-
-      // Verify individual plate amounts
-      if (basePack.ingredients.isNotEmpty || newPack.ingredients.isNotEmpty) {
-        var plateFromBasePack = basePack.ingredients.first;
-        var plateFromNewPack = newPack.ingredients.first;
-
-        print("Original plate amount: ${plateFromBasePack.quantity?.amount}");
-        print("Plate amount in newPack: ${plateFromNewPack.quantity?.amount}");
-      }
-    }
   }
 
   @override
