@@ -112,7 +112,7 @@ class MenuOrder with PlateMixin, PackMixin {
   }
 
   MenuOrder get flatOrder => MenuOrder(
-        packs: flattenPack(packs),
+        packs: flattenPacks(packs),
         plates: flattenPlates(plates),
       );
 

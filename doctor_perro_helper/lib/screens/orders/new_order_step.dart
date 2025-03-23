@@ -56,7 +56,7 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
       widget.onStepCompleted!(_draftedOrder);
     }
 
-    ref.read(menuOrderNotifierProvider.notifier).setDraftedOrder(_draftedOrder);
+    menuOrderNotifier.setDraftedOrder(_draftedOrder);
   }
 
   void onPlateSwipe(Plate plate, bool positive, double count) {
@@ -73,6 +73,9 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
           .removeWhere((Plate existingPlate) => existingPlate.id == plate.id);
       selectedPlates.add(plate);
       draftedOrder = draftedOrder.copyWith(plates: selectedPlates);
+      ref
+          .read(menuOrderNotifierProvider.notifier)
+          .setDraftedOrder(draftedOrder);
     });
   }
 

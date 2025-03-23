@@ -15,6 +15,9 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
   void setDraftedOrder(MenuOrder newOrder) {
     state = state.copyWith(draftedOrder: newOrder);
   }
+
+  /// Makes the current drafted order
+  void pushDraftedOrder() {}
 }
 
 class MenuOrderData {

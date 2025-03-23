@@ -31,7 +31,7 @@ mixin PackMixin {
   /// Perro Especial, Perro Especial, Perro Especial, Perro EspecialSalchicha, Ensalada, Papas, Salsa de Tomate, Salsa de Ajo, Tocino, Queso KraftSalchicha, Ensalada, Papas, Salsa de Tomate, Salsa de Ajo, Tocino, Queso KraftSalchicha, Ensalada, Papas, Salsa de Tomate, Salsa de Ajo, Tocino, Queso KraftSalchicha, Ensalada, Papas, Salsa de Tomate, Salsa de Ajo, Tocino, Queso KraftPepsi ColaPapas Fritas 200g
   ///
   /// with the numbered amount
-  List<PlatePack> flattenPack(List<PlatePack> packs) {
+  List<PlatePack> flattenPacks(List<PlatePack> packs) {
     if (packs.isEmpty) {
       return packs;
     }
