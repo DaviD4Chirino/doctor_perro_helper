@@ -20,6 +20,7 @@ class Orders extends ConsumerWidget {
 
     List<MenuOrder> pendingOrders =
         menuOrderProvider.ordersWhere(OrderStatus.pending);
+
     List<MenuOrder> servedOrders =
         menuOrderProvider.ordersWhere(OrderStatus.completed);
 
@@ -101,26 +102,21 @@ class DisplayOrders extends StatelessWidget {
 }
 
 // ignore: must_be_immutable
-class ExpansibleOrder extends StatefulWidget {
+class ExpansibleOrder extends ConsumerWidget with TimeMixin {
   ExpansibleOrder({
     super.key,
     required this.order,
-    this.editable = true,
   });
 
   /// Determines if this order can be edited or modified
-  final bool editable;
 
   MenuOrder order;
 
   @override
-  State<ExpansibleOrder> createState() => _ExpansibleOrderState();
-}
-
-class _ExpansibleOrderState extends State<ExpansibleOrder> with TimeMixin {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     ThemeData theme = Theme.of(context);
+    MenuOrderNotifier menuOrderNotifier =
+        ref.read(menuOrderNotifierProvider.notifier);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -128,9 +124,11 @@ class _ExpansibleOrderState extends State<ExpansibleOrder> with TimeMixin {
       mainAxisSize: MainAxisSize.max,
       children: [
         ListTile(
-          leading: DolarAndBolivarPriceText(price: widget.order.price),
+          leading: DolarAndBolivarPriceText(price: order.price),
           title: Text(
-            getRelativeTime(widget.order.timeMade),
+            getRelativeTime(order.status == OrderStatus.pending
+                ? order.timeMade
+                : order.timeFinished),
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -138,9 +136,9 @@ class _ExpansibleOrderState extends State<ExpansibleOrder> with TimeMixin {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.order.codeList),
+              Text(order.codeList),
               Text(
-                widget.order.direction,
+                order.direction,
                 style: TextStyle(
                   fontSize: theme.textTheme.labelSmall?.fontSize,
                   color: theme.colorScheme.onSurface.withAlpha(200),
@@ -149,13 +147,15 @@ class _ExpansibleOrderState extends State<ExpansibleOrder> with TimeMixin {
             ],
           ),
         ),
-        if (widget.editable)
+        if (order.status == OrderStatus.pending)
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Expanded(
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    menuOrderNotifier.serveOrder(order);
+                  },
                   child: const Text("Servir"),
                 ),
               ),

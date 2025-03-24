@@ -11,7 +11,7 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
     return MenuOrderData(history: []);
   }
 
-  addOrder(MenuOrder newOrder) {
+  void addOrder(MenuOrder newOrder) {
     List<MenuOrder> newHistory = state.history;
     MenuOrder order = newOrder;
     order.status = OrderStatus.pending;
@@ -36,6 +36,24 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
       return;
     }
     addOrder(state.draftedOrder!);
+  }
+
+  void serveOrder(MenuOrder order) {
+    List<MenuOrder> history = state.history;
+    final index = history.indexWhere(
+        (MenuOrder oldOrder) => oldOrder.codeList == order.codeList);
+    if (index == -1) {
+      throw Exception(
+        "Order with the CodeList of ${order.codeList} was not found in the history",
+      );
+    }
+    MenuOrder copiedOrder = order;
+
+    copiedOrder.status = OrderStatus.completed;
+
+    history[index] = copiedOrder;
+
+    state = state.copyWith(history: history);
   }
 }
 

@@ -183,7 +183,9 @@ class Plate {
 
   /// Returns this same plate as its written on the [PlateList]
   Plate get base {
-    Plate? basePlate = PlateList.getPlateByCode(code);
+    Plate? basePlate = code.startsWith("E")
+        ? PlateList.getExtraByCode(code)
+        : PlateList.getPlateByCode(code);
 
     if (basePlate == null) {
       throw Exception("This plate of code: $code does not exist in PlateList");

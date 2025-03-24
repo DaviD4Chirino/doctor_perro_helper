@@ -53,6 +53,14 @@ abstract class PlateList {
   static List<Plate> platesWithUniqueId() =>
       [...plates.map((Plate p) => p.withUniqueId())];
 
+  static Plate? getExtraByCode(String code) {
+    try {
+      return extras.firstWhere((extra) => extra.code == code);
+    } catch (e) {
+      return null;
+    }
+  }
+
   static Plate? getPlateByCode(String code) {
     try {
       return plates.firstWhere((plate) => plate.code == code);
