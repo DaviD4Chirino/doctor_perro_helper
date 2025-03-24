@@ -38,6 +38,24 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
     addOrder(state.draftedOrder!);
   }
 
+  void cancelOrder(MenuOrder order) {
+    List<MenuOrder> history = state.history;
+
+    final index = history.indexWhere(
+        (MenuOrder oldOrder) => oldOrder.codeList == order.codeList);
+    if (index == -1) {
+      throw Exception(
+        "Order with the CodeList of ${order.codeList} was not found in the history",
+      );
+    }
+
+    MenuOrder copiedOrder = order;
+    copiedOrder.status = OrderStatus.cancelled;
+    history[index] = copiedOrder;
+
+    state = state.copyWith(history: history);
+  }
+
   void serveOrder(MenuOrder order) {
     List<MenuOrder> history = state.history;
     final index = history.indexWhere(

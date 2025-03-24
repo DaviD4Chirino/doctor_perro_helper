@@ -23,6 +23,8 @@ class Orders extends ConsumerWidget {
 
     List<MenuOrder> servedOrders =
         menuOrderProvider.ordersWhere(OrderStatus.completed);
+    List<MenuOrder> cancelledOrders =
+        menuOrderProvider.ordersWhere(OrderStatus.cancelled);
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -46,6 +48,10 @@ class Orders extends ConsumerWidget {
             DisplayOrders(
               title: "Ordenes Servidas",
               orders: servedOrders,
+            ),
+            DisplayOrders(
+              title: "Ordenes Canceladas",
+              orders: cancelledOrders,
             ),
           ],
         ),
@@ -162,10 +168,13 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
               PopupMenuButton(
                 enableFeedback: true,
                 itemBuilder: (BuildContext context) => [
-                  const PopupMenuItem(
+                  PopupMenuItem(
                     child: Text("Editar orden"),
                   ),
-                  const PopupMenuItem(
+                  PopupMenuItem(
+                    onTap: () {
+                      menuOrderNotifier.cancelOrder(order);
+                    },
                     child: Text("Cancelar orden"),
                   ),
                 ],

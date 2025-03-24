@@ -4,7 +4,6 @@ import 'package:doctor_perro_helper/models/plate_pack.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_quantity.dart';
 import 'package:doctor_perro_helper/models/abstracts/ingredients_list.dart';
-import 'package:doctor_perro_helper/models/side_dish.dart';
 import 'package:uuid/uuid.dart';
 
 /// A class with every single plate in the restaurant
