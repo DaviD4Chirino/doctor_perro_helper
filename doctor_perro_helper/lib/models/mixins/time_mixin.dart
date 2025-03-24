@@ -6,7 +6,7 @@ mixin TimeMixin {
     Duration difference = currentTime.difference(timestamp);
 
     if (difference.inSeconds < 60) {
-      return "hace ${difference.inSeconds} segundos";
+      return "Hace ${difference.inSeconds} segundos";
     } else if (difference.inMinutes < 60) {
       return "Hace ${difference.inMinutes} ${difference.inMinutes > 1 ? "minutos" : "minuto"}";
     } else if (difference.inHours < 24) {

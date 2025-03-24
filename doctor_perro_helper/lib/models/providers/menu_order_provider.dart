@@ -16,8 +16,14 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
     MenuOrder order = newOrder;
     order.status = OrderStatus.pending;
     newHistory.add(order);
+    newHistory.sort(
+      (a, b) => b.timeMade.isAfter(a.timeMade) ? 1 : 0,
+    );
 
-    state = state.copyWith(history: newHistory);
+    state = state.copyWith(
+      history: newHistory,
+      draftedOrder: MenuOrder(plates: [], packs: []),
+    );
   }
 
   void setDraftedOrder(MenuOrder newOrder) {
@@ -36,9 +42,6 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
 class MenuOrderData {
   MenuOrderData({this.draftedOrder, required this.history});
 
-  MenuOrder? draftedOrder;
-  List<MenuOrder> history = [];
-
   MenuOrderData copyWith({
     MenuOrder? draftedOrder,
     List<MenuOrder>? history,
@@ -48,4 +51,10 @@ class MenuOrderData {
       history: history ?? this.history,
     );
   }
+
+  List<MenuOrder> ordersWhere(OrderStatus status) =>
+      history.where((element) => element.status == status).toList();
+
+  MenuOrder? draftedOrder;
+  List<MenuOrder> history = [];
 }
