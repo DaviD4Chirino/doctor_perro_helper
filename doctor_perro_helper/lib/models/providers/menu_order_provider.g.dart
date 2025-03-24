@@ -6,7 +6,7 @@ part of 'menu_order_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$menuOrderNotifierHash() => r'4281ce9f70858803eba743ce2bfb4daacc79fe52';
+String _$menuOrderNotifierHash() => r'0b69e87374c3e7fd883ee38967016ce1c64646ea';
 
 /// See also [MenuOrderNotifier].
 @ProviderFor(MenuOrderNotifier)

@@ -168,9 +168,13 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
               PopupMenuButton(
                 enableFeedback: true,
                 itemBuilder: (BuildContext context) => [
-                  PopupMenuItem(
+                  /*  PopupMenuItem(
+                    onTap: () {
+                      menuOrderNotifier.editOrder(order);
+                      Navigator.pushNamed(context, Paths.newOrder);
+                    },
                     child: Text("Editar orden"),
-                  ),
+                  ), */
                   PopupMenuItem(
                     onTap: () {
                       menuOrderNotifier.cancelOrder(order);

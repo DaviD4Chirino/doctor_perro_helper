@@ -39,11 +39,17 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
   List<Plate> selectedPlates = [];
   List<PlatePack> selectedPacks = [];
 
-  MenuOrder _draftedOrder = MenuOrder(packs: [], plates: []);
+  late MenuOrder draftedOrder = MenuOrder(packs: [], plates: []);
 
-  MenuOrder get draftedOrder => _draftedOrder;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (menuOrderProvider.draftedOrder != null) {
+      draftedOrder = menuOrderProvider.draftedOrder!;
+    }
+  }
 
-  set draftedOrder(MenuOrder order) {
+  /* set draftedOrder(MenuOrder order) {
     _draftedOrder = order;
 
     if (widget.onOrderModified != null) {
@@ -57,7 +63,7 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
     }
 
     menuOrderNotifier.setDraftedOrder(_draftedOrder);
-  }
+  } */
 
   void onPlateSwipe(Plate plate, bool positive, double count) {
     setState(() {
@@ -67,15 +73,21 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
 
         draftedOrder = draftedOrder.copyWith(plates: selectedPlates);
 
+        if (widget.onOrderModified != null) {
+          widget.onOrderModified!(draftedOrder);
+        }
         return;
       }
       selectedPlates
           .removeWhere((Plate existingPlate) => existingPlate.id == plate.id);
       selectedPlates.add(plate);
       draftedOrder = draftedOrder.copyWith(plates: selectedPlates);
-      ref
-          .read(menuOrderNotifierProvider.notifier)
-          .setDraftedOrder(draftedOrder);
+
+      menuOrderNotifier.setDraftedOrder(draftedOrder);
+
+      if (widget.onOrderModified != null) {
+        widget.onOrderModified!(draftedOrder);
+      }
     });
   }
 
@@ -88,6 +100,10 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
               (PlatePack existingPack) => existingPack.id == pack.id);
           draftedOrder = draftedOrder.copyWith(packs: selectedPacks);
 
+          if (widget.onOrderModified != null) {
+            widget.onOrderModified!(draftedOrder);
+          }
+          menuOrderNotifier.setDraftedOrder(draftedOrder);
           // printPlatesPackDebug(packs: order.packs);
           return;
         }
@@ -95,6 +111,11 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
             (PlatePack existingPack) => existingPack.id == pack.id);
         selectedPacks.add(pack);
         draftedOrder = draftedOrder.copyWith(packs: selectedPacks);
+
+        if (widget.onOrderModified != null) {
+          widget.onOrderModified!(draftedOrder);
+        }
+        menuOrderNotifier.setDraftedOrder(draftedOrder);
       },
     );
     // printPlatesPackDebug(packs: order.packs);
@@ -122,6 +143,8 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
                   if (widget.onStepCompleted != null) {
                     widget.onStepCompleted!(draftedOrder);
                   }
+
+                  menuOrderNotifier.setDraftedOrder(draftedOrder);
                   /* draftedOrder = MenuOrder(packs: selectedPacks, plates: selectedPlates); */
                 },
               ),
@@ -182,6 +205,8 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
   }
 
   Section packSection(TextStyle columnTitleStyle) {
+    // List<PlatePack> list =
+
     return Section(
       title: Text(
         "Combos",
@@ -190,11 +215,20 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
       child: Column(
         children: [
           ...PlateList.packs.map(
-            (PlatePack pack) => SwipeablePack(
-              key: Key(pack.code),
-              pack: pack,
-              onPackSwiped: onPackSwipe,
-            ),
+            (PlatePack pack) {
+              PlatePack updatedPack = menuOrderProvider.draftedOrder != null
+                  ? menuOrderProvider.draftedOrder!.packs.firstWhere(
+                      (draftedPack) => draftedPack.code == pack.code,
+                      orElse: () => pack,
+                    )
+                  : pack;
+
+              return SwipeablePack(
+                key: Key(updatedPack.code),
+                pack: updatedPack,
+                onPackSwiped: onPackSwipe,
+              );
+            },
           )
         ],
       ),
