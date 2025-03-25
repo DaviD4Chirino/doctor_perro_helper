@@ -1,6 +1,8 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/providers/menu_order_provider.dart';
+import 'package:doctor_perro_helper/models/providers/streams/user_data_provider_stream.dart';
+import 'package:doctor_perro_helper/models/providers/user.dart';
 import 'package:doctor_perro_helper/screens/orders/checkout_step.dart';
 import 'package:doctor_perro_helper/screens/orders/edit_order_step.dart';
 import 'package:doctor_perro_helper/screens/orders/new_order_step.dart';
@@ -18,6 +20,8 @@ class MakeNewOrder extends ConsumerStatefulWidget {
 }
 
 class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
+  AsyncValue<UserData> get userDataStream => ref.watch(userDataProvider);
+
   MenuOrderNotifier get menuOrderNotifier =>
       ref.read(menuOrderNotifierProvider.notifier);
 
@@ -52,7 +56,11 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
 
   set index(int idx) {
     if (idx >= 3) {
-      menuOrderNotifier.pushDraftedOrder();
+      String userId = userDataStream.maybeWhen(
+        data: (data) => data.user?.uid ?? "anonymous",
+        orElse: () => "anonymous",
+      );
+      menuOrderNotifier.pushDraftedOrder(userId: userId);
       Navigator.pop(context);
     }
     _index = idx.clamp(0, steps.length - 1);

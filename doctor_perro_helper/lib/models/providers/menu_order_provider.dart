@@ -32,10 +32,14 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
   }
 
   /// Makes the current drafted order
-  void pushDraftedOrder() {
+  void pushDraftedOrder({String userId = "anonymous"}) {
     if (state.draftedOrder == null) {
       return;
     }
+    MenuOrder draftedOrder = state.draftedOrder!;
+
+    draftedOrder.madeBy = userId;
+
     addOrder(state.draftedOrder!);
   }
 
@@ -50,6 +54,7 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
 
     final index = history.indexWhere(
         (MenuOrder oldOrder) => oldOrder.codeList == order.codeList);
+
     if (index == -1) {
       throw Exception(
         "Order with the CodeList of ${order.codeList} was not found in the history",
@@ -65,11 +70,13 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
 
   void serveOrder(MenuOrder order) {
     List<MenuOrder> history = state.history;
-    final index = history.indexWhere(
-        (MenuOrder oldOrder) => oldOrder.codeList == order.codeList);
+
+    final index =
+        history.indexWhere((MenuOrder oldOrder) => oldOrder.id == order.id);
+
     if (index == -1) {
       throw Exception(
-        "Order with the CodeList of ${order.codeList} was not found in the history",
+        "Order with the id of ${order.id} was not found in the history",
       );
     }
     MenuOrder copiedOrder = order;

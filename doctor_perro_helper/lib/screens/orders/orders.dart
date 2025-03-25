@@ -118,6 +118,19 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
 
   MenuOrder order;
 
+  DateTime get statusTime {
+    switch (order.status) {
+      case OrderStatus.cancelled:
+        return order.timeCancelled;
+
+      case OrderStatus.completed:
+        return order.timeFinished;
+
+      case OrderStatus.pending:
+        return order.timeMade;
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ThemeData theme = Theme.of(context);
@@ -132,9 +145,7 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
         ListTile(
           leading: DolarAndBolivarPriceText(price: order.price),
           title: Text(
-            getRelativeTime(order.status == OrderStatus.pending
-                ? order.timeMade
-                : order.timeFinished),
+            getRelativeTime(statusTime),
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -150,6 +161,7 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
                   color: theme.colorScheme.onSurface.withAlpha(200),
                 ),
               ),
+              Text(order.id),
             ],
           ),
         ),

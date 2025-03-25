@@ -6,6 +6,9 @@ import 'package:doctor_perro_helper/models/plate_pack.dart';
 import 'package:doctor_perro_helper/utils/extensions/double_extensions.dart';
 import 'package:doctor_perro_helper/utils/extensions/plate/plate_extensions.dart';
 import 'package:doctor_perro_helper/utils/extensions/platepack_extensions.dart';
+import 'package:uuid/uuid.dart';
+
+String get uid => Uuid().v4();
 
 /// Order as in; an order of french fries
 class MenuOrder with PlateMixin, PackMixin {
@@ -13,6 +16,7 @@ class MenuOrder with PlateMixin, PackMixin {
     required this.plates,
     required this.packs,
     this.direction = "",
+    this.madeBy = "",
   });
 
   void replacePlate(Plate oldPlate, Plate newPlate) {
@@ -136,10 +140,15 @@ class MenuOrder with PlateMixin, PackMixin {
     return newPacks;
   }
 
+  String id = uid;
+
   List<Plate> plates;
   List<PlatePack> packs;
 
   String direction;
+
+  /// The id of the user that made this order
+  String madeBy;
 
   // this should be controlled by changing the status
   DateTime timeMade = DateTime.timestamp();
