@@ -13,6 +13,25 @@ class Ingredient {
     this.quantifiable = true,
   });
 
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "cost": cost,
+        "max-name": maxName,
+        "min-name": minName,
+        "quantity": quantity?.toJson(),
+        "quantifiable": quantifiable,
+      };
+
+  Ingredient.fromJson(Map<String, dynamic> json)
+      : name = json["name"] as String,
+        cost = json["cost"] as double,
+        maxName = json["max-name"] as String,
+        minName = json["min-name"] as String,
+        quantity = json["quantity"] != null
+            ? PlateQuantity.fromJson(json["quantity"])
+            : null,
+        quantifiable = json["quantifiable"] as bool;
+
   /// Returns this same [Ingredient] with the initial amount changed
   Ingredient amount(double amount, {bool exponential = false}) {
     double prevAmount = quantity?.amount ?? 1.0;

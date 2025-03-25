@@ -142,27 +142,31 @@ class MenuOrder with PlateMixin, PackMixin {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "plates": plates,
-        "packs": packs,
+        "plates": plates.map((plate) => plate.toJson()).toList(),
+        "packs": packs.map((pack) => pack.toJson()).toList(),
         "direction": direction,
         "madeBy": madeBy,
         "status": status.index,
-        "time-made": timeMade,
-        "time-finished": timeFinished,
-        "time-cancelled": timeCancelled,
-        "time-ordered": timeOrdered,
+        "time-made": timeMade.toIso8601String(),
+        "time-finished": timeFinished.toIso8601String(),
+        "time-cancelled": timeCancelled.toIso8601String(),
+        "time-ordered": timeOrdered.toIso8601String(),
       };
 
   MenuOrder.fromJson(Map<String, dynamic> json)
       : id = json["id"] as String,
-        plates = json['plates'] as List<Plate>,
-        packs = json["packs"] as List<PlatePack>,
+        plates = (json["plates"] as List)
+            .map((plateJson) => Plate.fromJson(plateJson))
+            .toList(),
+        packs = (json["packs"] as List)
+            .map((packJson) => PlatePack.fromJson(packJson))
+            .toList(),
         direction = json["direction"] as String,
-        madeBy = json["made-by"] as String,
-        _status = OrderStatus.values[int.parse(json["status"])],
-        timeFinished = json["time-finished"] as DateTime,
-        timeCancelled = json["time-cancelled"] as DateTime,
-        timeOrdered = json["time-ordered"] as DateTime;
+        madeBy = json["madeBy"] as String,
+        _status = OrderStatus.values[json["status"] as int],
+        timeFinished = DateTime.parse(json["time-finished"] as String),
+        timeCancelled = DateTime.parse(json["time-cancelled"] as String),
+        timeOrdered = DateTime.parse(json["time-ordered"] as String);
 
   String id = uid;
 

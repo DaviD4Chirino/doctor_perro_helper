@@ -9,6 +9,23 @@ class PlateQuantity {
     this.suffix = "",
   });
 
+  Map<String, dynamic> toJson() => {
+        "max": max,
+        "min": min,
+        "count": count,
+        "amount": amount,
+        "prefix": prefix,
+        "suffix": suffix,
+      };
+
+  PlateQuantity.fromJson(Map<String, dynamic> json)
+      : max = json["max"] as double,
+        min = json["min"] as double,
+        count = json["count"] as double,
+        amount = json["amount"] as double,
+        prefix = json["prefix"] as String,
+        suffix = json["suffix"] as String;
+
   double amount = 1.0;
 
   PlateQuantity copyWith({

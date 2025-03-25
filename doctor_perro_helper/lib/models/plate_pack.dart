@@ -18,6 +18,31 @@ class PlatePack {
     this.extras,
     this.id = "",
   });
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "code": code,
+        "name": name,
+        "plates": plates.map((plate) => plate.toJson()).toList(),
+        "extras": extras?.map((extra) => extra.toJson()).toList(),
+        "cost": cost,
+        "quantity": quantity.toJson(),
+      };
+
+  PlatePack.fromJson(Map<String, dynamic> json)
+      : id = json["id"] as String,
+        code = json["code"] as String,
+        name = json["name"] as String,
+        plates = (json["plates"] as List)
+            .map((plateJson) => Plate.fromJson(plateJson))
+            .toList(),
+        extras = json["extras"] != null
+            ? (json["extras"] as List)
+                .map((extraJson) => SideDish.fromJson(extraJson))
+                .toList()
+            : null,
+        cost = json["cost"] as double,
+        quantity =
+            PlateQuantity.fromJson(json["quantity"] as Map<String, dynamic>);
 
   PlatePack amount(
     double amount, {

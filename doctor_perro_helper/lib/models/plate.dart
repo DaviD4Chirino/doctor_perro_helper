@@ -19,6 +19,34 @@ class Plate {
     this.modified = false,
   });
 
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "code": code,
+        "name": name,
+        "ingredients":
+            ingredients.map((ingredient) => ingredient.toJson()).toList(),
+        "extras": extras?.map((extra) => extra.toJson()).toList(),
+        "cost": cost,
+        "quantity": quantity.toJson(),
+        "modified": modified,
+      };
+
+  Plate.fromJson(Map<String, dynamic> json)
+      : id = json["id"] as String,
+        code = json["code"] as String,
+        name = json["name"] as String,
+        ingredients = (json["ingredients"] as List)
+            .map((ingredientJson) => Ingredient.fromJson(ingredientJson))
+            .toList(),
+        extras = json["extras"] != null
+            ? (json["extras"] as List)
+                .map((extraJson) => SideDish.fromJson(extraJson))
+                .toList()
+            : null,
+        cost = json["cost"] as double,
+        quantity = PlateQuantity.fromJson(json["quantity"]),
+        modified = json["modified"] as bool;
+
   Plate amount(
     double amount, {
     bool exponential = false,

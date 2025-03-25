@@ -11,6 +11,28 @@ class SideDish extends Ingredient {
     super.minName,
   });
 
+  @override
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "cost": cost,
+        "max-name": maxName,
+        "min-name": minName,
+        "quantity": quantity?.toJson(),
+        "quantifiable": quantifiable,
+      };
+
+  SideDish.fromJson(Map<String, dynamic> json)
+      : super(
+          name: json["name"] as String,
+          cost: json["cost"] as double,
+          maxName: json["max-name"] as String,
+          minName: json["min-name"] as String,
+          quantity: json["quantity"] != null
+              ? PlateQuantity.fromJson(json["quantity"])
+              : null,
+          quantifiable: json["quantifiable"] as bool,
+        );
+
   Ingredient toIngredient() {
     return Ingredient(
       name: name,
