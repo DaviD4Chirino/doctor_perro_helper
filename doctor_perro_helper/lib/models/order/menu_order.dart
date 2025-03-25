@@ -140,6 +140,30 @@ class MenuOrder with PlateMixin, PackMixin {
     return newPacks;
   }
 
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "plates": plates,
+        "packs": packs,
+        "direction": direction,
+        "madeBy": madeBy,
+        "status": status.index,
+        "time-made": timeMade,
+        "time-finished": timeFinished,
+        "time-cancelled": timeCancelled,
+        "time-ordered": timeOrdered,
+      };
+
+  MenuOrder.fromJson(Map<String, dynamic> json)
+      : id = json["id"] as String,
+        plates = json['plates'] as List<Plate>,
+        packs = json["packs"] as List<PlatePack>,
+        direction = json["direction"] as String,
+        madeBy = json["made-by"] as String,
+        _status = OrderStatus.values[int.parse(json["status"])],
+        timeFinished = json["time-finished"] as DateTime,
+        timeCancelled = json["time-cancelled"] as DateTime,
+        timeOrdered = json["time-ordered"] as DateTime;
+
   String id = uid;
 
   List<Plate> plates;

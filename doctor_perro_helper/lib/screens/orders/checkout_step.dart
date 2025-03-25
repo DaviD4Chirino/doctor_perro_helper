@@ -56,7 +56,7 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep>
       ),
       child: Expanded(
         child: DataTable2(
-          lmRatio: 0.8,
+          lmRatio: 1.0,
           columns: [
             DataColumn2(
               label: Text("Costo en dólares:\nCosto en Bolivares:"),
