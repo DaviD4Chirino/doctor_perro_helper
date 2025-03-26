@@ -29,6 +29,7 @@ class Plate {
         "cost": cost,
         "quantity": quantity.toJson(),
         "modified": modified,
+        "type": "plate",
       };
 
   Plate.fromJson(Map<String, dynamic> json)

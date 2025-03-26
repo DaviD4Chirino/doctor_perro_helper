@@ -26,6 +26,7 @@ class PlatePack {
         "extras": extras?.map((extra) => extra.toJson()).toList(),
         "cost": cost,
         "quantity": quantity.toJson(),
+        "type": "pack",
       };
 
   PlatePack.fromJson(Map<String, dynamic> json)
