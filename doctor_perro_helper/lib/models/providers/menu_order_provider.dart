@@ -12,6 +12,8 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
     return MenuOrderData(history: []);
   }
 
+  Future<void> fetchOrders() async {}
+
   void addOrder(MenuOrder newOrder) {
     List<MenuOrder> newHistory = state.history;
     MenuOrder order = newOrder;

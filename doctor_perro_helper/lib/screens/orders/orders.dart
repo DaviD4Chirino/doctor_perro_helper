@@ -3,6 +3,7 @@ import 'package:doctor_perro_helper/models/mixins/time_mixin.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/order/menu_order_status.dart';
 import 'package:doctor_perro_helper/models/providers/menu_order_provider.dart';
+import 'package:doctor_perro_helper/models/providers/streams/menu_order_stream.dart';
 import 'package:doctor_perro_helper/models/providers/streams/user_data_provider_stream.dart';
 import 'package:doctor_perro_helper/models/providers/user.dart';
 import 'package:doctor_perro_helper/models/routes.dart';
@@ -18,22 +19,27 @@ class Orders extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     AsyncValue<UserData> userDataStream = ref.watch(userDataProvider);
+    final AsyncValue<List<MenuOrder>> menuOrdersStream =
+        ref.watch(menuOrderStream);
+
+    final MenuOrderData allOrders = menuOrdersStream.maybeWhen(
+      data: (data) => MenuOrderData(history: data),
+      orElse: () => MenuOrderData(history: []),
+    );
 
     String userId = userDataStream.maybeWhen(
       data: (data) => data.user?.uid ?? "",
       orElse: () => "",
     );
 
-    MenuOrderData menuOrderProvider = ref.watch(menuOrderNotifierProvider);
+    /* MenuOrderData menuOrderProvider = ref.watch(menuOrderNotifierProvider); */
     /*   MenuOrderNotifier menuOrderNotifier =
         ref.read(menuOrderNotifierProvider.notifier); */
 
-    List<MenuOrder> pendingOrders =
-        menuOrderProvider.ordersWhere(OrderStatus.pending);
-    List<MenuOrder> servedOrders =
-        menuOrderProvider.ordersWhere(OrderStatus.completed);
+    List<MenuOrder> pendingOrders = allOrders.ordersWhere(OrderStatus.pending);
+    List<MenuOrder> servedOrders = allOrders.ordersWhere(OrderStatus.completed);
     List<MenuOrder> cancelledOrders =
-        menuOrderProvider.ordersWhere(OrderStatus.cancelled);
+        allOrders.ordersWhere(OrderStatus.cancelled);
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(

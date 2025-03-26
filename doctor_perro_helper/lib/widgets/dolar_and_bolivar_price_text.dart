@@ -2,8 +2,7 @@ import 'package:doctor_perro_helper/models/consumers/bolivar_price_text.dart';
 import 'package:doctor_perro_helper/widgets/dolar_price_text.dart';
 import 'package:flutter/material.dart';
 
-/// This widget gives you the presented dolar and it calculates the bs price
-/// below it
+/// This widget gives you the presented dolar and it calculates the bs price below it
 class DolarAndBolivarPriceText extends StatelessWidget {
   const DolarAndBolivarPriceText({
     super.key,
