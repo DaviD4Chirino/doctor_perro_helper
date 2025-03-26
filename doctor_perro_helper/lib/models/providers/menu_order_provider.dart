@@ -1,5 +1,6 @@
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/order/menu_order_status.dart';
+import 'package:doctor_perro_helper/utils/database/orders_helper.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part "menu_order_provider.g.dart";
@@ -19,7 +20,7 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
     newHistory.sort(
       (a, b) => b.timeMade.isAfter(a.timeMade) ? 1 : 0,
     );
-
+    uploadOrder(order);
     state = state.copyWith(
       history: newHistory,
       draftedOrder: MenuOrder(plates: [], packs: []),
