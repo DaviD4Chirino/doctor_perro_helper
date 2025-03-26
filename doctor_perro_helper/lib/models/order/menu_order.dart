@@ -145,7 +145,7 @@ class MenuOrder with PlateMixin, PackMixin {
         "plates": plates.map((plate) => plate.toJson()).toList(),
         "packs": packs.map((pack) => pack.toJson()).toList(),
         "direction": direction,
-        "madeBy": madeBy,
+        "made-by": madeBy,
         "status": status.index,
         "time-made": timeMade.toIso8601String(),
         "time-finished": timeFinished.toIso8601String(),
@@ -162,7 +162,7 @@ class MenuOrder with PlateMixin, PackMixin {
             .map((packJson) => PlatePack.fromJson(packJson))
             .toList(),
         direction = json["direction"] as String,
-        madeBy = json["madeBy"] as String,
+        madeBy = json["made-by"] as String,
         _status = OrderStatus.values[json["status"] as int],
         timeFinished = DateTime.parse(json["time-finished"] as String),
         timeCancelled = DateTime.parse(json["time-cancelled"] as String),
