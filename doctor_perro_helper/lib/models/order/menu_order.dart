@@ -43,12 +43,15 @@ class MenuOrder with PlateMixin, PackMixin {
     switch (newStatus) {
       case OrderStatus.pending:
         timeOrdered = DateTime.timestamp();
+        break;
 
       case OrderStatus.completed:
         timeFinished = DateTime.timestamp();
+        break;
 
       case OrderStatus.cancelled:
         timeCancelled = DateTime.timestamp();
+        break;
     }
     _status = newStatus;
   }

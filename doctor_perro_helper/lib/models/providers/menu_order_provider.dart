@@ -20,7 +20,9 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
     newHistory.sort(
       (a, b) => b.timeMade.isAfter(a.timeMade) ? 1 : 0,
     );
+
     uploadOrder(order);
+
     state = state.copyWith(
       history: newHistory,
       draftedOrder: MenuOrder(plates: [], packs: []),
@@ -64,7 +66,7 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
     MenuOrder copiedOrder = order;
     copiedOrder.status = OrderStatus.cancelled;
     history[index] = copiedOrder;
-
+    uploadOrder(copiedOrder);
     state = state.copyWith(history: history);
   }
 
@@ -84,6 +86,8 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
     copiedOrder.status = OrderStatus.completed;
 
     history[index] = copiedOrder;
+
+    uploadOrder(copiedOrder);
 
     state = state.copyWith(history: history);
   }

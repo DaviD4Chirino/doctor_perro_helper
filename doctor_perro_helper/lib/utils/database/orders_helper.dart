@@ -3,10 +3,15 @@ import 'package:doctor_perro_helper/models/abstracts/database_paths.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/utils/database/document_helper.dart';
 import 'package:doctor_perro_helper/utils/database/shared.dart';
+import 'package:doctor_perro_helper/utils/toast_message_helper.dart';
+import 'package:flutter/material.dart';
 
 Future<bool> hasOrder(MenuOrder order) async {
   return await hasDocument(CollectionsPaths.orders, order.id);
 }
+
+Future<void> deleteOrder(String id) async =>
+    getDocument(CollectionsPaths.users, id).delete();
 
 Future<MenuOrder?> getOrder(String id) async {
   try {
@@ -23,10 +28,16 @@ Future<MenuOrder?> getOrder(String id) async {
   }
 }
 
-Future<DocumentReference> uploadOrder(MenuOrder order) async {
-  await db
-      .collection(CollectionsPaths.orders)
-      .doc(order.id)
-      .set(order.toJson());
-  return getDocument(CollectionsPaths.users, order.id);
+/// Can be used to update the order, no idea if thats good
+Future<void> uploadOrder(MenuOrder order) async {
+  try {
+    await db
+        .collection(CollectionsPaths.orders)
+        .doc(order.id)
+        .set(order.toJson());
+  } catch (e) {
+    ToastMessage.error(
+      title: Text(e.toString()),
+    );
+  }
 }

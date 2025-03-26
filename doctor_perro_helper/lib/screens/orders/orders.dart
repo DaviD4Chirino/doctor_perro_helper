@@ -3,6 +3,8 @@ import 'package:doctor_perro_helper/models/mixins/time_mixin.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/order/menu_order_status.dart';
 import 'package:doctor_perro_helper/models/providers/menu_order_provider.dart';
+import 'package:doctor_perro_helper/models/providers/streams/user_data_provider_stream.dart';
+import 'package:doctor_perro_helper/models/providers/user.dart';
 import 'package:doctor_perro_helper/models/routes.dart';
 import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
 import 'package:doctor_perro_helper/widgets/reusables/Section.dart';
@@ -14,6 +16,14 @@ class Orders extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final ThemeData theme = Theme.of(context);
+    AsyncValue<UserData> userDataStream = ref.watch(userDataProvider);
+
+    String userId = userDataStream.maybeWhen(
+      data: (data) => data.user?.uid ?? "",
+      orElse: () => "",
+    );
+
     MenuOrderData menuOrderProvider = ref.watch(menuOrderNotifierProvider);
     /*   MenuOrderNotifier menuOrderNotifier =
         ref.read(menuOrderNotifierProvider.notifier); */
@@ -27,8 +37,11 @@ class Orders extends ConsumerWidget {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        backgroundColor: userId == "" ? theme.disabledColor : null,
         tooltip: "Nueva orden",
-        onPressed: () => Navigator.pushNamed(context, Paths.newOrder),
+        onPressed: userId != ""
+            ? () => Navigator.pushNamed(context, Paths.newOrder)
+            : null,
         child: const Icon(
           Icons.add_circle,
           size: 32.0,
@@ -43,14 +56,17 @@ class Orders extends ConsumerWidget {
             ),
             DisplayOrders(
               orders: pendingOrders,
+              accountId: userId,
             ),
             DisplayOrders(
               title: "Ordenes Servidas",
               orders: servedOrders,
+              accountId: userId,
             ),
             DisplayOrders(
               title: "Ordenes Canceladas",
               orders: cancelledOrders,
+              accountId: userId,
             ),
           ],
         ),
@@ -59,15 +75,20 @@ class Orders extends ConsumerWidget {
   }
 }
 
+// ignore: must_be_immutable
 class DisplayOrders extends StatelessWidget {
-  const DisplayOrders({
+  DisplayOrders({
     super.key,
     required this.orders,
     this.title = "Ordenes Pendientes",
+    this.accountId = "",
   });
   final String title;
 
   final List<MenuOrder> orders;
+
+  /// The id of the currently logged account
+  String accountId;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +116,9 @@ class DisplayOrders extends StatelessWidget {
               children: orders
                   .map(
                     (MenuOrder order) => ExpansibleOrder(
+                      key: Key(order.id),
                       order: order,
+                      accountId: accountId,
                     ),
                   )
                   .toList(),
@@ -112,11 +135,13 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
   ExpansibleOrder({
     super.key,
     required this.order,
+    this.accountId = "",
   });
 
-  /// Determines if this order can be edited or modified
-
   MenuOrder order;
+
+  /// The id of the currently logged account
+  String accountId;
 
   DateTime get statusTime {
     switch (order.status) {
@@ -139,7 +164,9 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
 
     return Container(
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainer,
+        color: order.status != OrderStatus.cancelled
+            ? theme.colorScheme.surfaceContainer
+            : null,
         borderRadius: BorderRadius.circular(Sizes().roundedSmall),
       ),
       child: Column(
@@ -170,15 +197,18 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
               ],
             ),
           ),
-          if (order.status == OrderStatus.pending)
+          if (order.status != OrderStatus.cancelled)
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: () {
-                      menuOrderNotifier.serveOrder(order);
-                    },
+                    onPressed: order.madeBy == accountId &&
+                            order.status == OrderStatus.pending
+                        ? () {
+                            menuOrderNotifier.serveOrder(order);
+                          }
+                        : null,
                     child: const Text("Servir"),
                   ),
                 ),
@@ -192,11 +222,15 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
                       },
                       child: Text("Editar orden"),
                     ), */
+
                     PopupMenuItem(
+                      enabled: order.madeBy == accountId,
                       onTap: () {
                         menuOrderNotifier.cancelOrder(order);
                       },
-                      child: Text("Cancelar orden"),
+                      child: Text(
+                        "Cancelar orden",
+                      ),
                     ),
                   ],
                 )
