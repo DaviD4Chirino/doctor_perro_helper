@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/mixins/time_mixin.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
@@ -38,61 +40,64 @@ class _OrdersState extends ConsumerState<Orders> {
         data: (data) => data.user?.uid ?? "",
         orElse: () => "",
       );
+  List<MenuOrder> get pendingOrders =>
+      allOrders.ordersWhere(OrderStatus.pending);
+  List<MenuOrder> get servedOrders =>
+      allOrders.ordersWhere(OrderStatus.completed);
+  List<MenuOrder> get cancelledOrders =>
+      allOrders.ordersWhere(OrderStatus.cancelled);
+
+  @override
+  void initState() {
+    super.initState();
+    Timer.periodic(const Duration(seconds: 5), (timer) => setState(() {}));
+  }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    MenuOrderData menuOrderProvider = ref.watch(menuOrderNotifierProvider);
+    // MenuOrderData menuOrderProvider = ref.watch(menuOrderNotifierProvider);
     /*   MenuOrderNotifier menuOrderNotifier =
         ref.read(menuOrderNotifierProvider.notifier); */
 
-    List<MenuOrder> pendingOrders = allOrders.ordersWhere(OrderStatus.pending);
-    List<MenuOrder> servedOrders = allOrders.ordersWhere(OrderStatus.completed);
-    List<MenuOrder> cancelledOrders =
-        allOrders.ordersWhere(OrderStatus.cancelled);
-
-    return menuOrderProvider.fetchingData
-        ? Scaffold(
-            body: LinearProgressIndicator(),
-          )
-        : Scaffold(
-            floatingActionButton: FloatingActionButton(
-              backgroundColor: userId == "" ? theme.disabledColor : null,
-              tooltip: "Nueva orden",
-              onPressed: userId != ""
-                  ? () => Navigator.pushNamed(context, Paths.newOrder)
-                  : null,
-              child: const Icon(
-                Icons.add_circle,
-                size: 32.0,
-              ),
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: userId == "" ? theme.disabledColor : null,
+        tooltip: "Nueva orden",
+        onPressed: userId != ""
+            ? () => Navigator.pushNamed(context, Paths.newOrder)
+            : null,
+        child: const Icon(
+          Icons.add_circle,
+          size: 32.0,
+        ),
+      ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: Sizes().large),
+        child: ListView(
+          children: [
+            SizedBox(
+              height: Sizes().xxxl,
             ),
-            body: Padding(
-              padding: EdgeInsets.symmetric(horizontal: Sizes().large),
-              child: ListView(
-                children: [
-                  SizedBox(
-                    height: Sizes().xxxl,
-                  ),
-                  DisplayOrders(
-                    orders: pendingOrders,
-                    accountId: userId,
-                  ),
-                  DisplayOrders(
-                    title: "Ordenes Servidas",
-                    orders: servedOrders,
-                    accountId: userId,
-                  ),
-                  DisplayOrders(
-                    title: "Ordenes Canceladas",
-                    orders: cancelledOrders,
-                    accountId: userId,
-                  ),
-                ],
-              ),
+            DisplayOrders(
+              orders: pendingOrders,
+              accountId: userId,
             ),
-          );
+            DisplayOrders(
+              title: "Ordenes Servidas",
+              orders: servedOrders,
+              accountId: userId,
+            ),
+            DisplayOrders(
+              title: "Ordenes Canceladas",
+              orders: cancelledOrders,
+              accountId: userId,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

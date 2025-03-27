@@ -42,9 +42,9 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
     MenuOrder order = newOrder;
     order.status = OrderStatus.pending;
     newHistory.add(order);
-    newHistory.sort(
+    /* newHistory.sort(
       (a, b) => b.timeMade.isAfter(a.timeMade) ? 1 : 0,
-    );
+    ); */
 
     uploadOrder(order);
 
