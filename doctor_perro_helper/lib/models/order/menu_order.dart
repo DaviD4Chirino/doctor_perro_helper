@@ -150,10 +150,10 @@ class MenuOrder with PlateMixin, PackMixin {
         "direction": direction,
         "made-by": madeBy,
         "status": status.index,
-        "time-made": timeMade.toIso8601String(),
-        "time-finished": timeFinished.toIso8601String(),
-        "time-cancelled": timeCancelled.toIso8601String(),
-        "time-ordered": timeOrdered.toIso8601String(),
+        "time-made": timeMade.toString(),
+        "time-finished": timeFinished.toString(),
+        "time-cancelled": timeCancelled.toString(),
+        "time-ordered": timeOrdered.toString(),
       };
 
   MenuOrder.fromJson(Map<String, dynamic> json)
@@ -167,6 +167,7 @@ class MenuOrder with PlateMixin, PackMixin {
         direction = json["direction"] as String,
         madeBy = json["made-by"] as String,
         _status = OrderStatus.values[json["status"] as int],
+        timeMade = DateTime.parse(json["time-finished"] as String),
         timeFinished = DateTime.parse(json["time-finished"] as String),
         timeCancelled = DateTime.parse(json["time-cancelled"] as String),
         timeOrdered = DateTime.parse(json["time-ordered"] as String);

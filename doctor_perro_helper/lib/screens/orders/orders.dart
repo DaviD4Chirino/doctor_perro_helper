@@ -12,25 +12,44 @@ import 'package:doctor_perro_helper/widgets/reusables/Section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Orders extends ConsumerWidget {
+class Orders extends ConsumerStatefulWidget {
   const Orders({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<Orders> createState() => _OrdersState();
+}
+
+class _OrdersState extends ConsumerState<Orders> {
+  bool loading = true;
+
+  AsyncValue<UserData> get userDataStream => ref.watch(userDataProvider);
+
+  AsyncValue<List<MenuOrder>> get menuOrdersStream =>
+      ref.watch(menuOrderStream);
+
+  MenuOrderData get allOrders => menuOrdersStream.maybeWhen(
+        data: (data) {
+          setState(() {
+            loading = false;
+          });
+          return MenuOrderData(history: data);
+        },
+        orElse: () {
+          setState(() {
+            loading = true;
+          });
+          return MenuOrderData(history: []);
+        },
+      );
+
+  String get userId => userDataStream.maybeWhen(
+        data: (data) => data.user?.uid ?? "",
+        orElse: () => "",
+      );
+
+  @override
+  Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    AsyncValue<UserData> userDataStream = ref.watch(userDataProvider);
-    final AsyncValue<List<MenuOrder>> menuOrdersStream =
-        ref.watch(menuOrderStream);
-
-    final MenuOrderData allOrders = menuOrdersStream.maybeWhen(
-      data: (data) => MenuOrderData(history: data),
-      orElse: () => MenuOrderData(history: []),
-    );
-
-    String userId = userDataStream.maybeWhen(
-      data: (data) => data.user?.uid ?? "",
-      orElse: () => "",
-    );
 
     /* MenuOrderData menuOrderProvider = ref.watch(menuOrderNotifierProvider); */
     /*   MenuOrderNotifier menuOrderNotifier =
@@ -41,43 +60,47 @@ class Orders extends ConsumerWidget {
     List<MenuOrder> cancelledOrders =
         allOrders.ordersWhere(OrderStatus.cancelled);
 
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: userId == "" ? theme.disabledColor : null,
-        tooltip: "Nueva orden",
-        onPressed: userId != ""
-            ? () => Navigator.pushNamed(context, Paths.newOrder)
-            : null,
-        child: const Icon(
-          Icons.add_circle,
-          size: 32.0,
-        ),
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: Sizes().large),
-        child: ListView(
-          children: [
-            SizedBox(
-              height: Sizes().xxxl,
+    return loading
+        ? Scaffold(
+            body: LinearProgressIndicator(),
+          )
+        : Scaffold(
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: userId == "" ? theme.disabledColor : null,
+              tooltip: "Nueva orden",
+              onPressed: userId != ""
+                  ? () => Navigator.pushNamed(context, Paths.newOrder)
+                  : null,
+              child: const Icon(
+                Icons.add_circle,
+                size: 32.0,
+              ),
             ),
-            DisplayOrders(
-              orders: pendingOrders,
-              accountId: userId,
+            body: Padding(
+              padding: EdgeInsets.symmetric(horizontal: Sizes().large),
+              child: ListView(
+                children: [
+                  SizedBox(
+                    height: Sizes().xxxl,
+                  ),
+                  DisplayOrders(
+                    orders: pendingOrders,
+                    accountId: userId,
+                  ),
+                  DisplayOrders(
+                    title: "Ordenes Servidas",
+                    orders: servedOrders,
+                    accountId: userId,
+                  ),
+                  DisplayOrders(
+                    title: "Ordenes Canceladas",
+                    orders: cancelledOrders,
+                    accountId: userId,
+                  ),
+                ],
+              ),
             ),
-            DisplayOrders(
-              title: "Ordenes Servidas",
-              orders: servedOrders,
-              accountId: userId,
-            ),
-            DisplayOrders(
-              title: "Ordenes Canceladas",
-              orders: cancelledOrders,
-              accountId: userId,
-            ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 }
 
