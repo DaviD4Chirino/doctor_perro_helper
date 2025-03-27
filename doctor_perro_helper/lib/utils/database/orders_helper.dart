@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_perro_helper/models/abstracts/database_paths.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
+import 'package:doctor_perro_helper/models/order/menu_order_status.dart';
 import 'package:doctor_perro_helper/utils/database/document_helper.dart';
 import 'package:doctor_perro_helper/utils/database/shared.dart';
 import 'package:doctor_perro_helper/utils/toast_message_helper.dart';
@@ -29,12 +30,16 @@ Future<MenuOrder?> getOrder(String id) async {
 }
 
 /// Can be used to update the order, no idea if thats good
-Future<void> uploadOrder(MenuOrder order) async {
+Future<void> uploadOrder(MenuOrder order, {String userId = "anonymous"}) async {
   try {
-    await db
-        .collection(CollectionsPaths.orders)
-        .doc(order.id)
-        .set(order.toJson());
+    MenuOrder newOrder = order..madeBy = userId;
+    // ..status = OrderStatus.pending;
+
+    /*  newOrder.madeBy = userId;
+    newOrder.status = OrderStatus.pending; */
+
+    await getDocument(CollectionsPaths.orders, newOrder.id)
+        .set(newOrder.toJson());
   } catch (e) {
     ToastMessage.error(
       title: Text(e.toString()),

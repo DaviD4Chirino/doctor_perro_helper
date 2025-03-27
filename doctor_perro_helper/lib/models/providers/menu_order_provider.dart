@@ -7,6 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part "menu_order_provider.g.dart";
 
+// remove this and use a local drafted order
 @Riverpod(keepAlive: true)
 class MenuOrderNotifier extends _$MenuOrderNotifier {
   @override
