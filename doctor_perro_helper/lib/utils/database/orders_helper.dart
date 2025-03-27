@@ -30,16 +30,15 @@ Future<MenuOrder?> getOrder(String id) async {
 }
 
 /// Can be used to update the order, no idea if thats good
-Future<void> uploadOrder(MenuOrder order, {String userId = "anonymous"}) async {
+Future<void> uploadOrder(MenuOrder order) async {
   try {
-    MenuOrder newOrder = order..madeBy = userId;
+    // MenuOrder newOrder = order..madeBy = userId;
     // ..status = OrderStatus.pending;
 
     /*  newOrder.madeBy = userId;
     newOrder.status = OrderStatus.pending; */
 
-    await getDocument(CollectionsPaths.orders, newOrder.id)
-        .set(newOrder.toJson());
+    await getDocument(CollectionsPaths.orders, order.id).set(order.toJson());
   } catch (e) {
     ToastMessage.error(
       title: Text(e.toString()),
