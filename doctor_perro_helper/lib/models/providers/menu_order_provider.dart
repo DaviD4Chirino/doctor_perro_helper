@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_perro_helper/models/abstracts/database_paths.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/order/menu_order_status.dart';
 import 'package:doctor_perro_helper/utils/database/orders_helper.dart';
@@ -12,7 +14,25 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
     return MenuOrderData(history: []);
   }
 
-  Future<void> fetchOrders() async {}
+  Future<void> fetchOrders() async {
+    state = state.copyWith(fetchingData: true);
+
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection(CollectionsPaths.orders)
+        .get();
+
+    List<MenuOrder> orders = querySnapshot.docs
+        .map(
+          (QueryDocumentSnapshot<Map<String, dynamic>> snapshot) =>
+              MenuOrder.fromJson(
+            snapshot.data(),
+          ),
+        )
+        .toList();
+
+    state.copyWith(history: orders, fetchingData: false);
+  }
 
   void addOrder(MenuOrder newOrder) {
     List<MenuOrder> newHistory = state.history;
@@ -96,15 +116,18 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
 }
 
 class MenuOrderData {
-  MenuOrderData({this.draftedOrder, required this.history});
+  MenuOrderData(
+      {this.draftedOrder, required this.history, this.fetchingData = false});
 
   MenuOrderData copyWith({
     MenuOrder? draftedOrder,
     List<MenuOrder>? history,
+    bool? fetchingData,
   }) {
     return MenuOrderData(
       draftedOrder: draftedOrder ?? this.draftedOrder,
       history: history ?? this.history,
+      fetchingData: fetchingData ?? this.fetchingData,
     );
   }
 
@@ -113,4 +136,6 @@ class MenuOrderData {
 
   MenuOrder? draftedOrder;
   List<MenuOrder> history = [];
+
+  bool fetchingData = false;
 }

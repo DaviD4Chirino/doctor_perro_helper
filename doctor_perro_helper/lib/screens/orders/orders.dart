@@ -20,8 +20,6 @@ class Orders extends ConsumerStatefulWidget {
 }
 
 class _OrdersState extends ConsumerState<Orders> {
-  bool loading = true;
-
   AsyncValue<UserData> get userDataStream => ref.watch(userDataProvider);
 
   AsyncValue<List<MenuOrder>> get menuOrdersStream =>
@@ -29,15 +27,9 @@ class _OrdersState extends ConsumerState<Orders> {
 
   MenuOrderData get allOrders => menuOrdersStream.maybeWhen(
         data: (data) {
-          setState(() {
-            loading = false;
-          });
           return MenuOrderData(history: data);
         },
         orElse: () {
-          setState(() {
-            loading = true;
-          });
           return MenuOrderData(history: []);
         },
       );
@@ -51,7 +43,7 @@ class _OrdersState extends ConsumerState<Orders> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    /* MenuOrderData menuOrderProvider = ref.watch(menuOrderNotifierProvider); */
+    MenuOrderData menuOrderProvider = ref.watch(menuOrderNotifierProvider);
     /*   MenuOrderNotifier menuOrderNotifier =
         ref.read(menuOrderNotifierProvider.notifier); */
 
@@ -60,7 +52,7 @@ class _OrdersState extends ConsumerState<Orders> {
     List<MenuOrder> cancelledOrders =
         allOrders.ordersWhere(OrderStatus.cancelled);
 
-    return loading
+    return menuOrderProvider.fetchingData
         ? Scaffold(
             body: LinearProgressIndicator(),
           )
