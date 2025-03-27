@@ -184,9 +184,9 @@ class MenuOrder with PlateMixin, PackMixin {
 
   // this should be controlled by changing the status
   DateTime timeMade = DateTime.timestamp();
-  DateTime timeFinished = DateTime.timestamp();
-  DateTime timeCancelled = DateTime.timestamp();
-  DateTime timeOrdered = DateTime.timestamp();
+  DateTime timeFinished = DateTime.utc(0);
+  DateTime timeCancelled = DateTime.utc(0);
+  DateTime timeOrdered = DateTime.utc(0);
 }
 
 double getPrices(List arr) {

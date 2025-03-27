@@ -106,30 +106,33 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Nuevo Pedido"),
+        title: Column(
+          children: [
+            SizedBox(
+              height: 30,
+            ),
+            stepper(theme),
+          ],
+        ),
+        backgroundColor: theme.colorScheme.surface,
+        centerTitle: true,
+        toolbarHeight: 120,
+        automaticallyImplyLeading: false,
       ),
       bottomNavigationBar: FilledButton(
         onPressed: canAdvance ? nextStep : null,
         child: Text("Continue"),
       ),
       body: Padding(
-        padding: EdgeInsets.all(Sizes().xl),
-        child: Column(
-          children: [
-            stepper(theme),
-            // draftedOrderSection(columnTitleStyle, theme),
-            /* Container(
-              height: 1,
-              color: theme.colorScheme.outline,
-            ), */
-            Expanded(
-              child: PageView(
-                controller: _pageController,
-                physics: NeverScrollableScrollPhysics(),
-                children: steps,
-              ),
-            )
-          ],
+        padding: EdgeInsets.only(
+          left: Sizes().large,
+          right: Sizes().large,
+          top: Sizes().xl,
+        ),
+        child: PageView(
+          controller: _pageController,
+          physics: NeverScrollableScrollPhysics(),
+          children: steps,
         ),
       ),
     );
@@ -141,8 +144,10 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
       activeStep: index,
       lineStyle: LineStyle(
         lineType: LineType.normal,
-        lineLength: 70,
+        lineLength: 45,
         lineSpace: 0,
+        progress: 0.5,
+        // lineWidth: 15,
         defaultLineColor: theme.colorScheme.onSurface.withAlpha(150),
         finishedLineColor: theme.colorScheme.primary,
         activeLineColor: theme.colorScheme.onSurface,
@@ -155,7 +160,7 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
       defaultStepBorderType: BorderType.normal,
       fitWidth: false,
       stepRadius: 32,
-      internalPadding: 18,
+      internalPadding: 5,
       showTitle: true,
       showLoadingAnimation: false,
 

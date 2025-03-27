@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_perro_helper/models/abstracts/database_paths.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
@@ -61,11 +63,11 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
     if (state.draftedOrder == null) {
       return;
     }
-    MenuOrder draftedOrder = state.draftedOrder!;
+    MenuOrder draftedOrder = state.draftedOrder!
+      ..status = OrderStatus.pending
+      ..madeBy = userId;
 
-    draftedOrder.madeBy = userId;
-
-    addOrder(state.draftedOrder!);
+    addOrder(draftedOrder);
   }
 
   void editOrder(MenuOrder order) {
@@ -74,20 +76,23 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
     state = state.copyWith(draftedOrder: order);
   }
 
+  /// Changes the status of the order as cancelled and updates the database
   void cancelOrder(MenuOrder order) {
     List<MenuOrder> history = state.history;
+    MenuOrder copiedOrder = order;
+    copiedOrder.status = OrderStatus.cancelled;
 
     final index = history.indexWhere(
         (MenuOrder oldOrder) => oldOrder.codeList == order.codeList);
 
     if (index == -1) {
-      throw Exception(
+      log(
         "Order with the CodeList of ${order.codeList} was not found in the history",
       );
+      uploadOrder(order);
+      return;
     }
 
-    MenuOrder copiedOrder = order;
-    copiedOrder.status = OrderStatus.cancelled;
     history[index] = copiedOrder;
     uploadOrder(copiedOrder);
     state = state.copyWith(history: history);

@@ -173,7 +173,7 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
         return order.timeFinished;
 
       case OrderStatus.pending:
-        return order.timeMade;
+        return order.timeOrdered;
     }
   }
 
