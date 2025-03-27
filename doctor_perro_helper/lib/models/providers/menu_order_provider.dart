@@ -100,18 +100,19 @@ class MenuOrderNotifier extends _$MenuOrderNotifier {
 
   void serveOrder(MenuOrder order) {
     List<MenuOrder> history = state.history;
+    MenuOrder copiedOrder = order;
+    copiedOrder.status = OrderStatus.completed;
 
     final index =
         history.indexWhere((MenuOrder oldOrder) => oldOrder.id == order.id);
 
     if (index == -1) {
-      throw Exception(
-        "Order with the id of ${order.id} was not found in the history",
+      log(
+        "Order with the CodeList of ${order.codeList} was not found in the history",
       );
+      uploadOrder(copiedOrder);
+      return;
     }
-    MenuOrder copiedOrder = order;
-
-    copiedOrder.status = OrderStatus.completed;
 
     history[index] = copiedOrder;
 

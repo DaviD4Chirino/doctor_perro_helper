@@ -22,6 +22,11 @@ class Orders extends ConsumerStatefulWidget {
 }
 
 class _OrdersState extends ConsumerState<Orders> {
+  late Timer timer = Timer.periodic(
+    Duration(seconds: 5),
+    (timer) {},
+  );
+
   AsyncValue<UserData> get userDataStream => ref.watch(userDataProvider);
 
   AsyncValue<List<MenuOrder>> get menuOrdersStream =>
@@ -50,7 +55,14 @@ class _OrdersState extends ConsumerState<Orders> {
   @override
   void initState() {
     super.initState();
-    Timer.periodic(const Duration(seconds: 5), (timer) => setState(() {}));
+    timer =
+        Timer.periodic(const Duration(seconds: 5), (timer) => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
   }
 
   @override
@@ -188,82 +200,74 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
     MenuOrderNotifier menuOrderNotifier =
         ref.read(menuOrderNotifierProvider.notifier);
 
-    return Container(
-      decoration: BoxDecoration(
-        color: order.status != OrderStatus.cancelled
-            ? theme.colorScheme.surfaceContainer
-            : null,
-        borderRadius: BorderRadius.circular(Sizes().roundedSmall),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          ListTile(
-            leading: DolarAndBolivarPriceText(price: order.price),
-            title: Text(
-              getRelativeTime(statusTime),
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(order.codeList),
-                Text(
-                  order.direction,
-                  style: TextStyle(
-                    fontSize: theme.textTheme.labelSmall?.fontSize,
-                    color: theme.colorScheme.onSurface.withAlpha(200),
-                  ),
-                ),
-                // Text(order.id),
-              ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        ListTile(
+          leading: DolarAndBolivarPriceText(price: order.price),
+          title: Text(
+            getRelativeTime(statusTime),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
             ),
           ),
-          if (order.status != OrderStatus.cancelled)
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: order.madeBy == accountId &&
-                            order.status == OrderStatus.pending
-                        ? () {
-                            menuOrderNotifier.serveOrder(order);
-                          }
-                        : null,
-                    child: const Text("Servir"),
-                  ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(order.codeList),
+              Text(
+                order.direction,
+                style: TextStyle(
+                  fontSize: theme.textTheme.labelSmall?.fontSize,
+                  color: theme.colorScheme.onSurface.withAlpha(200),
                 ),
-                PopupMenuButton(
-                  enableFeedback: true,
-                  itemBuilder: (BuildContext context) => [
-                    /*  PopupMenuItem(
-                      onTap: () {
-                        menuOrderNotifier.editOrder(order);
-                        Navigator.pushNamed(context, Paths.newOrder);
-                      },
-                      child: Text("Editar orden"),
-                    ), */
+              ),
+              // Text(order.id),
+            ],
+          ),
+        ),
+        if (order.status == OrderStatus.pending)
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: order.madeBy == accountId &&
+                          order.status == OrderStatus.pending
+                      ? () {
+                          menuOrderNotifier.serveOrder(order);
+                        }
+                      : null,
+                  child: const Text("Servir"),
+                ),
+              ),
+              PopupMenuButton(
+                enableFeedback: true,
+                itemBuilder: (BuildContext context) => [
+                  /*  PopupMenuItem(
+                    onTap: () {
+                      menuOrderNotifier.editOrder(order);
+                      Navigator.pushNamed(context, Paths.newOrder);
+                    },
+                    child: Text("Editar orden"),
+                  ), */
 
-                    PopupMenuItem(
-                      enabled: order.madeBy == accountId,
-                      onTap: () {
-                        menuOrderNotifier.cancelOrder(order);
-                      },
-                      child: Text(
-                        "Cancelar orden",
-                      ),
+                  PopupMenuItem(
+                    enabled: order.madeBy == accountId,
+                    onTap: () {
+                      menuOrderNotifier.cancelOrder(order);
+                    },
+                    child: Text(
+                      "Cancelar orden",
                     ),
-                  ],
-                )
-              ],
-            ),
-        ],
-      ),
+                  ),
+                ],
+              )
+            ],
+          ),
+      ],
     );
   }
 }
