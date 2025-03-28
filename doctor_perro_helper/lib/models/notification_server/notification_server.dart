@@ -11,7 +11,7 @@ class NotificationServer {
     if (_isInitialized) return;
 
     const initSettingsAndroid =
-        AndroidInitializationSettings("@mipmap/ic_launcher");
+        AndroidInitializationSettings("@mipmap/launcher_icon");
 
     const initSettings = InitializationSettings(android: initSettingsAndroid);
 
@@ -38,7 +38,15 @@ class NotificationServer {
       id,
       title,
       body,
-      notificationDetails(),
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          "home-notifications",
+          "Home Notifications",
+          channelDescription: "Test description",
+          importance: Importance.max,
+          priority: Priority.high,
+        ),
+      ),
     );
   }
 }

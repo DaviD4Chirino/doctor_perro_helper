@@ -13,7 +13,7 @@ final AutoDisposeStreamProvider<List<MenuOrder>> menuOrderStreamProvider =
 final Stream<List<MenuOrder>> menuOrderStream = FirebaseFirestore.instance
     .collection(CollectionsPaths.orders)
     .orderBy("time-made", descending: true)
-    .limit(30)
+    .limit(10)
     .snapshots()
     .map(
       (snapshot) => snapshot.docs

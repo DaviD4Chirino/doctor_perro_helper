@@ -100,7 +100,6 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     _pageController = PageController();
-    NotificationServer().showNotification(body: "xddd", id: 0, title: "Title");
   }
 
   @override
