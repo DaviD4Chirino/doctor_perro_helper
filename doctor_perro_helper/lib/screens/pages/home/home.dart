@@ -1,3 +1,4 @@
+import 'package:doctor_perro_helper/models/notification_server/notification_server.dart';
 import 'package:doctor_perro_helper/screens/dash_board.dart';
 import 'package:doctor_perro_helper/screens/orders/orders.dart';
 import 'package:doctor_perro_helper/screens/pages/calculator/calculator.dart';
@@ -99,6 +100,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     _pageController = PageController();
+    NotificationServer().showNotification(body: "xddd", id: 0, title: "Title");
   }
 
   @override

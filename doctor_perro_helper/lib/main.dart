@@ -1,4 +1,6 @@
 import 'package:doctor_perro_helper/config/themes/app_theme.dart';
+import 'package:doctor_perro_helper/models/notification_server/notification_server.dart';
+import 'package:doctor_perro_helper/models/providers/subscriptions/menu_order_subscription.dart';
 import 'package:doctor_perro_helper/models/providers/theme_mode_provider.dart';
 
 import 'package:doctor_perro_helper/models/routes.dart';
@@ -64,6 +66,7 @@ class _MainAppState extends ConsumerState<MainApp> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       try {
         await silentSignInWithGoogle();
+        await NotificationServer().initialize();
       } catch (e) {
         if (kDebugMode) {
           print(e);
@@ -91,4 +94,14 @@ class _MainAppState extends ConsumerState<MainApp> {
       ),
     );
   }
+}
+
+void notificationOnMenuOrderChanged() {
+  menuOrderSubscription.onData(
+    (data) {
+      if (data.isEmpty) {
+        return;
+      }
+    },
+  );
 }
