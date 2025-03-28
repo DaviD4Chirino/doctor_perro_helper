@@ -30,7 +30,7 @@ class _OrdersState extends ConsumerState<Orders> {
   AsyncValue<UserData> get userDataStream => ref.watch(userDataProvider);
 
   AsyncValue<List<MenuOrder>> get menuOrdersStream =>
-      ref.watch(menuOrderStream);
+      ref.watch(menuOrderStreamProvider);
 
   MenuOrderData get allOrders => menuOrdersStream.maybeWhen(
         data: (data) {
