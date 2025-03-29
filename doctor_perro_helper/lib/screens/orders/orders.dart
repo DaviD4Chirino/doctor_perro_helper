@@ -8,6 +8,7 @@ import 'package:doctor_perro_helper/models/providers/streams/user_data_provider_
 import 'package:doctor_perro_helper/models/providers/user.dart';
 import 'package:doctor_perro_helper/models/routes.dart';
 import 'package:doctor_perro_helper/utils/extensions/order_list_extensions.dart';
+import 'package:doctor_perro_helper/utils/toast_message_helper.dart';
 import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
 import 'package:doctor_perro_helper/widgets/reusables/Section.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,11 @@ class _OrdersState extends ConsumerState<Orders> {
 
   AsyncValue<List<MenuOrder>> get menuOrdersStream =>
       ref.watch(menuOrdersStreamProvider);
+
+  bool get loadingOrders => menuOrdersStream.maybeWhen(
+        data: (data) => false,
+        orElse: () => true,
+      );
 
   List<MenuOrder> get allOrders => menuOrdersStream.maybeWhen(
         data: (data) {
@@ -73,41 +79,71 @@ class _OrdersState extends ConsumerState<Orders> {
         ref.read(menuOrderNotifierProvider.notifier); */
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: userId == "" ? theme.disabledColor : null,
-        tooltip: "Nueva orden",
-        onPressed: userId != ""
-            ? () => Navigator.pushNamed(context, Paths.newOrder)
-            : null,
-        child: const Icon(
-          Icons.add_circle,
-          size: 32.0,
-        ),
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: Sizes().large),
-        child: ListView(
-          children: [
-            SizedBox(
-              height: Sizes().xxxl,
+      floatingActionButton:
+          floatingActionButton(theme, context, userDataStream),
+      body: loadingOrders
+          ? LinearProgressIndicator()
+          : Padding(
+              padding: EdgeInsets.symmetric(horizontal: Sizes().large),
+              child: ListView(
+                children: [
+                  SizedBox(
+                    height: Sizes().xxxl,
+                  ),
+                  DisplayOrders(
+                    orders: pendingOrders,
+                    accountId: userId,
+                  ),
+                  DisplayOrders(
+                    title: "Ordenes Servidas",
+                    orders: servedOrders,
+                    accountId: userId,
+                  ),
+                  DisplayOrders(
+                    title: "Ordenes Canceladas",
+                    orders: cancelledOrders,
+                    accountId: userId,
+                  ),
+                ],
+              ),
             ),
-            DisplayOrders(
-              orders: pendingOrders,
-              accountId: userId,
-            ),
-            DisplayOrders(
-              title: "Ordenes Servidas",
-              orders: servedOrders,
-              accountId: userId,
-            ),
-            DisplayOrders(
-              title: "Ordenes Canceladas",
-              orders: cancelledOrders,
-              accountId: userId,
-            ),
-          ],
-        ),
-      ),
+    );
+  }
+
+  FloatingActionButton? floatingActionButton(ThemeData theme,
+      BuildContext context, AsyncValue<UserData> userDataStream) {
+    return userDataStream.when(
+      data: (data) {
+        return FloatingActionButton(
+          backgroundColor: userId == "" ? theme.disabledColor : null,
+          tooltip: "Nueva orden",
+          onPressed: userId != ""
+              ? () => Navigator.pushNamed(context, Paths.newOrder)
+              : null,
+          child: const Icon(
+            Icons.add_circle,
+            size: 32.0,
+          ),
+        );
+      },
+      error: (error, stackTrace) {
+        return FloatingActionButton(
+          backgroundColor: theme.disabledColor,
+          onPressed: null,
+          tooltip: "Necesitas iniciar sesión",
+          child: const Icon(
+            Icons.close_rounded,
+            size: 32.0,
+          ),
+        );
+      },
+      loading: () {
+        return FloatingActionButton(
+          onPressed: null,
+          tooltip: "Loading...",
+          child: CircularProgressIndicator(),
+        );
+      },
     );
   }
 }
@@ -143,25 +179,26 @@ class DisplayOrders extends StatelessWidget {
       title: Text(
         title,
         style: TextStyle(
-          fontSize: theme.textTheme.titleLarge?.fontSize,
+          fontSize: theme.textTheme.bodyLarge?.fontSize,
           fontWeight: FontWeight.bold,
         ),
       ),
       child: orders.isNotEmpty
           ? Column(
               spacing: Sizes().medium,
-              children: orders
-                  .map(
-                    (MenuOrder order) => ExpansibleOrder(
-                      key: Key(order.id),
-                      order: order,
-                      accountId: accountId,
-                    ),
-                  )
-                  .toList(),
+              children: [
+                ...orders.map(
+                  (MenuOrder order) => ExpansibleOrder(
+                    key: Key(order.id),
+                    order: order,
+                    accountId: accountId,
+                  ),
+                ),
+                SizedBox(height: Sizes().large),
+              ],
             )
           : Center(
-              child: Text("No hay ${title.toLowerCase()}"),
+              child: Text("No hay ${title.toLowerCase()}\n"),
             ),
     );
   }
