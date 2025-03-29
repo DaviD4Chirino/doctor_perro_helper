@@ -7,8 +7,8 @@ import 'package:doctor_perro_helper/models/providers/streams/menu_order_stream.d
 import 'package:doctor_perro_helper/models/providers/streams/user_data_provider_stream.dart';
 import 'package:doctor_perro_helper/models/providers/user.dart';
 import 'package:doctor_perro_helper/models/routes.dart';
+import 'package:doctor_perro_helper/utils/database/orders_helper.dart';
 import 'package:doctor_perro_helper/utils/extensions/order_list_extensions.dart';
-import 'package:doctor_perro_helper/utils/toast_message_helper.dart';
 import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
 import 'package:doctor_perro_helper/widgets/reusables/Section.dart';
 import 'package:flutter/material.dart';
@@ -51,11 +51,14 @@ class _OrdersState extends ConsumerState<Orders> {
         orElse: () => "",
       );
   List<MenuOrder> get pendingOrders =>
-      allOrders.whereStatus(OrderStatus.pending);
+      allOrders.whereStatus(OrderStatus.pending)
+        ..sort((a, b) => b.timeMade.isAfter(a.timeMade) ? 1 : 0);
   List<MenuOrder> get servedOrders =>
-      allOrders.whereStatus(OrderStatus.completed);
+      allOrders.whereStatus(OrderStatus.completed)
+        ..sort((a, b) => b.timeFinished.isAfter(a.timeFinished) ? 1 : 0);
   List<MenuOrder> get cancelledOrders =>
-      allOrders.whereStatus(OrderStatus.cancelled);
+      allOrders.whereStatus(OrderStatus.cancelled)
+        ..sort((a, b) => b.timeCancelled.isAfter(a.timeCancelled) ? 1 : 0);
 
   @override
   void initState() {
@@ -260,29 +263,29 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
                   color: theme.colorScheme.onSurface.withAlpha(200),
                 ),
               ),
-              // Text(order.id),
+              Text(order.id),
             ],
           ),
         ),
-        if (order.status == OrderStatus.pending)
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: order.madeBy == accountId &&
-                          order.status == OrderStatus.pending
-                      ? () {
-                          menuOrderNotifier.serveOrder(order);
-                        }
-                      : null,
-                  child: const Text("Servir"),
-                ),
+        // if (order.status == OrderStatus.pending)
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: OutlinedButton(
+                onPressed: order.madeBy == accountId &&
+                        order.status == OrderStatus.pending
+                    ? () {
+                        menuOrderNotifier.serveOrder(order);
+                      }
+                    : null,
+                child: const Text("Servir"),
               ),
-              PopupMenuButton(
-                enableFeedback: true,
-                itemBuilder: (BuildContext context) => [
-                  /*  PopupMenuItem(
+            ),
+            PopupMenuButton(
+              enableFeedback: true,
+              itemBuilder: (BuildContext context) => [
+                /*  PopupMenuItem(
                     onTap: () {
                       menuOrderNotifier.editOrder(order);
                       Navigator.pushNamed(context, Paths.newOrder);
@@ -290,19 +293,20 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
                     child: Text("Editar orden"),
                   ), */
 
-                  PopupMenuItem(
-                    enabled: order.madeBy == accountId,
-                    onTap: () {
-                      menuOrderNotifier.cancelOrder(order);
-                    },
-                    child: Text(
-                      "Cancelar orden",
-                    ),
+                PopupMenuItem(
+                  enabled: order.madeBy == accountId,
+                  onTap: () {
+                    order.status = OrderStatus.cancelled;
+                    uploadOrder(order);
+                  },
+                  child: Text(
+                    "Cancelar orden",
                   ),
-                ],
-              )
-            ],
-          ),
+                ),
+              ],
+            )
+          ],
+        ),
       ],
     );
   }

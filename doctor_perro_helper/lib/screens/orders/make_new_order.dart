@@ -62,7 +62,7 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
       );
       MenuOrder menuOrder = menuOrderProvider..madeBy = userId;
 
-      draftedOrderNotifier.setOrder(menuOrder);
+      draftedOrderNotifier.addOrder(menuOrder);
       // uploadOrder(menuOrderProvider.draftedOrder!, userId: userId);
       Navigator.pop(context);
     }

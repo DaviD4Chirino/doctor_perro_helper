@@ -14,7 +14,8 @@ class DraftedOrderNotifier extends _$DraftedOrderNotifier {
   }
 
   void addOrder(MenuOrder newOrder) {
-    state = pushOrder(newOrder, OrderStatus.pending);
+    pushOrder(newOrder, OrderStatus.pending);
+    state = MenuOrder(plates: [], packs: []);
   }
 
   void setOrder(MenuOrder newOrder) {
@@ -35,7 +36,7 @@ class DraftedOrderNotifier extends _$DraftedOrderNotifier {
   }
 
   MenuOrder pushOrder(MenuOrder order, OrderStatus status) {
-    MenuOrder copiedOrder = order;
+    MenuOrder copiedOrder = order..status = status;
     copiedOrder.status = status;
     uploadOrder(copiedOrder);
     return copiedOrder;

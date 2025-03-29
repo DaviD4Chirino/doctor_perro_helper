@@ -89,16 +89,25 @@ class MenuOrder with PlateMixin, PackMixin {
   MenuOrder copyWith({
     List<Plate>? plates,
     List<PlatePack>? packs,
+    String? id,
     String? direction,
+    String? madeBy,
     DateTime? timeMade,
     DateTime? timeFinished,
     DateTime? timeCancelled,
     DateTime? timeOrdered,
   }) {
     return MenuOrder(
-        plates: plates ?? this.plates,
-        packs: packs ?? this.packs,
-        direction: direction ?? this.direction);
+      plates: plates ?? this.plates,
+      packs: packs ?? this.packs,
+      direction: direction ?? this.direction,
+      madeBy: madeBy ?? this.madeBy,
+    )
+      ..id = id ?? this.id
+      ..timeCancelled = timeCancelled ?? this.timeCancelled
+      ..timeCancelled = timeCancelled ?? this.timeFinished
+      ..timeFinished = timeMade ?? this.timeMade
+      ..timeOrdered = timeOrdered ?? this.timeOrdered;
   }
 
   /// The combined amount of each [Plate] in [plates]

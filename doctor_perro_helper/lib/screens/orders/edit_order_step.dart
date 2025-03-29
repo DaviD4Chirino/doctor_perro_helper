@@ -26,7 +26,7 @@ class _EditOrderStepState extends ConsumerState<EditOrderStep> {
 
   // MenuOrder? get draftedOrder => ref.watch(draftedOrderNotifierProvider);
 
-  MenuOrder get menuOrderProvider => ref.watch(draftedOrderNotifierProvider);
+  MenuOrder get draftedOrder => ref.watch(draftedOrderNotifierProvider);
 
   late List<Plate> plates;
   late List<PlatePack> packs;
@@ -36,8 +36,8 @@ class _EditOrderStepState extends ConsumerState<EditOrderStep> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    plates = menuOrderProvider.platesSpread;
-    packs = menuOrderProvider.packSpread;
+    plates = draftedOrder.platesSpread;
+    packs = draftedOrder.packSpread;
   }
 
   @override
@@ -63,7 +63,7 @@ class _EditOrderStepState extends ConsumerState<EditOrderStep> {
                   pack: pack,
                   onSwiped: (dir, modifiedPack) {
                     draftedOrderNotifier.setOrder(
-                      MenuOrder(
+                      draftedOrder.copyWith(
                         plates: plates,
                         packs: packs.replaceWhere(pack, modifiedPack),
                       ),
@@ -76,7 +76,7 @@ class _EditOrderStepState extends ConsumerState<EditOrderStep> {
                 plate: plate,
                 onSwiped: (dir, modifiedPlate) {
                   draftedOrderNotifier.setOrder(
-                    MenuOrder(
+                    draftedOrder.copyWith(
                       plates: plates.replaceWhere(plate, modifiedPlate),
                       packs: packs,
                     ),
