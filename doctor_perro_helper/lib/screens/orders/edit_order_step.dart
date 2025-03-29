@@ -21,13 +21,12 @@ class EditOrderStep extends ConsumerStatefulWidget {
 }
 
 class _EditOrderStepState extends ConsumerState<EditOrderStep> {
-  MenuOrderNotifier get menuOrderNotifier =>
-      ref.read(menuOrderNotifierProvider.notifier);
+  DraftedOrderNotifier get draftedOrderNotifier =>
+      ref.read(draftedOrderNotifierProvider.notifier);
 
-  MenuOrder? get draftedOrder =>
-      ref.watch(menuOrderNotifierProvider).draftedOrder;
+  // MenuOrder? get draftedOrder => ref.watch(draftedOrderNotifierProvider);
 
-  MenuOrderData get menuOrderProvider => ref.watch(menuOrderNotifierProvider);
+  MenuOrder get menuOrderProvider => ref.watch(draftedOrderNotifierProvider);
 
   late List<Plate> plates;
   late List<PlatePack> packs;
@@ -37,12 +36,8 @@ class _EditOrderStepState extends ConsumerState<EditOrderStep> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    if (draftedOrder == null) {
-      throw Exception("menuOrderProvider.draftedOrder is null");
-    }
-
-    plates = draftedOrder!.platesSpread;
-    packs = draftedOrder!.packSpread;
+    plates = menuOrderProvider.platesSpread;
+    packs = menuOrderProvider.packSpread;
   }
 
   @override
@@ -67,7 +62,7 @@ class _EditOrderStepState extends ConsumerState<EditOrderStep> {
             ...packs.map((PlatePack pack) => ExpansiblePack(
                   pack: pack,
                   onSwiped: (dir, modifiedPack) {
-                    menuOrderNotifier.setDraftedOrder(
+                    draftedOrderNotifier.setOrder(
                       MenuOrder(
                         plates: plates,
                         packs: packs.replaceWhere(pack, modifiedPack),
@@ -80,7 +75,7 @@ class _EditOrderStepState extends ConsumerState<EditOrderStep> {
                 key: Key(plate.id),
                 plate: plate,
                 onSwiped: (dir, modifiedPlate) {
-                  menuOrderNotifier.setDraftedOrder(
+                  draftedOrderNotifier.setOrder(
                     MenuOrder(
                       plates: plates.replaceWhere(plate, modifiedPlate),
                       packs: packs,

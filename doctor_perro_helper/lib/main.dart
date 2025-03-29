@@ -1,11 +1,5 @@
-import 'dart:convert';
-
 import 'package:doctor_perro_helper/config/themes/app_theme.dart';
 import 'package:doctor_perro_helper/models/notification_server/notification_server.dart';
-import 'package:doctor_perro_helper/models/order/menu_order.dart';
-import 'package:doctor_perro_helper/models/order/menu_order_status.dart';
-import 'package:doctor_perro_helper/models/providers/menu_order_provider.dart';
-import 'package:doctor_perro_helper/models/providers/subscriptions/menu_order_subscription.dart';
 import 'package:doctor_perro_helper/models/providers/theme_mode_provider.dart';
 
 import 'package:doctor_perro_helper/models/routes.dart';
@@ -13,6 +7,7 @@ import 'package:doctor_perro_helper/models/use_shared_preferences.dart';
 import 'package:doctor_perro_helper/screens/orders/make_new_order.dart';
 import 'package:doctor_perro_helper/screens/pages/home/home.dart';
 import 'package:doctor_perro_helper/utils/google/google.dart';
+import 'package:doctor_perro_helper/utils/notifications_handlers/notification_on_menu_order_changed.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 
@@ -20,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
@@ -101,37 +95,4 @@ class _MainAppState extends ConsumerState<MainApp> {
       ),
     );
   }
-}
-
-void notificationOnMenuOrderChanged() {
-  menuOrderSubscription.onData(
-    (data) {
-      if (data.isEmpty) {
-        return;
-      }
-      MenuOrderData allOrders = MenuOrderData(history: data);
-
-      List<MenuOrder> pendingOrders =
-          allOrders.ordersWhere(OrderStatus.pending);
-
-      if (pendingOrders.isEmpty) return;
-      MenuOrder latestOrder = pendingOrders.first;
-
-      String? latestMenuOrderId =
-          UseSharedPreferences.preferences.getString("latest-menu-order-id");
-
-      if (latestMenuOrderId != null && latestMenuOrderId == latestOrder.id) {
-        return;
-      }
-
-      UseSharedPreferences.preferences
-          .setString("latest-menu-order-id", latestOrder.id);
-
-      NotificationServer().showNotification(
-        body: latestOrder.codeList,
-        id: 1,
-        title: "Hay Ordenes Pendientes",
-      );
-    },
-  );
 }

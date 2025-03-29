@@ -18,18 +18,21 @@ class NotificationServer {
     await notificationPlugin.initialize(initSettings);
   }
 
-  NotificationDetails notificationDetails() {
-    return NotificationDetails(
-        android: AndroidNotificationDetails(
-      "daily-notifications",
-      "Daily Notifications",
-      channelDescription: "Test description",
-      importance: Importance.max,
-      priority: Priority.high,
-    ));
+  Future<void> showNotification({
+    int id = 0,
+    String? title,
+    String? body,
+    NotificationDetails? details,
+  }) async {
+    return notificationPlugin.show(
+      id,
+      title,
+      body,
+      details,
+    );
   }
 
-  Future<void> showNotification({
+  Future<void> showOrderNotification({
     int id = 0,
     String? title,
     String? body,
@@ -40,9 +43,9 @@ class NotificationServer {
       body,
       NotificationDetails(
         android: AndroidNotificationDetails(
-          "home-notifications",
-          "Home Notifications",
-          channelDescription: "Test description",
+          "order",
+          "Pedidos",
+          channelDescription: "Alertas de los pedidos pendientes",
           importance: Importance.max,
           priority: Priority.high,
         ),

@@ -25,23 +25,10 @@ class CheckoutStep extends ConsumerStatefulWidget {
 
 class _CheckoutStepState extends ConsumerState<CheckoutStep>
     with PlateMixin, PackMixin {
-  MenuOrderData get menuOrderData => ref.watch(menuOrderNotifierProvider);
-
-  late MenuOrder draftedOrder;
+  MenuOrder get draftedOrder => ref.watch(draftedOrderNotifierProvider);
 
   late List<Plate> plates = mergePlates(draftedOrder.plates);
   late List<PlatePack> packs = draftedOrder.packSpread;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    if (menuOrderData.draftedOrder == null) {
-      throw Exception("menuOrderData.draftedOrder is null");
-    }
-
-    draftedOrder = menuOrderData.draftedOrder!;
-  }
 
   @override
   Widget build(BuildContext context) {

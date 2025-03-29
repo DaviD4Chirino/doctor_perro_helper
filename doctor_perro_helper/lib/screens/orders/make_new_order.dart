@@ -22,14 +22,14 @@ class MakeNewOrder extends ConsumerStatefulWidget {
 class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
   AsyncValue<UserData> get userDataStream => ref.watch(userDataProvider);
 
-  MenuOrderNotifier get menuOrderNotifier =>
-      ref.read(menuOrderNotifierProvider.notifier);
+  DraftedOrderNotifier get draftedOrderNotifier =>
+      ref.read(draftedOrderNotifierProvider.notifier);
 
-  MenuOrderData get menuOrderProvider => ref.watch(menuOrderNotifierProvider);
+  MenuOrder get menuOrderProvider => ref.watch(draftedOrderNotifierProvider);
 
   late PageController? _pageController;
 
-  MenuOrder draftedOrder = MenuOrder(packs: [], plates: []);
+  // MenuOrder draftedOrder = MenuOrder(packs: [], plates: []);
 
   List<Widget> get steps => [
         NewOrderStep(
@@ -60,7 +60,9 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
         data: (data) => data.user?.uid ?? "anonymous",
         orElse: () => "anonymous",
       );
-      menuOrderNotifier.pushDraftedOrder(userId: userId);
+      MenuOrder menuOrder = menuOrderProvider..madeBy = userId;
+
+      draftedOrderNotifier.setOrder(menuOrder);
       // uploadOrder(menuOrderProvider.draftedOrder!, userId: userId);
       Navigator.pop(context);
     }

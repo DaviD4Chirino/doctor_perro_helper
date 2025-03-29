@@ -11,114 +11,38 @@ part "menu_order_provider.g.dart";
 
 // remove this and use a local drafted order
 @Riverpod(keepAlive: true)
-class MenuOrderNotifier extends _$MenuOrderNotifier {
+class DraftedOrderNotifier extends _$DraftedOrderNotifier {
   @override
-  MenuOrderData build() {
-    return MenuOrderData(history: []);
-  }
-
-  Future<void> fetchOrders() async {
-    state = state.copyWith(fetchingData: true);
-
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
-        .instance
-        .collection(CollectionsPaths.orders)
-        .get();
-
-    List<MenuOrder> orders = querySnapshot.docs
-        .map(
-          (QueryDocumentSnapshot<Map<String, dynamic>> snapshot) =>
-              MenuOrder.fromJson(
-            snapshot.data(),
-          ),
-        )
-        .toList();
-
-    state.copyWith(history: orders, fetchingData: false);
+  MenuOrder build() {
+    return MenuOrder(packs: [], plates: []);
   }
 
   void addOrder(MenuOrder newOrder) {
-    List<MenuOrder> newHistory = state.history;
-    MenuOrder order = newOrder;
-    order.status = OrderStatus.pending;
-    newHistory.add(order);
-    /* newHistory.sort(
-      (a, b) => b.timeMade.isAfter(a.timeMade) ? 1 : 0,
-    ); */
-
-    uploadOrder(order);
-
-    state = state.copyWith(
-      history: newHistory,
-      draftedOrder: MenuOrder(plates: [], packs: []),
-    );
+    state = pushOrder(newOrder, OrderStatus.pending);
   }
 
-  void setDraftedOrder(MenuOrder newOrder) {
-    state = state.copyWith(draftedOrder: newOrder);
-  }
-
-  /// Makes the current drafted order
-  void pushDraftedOrder({String userId = "anonymous"}) {
-    if (state.draftedOrder == null) {
-      return;
-    }
-    MenuOrder draftedOrder = state.draftedOrder!
-      ..status = OrderStatus.pending
-      ..madeBy = userId;
-
-    addOrder(draftedOrder);
+  void setOrder(MenuOrder newOrder) {
+    state = newOrder;
   }
 
   void editOrder(MenuOrder order) {
-    order.status = OrderStatus.pending;
-
-    state = state.copyWith(draftedOrder: order);
+    state = pushOrder(order, OrderStatus.pending);
   }
 
   /// Changes the status of the order as cancelled and updates the database
   void cancelOrder(MenuOrder order) {
-    List<MenuOrder> history = state.history;
-    MenuOrder copiedOrder = order;
-    copiedOrder.status = OrderStatus.cancelled;
-
-    final index = history.indexWhere(
-        (MenuOrder oldOrder) => oldOrder.codeList == order.codeList);
-
-    if (index == -1) {
-      log(
-        "Order with the CodeList of ${order.codeList} was not found in the history",
-      );
-      uploadOrder(order);
-      return;
-    }
-
-    history[index] = copiedOrder;
-    uploadOrder(copiedOrder);
-    state = state.copyWith(history: history);
+    state = pushOrder(order, OrderStatus.cancelled);
   }
 
   void serveOrder(MenuOrder order) {
-    List<MenuOrder> history = state.history;
+    state = pushOrder(order, OrderStatus.completed);
+  }
+
+  MenuOrder pushOrder(MenuOrder order, OrderStatus status) {
     MenuOrder copiedOrder = order;
-    copiedOrder.status = OrderStatus.completed;
-
-    final index =
-        history.indexWhere((MenuOrder oldOrder) => oldOrder.id == order.id);
-
-    if (index == -1) {
-      log(
-        "Order with the CodeList of ${order.codeList} was not found in the history",
-      );
-      uploadOrder(copiedOrder);
-      return;
-    }
-
-    history[index] = copiedOrder;
-
+    copiedOrder.status = status;
     uploadOrder(copiedOrder);
-
-    state = state.copyWith(history: history);
+    return copiedOrder;
   }
 }
 
@@ -138,7 +62,7 @@ class MenuOrderData {
     );
   }
 
-  List<MenuOrder> ordersWhere(OrderStatus status) =>
+  List<MenuOrder> whereStatus(OrderStatus status) =>
       history.where((element) => element.status == status).toList();
 
   MenuOrder? draftedOrder;

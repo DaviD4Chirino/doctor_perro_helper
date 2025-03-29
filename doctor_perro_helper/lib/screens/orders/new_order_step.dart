@@ -31,10 +31,10 @@ class NewOrderStep extends ConsumerStatefulWidget {
 }
 
 class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
-  MenuOrderNotifier get menuOrderNotifier =>
-      ref.read(menuOrderNotifierProvider.notifier);
+  DraftedOrderNotifier get draftedOrderNotifier =>
+      ref.read(draftedOrderNotifierProvider.notifier);
 
-  MenuOrderData get menuOrderProvider => ref.watch(menuOrderNotifierProvider);
+  MenuOrder get draftedOrderProvider => ref.watch(draftedOrderNotifierProvider);
 
   List<Plate> selectedPlates = [];
   List<PlatePack> selectedPacks = [];
@@ -44,9 +44,6 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (menuOrderProvider.draftedOrder != null) {
-      draftedOrder = menuOrderProvider.draftedOrder!;
-    }
   }
 
   /* set draftedOrder(MenuOrder order) {
@@ -83,7 +80,7 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
       selectedPlates.add(plate);
       draftedOrder = draftedOrder.copyWith(plates: selectedPlates);
 
-      menuOrderNotifier.setDraftedOrder(draftedOrder);
+      draftedOrderNotifier.setOrder(draftedOrder);
 
       if (widget.onOrderModified != null) {
         widget.onOrderModified!(draftedOrder);
@@ -103,7 +100,7 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
           if (widget.onOrderModified != null) {
             widget.onOrderModified!(draftedOrder);
           }
-          menuOrderNotifier.setDraftedOrder(draftedOrder);
+          draftedOrderNotifier.setOrder(draftedOrder);
           // printPlatesPackDebug(packs: order.packs);
           return;
         }
@@ -115,7 +112,7 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
         if (widget.onOrderModified != null) {
           widget.onOrderModified!(draftedOrder);
         }
-        menuOrderNotifier.setDraftedOrder(draftedOrder);
+        draftedOrderNotifier.setOrder(draftedOrder);
       },
     );
     // printPlatesPackDebug(packs: order.packs);
@@ -144,7 +141,7 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
                     widget.onStepCompleted!(draftedOrder);
                   }
 
-                  menuOrderNotifier.setDraftedOrder(draftedOrder);
+                  draftedOrderNotifier.setOrder(draftedOrder);
                   /* draftedOrder = MenuOrder(packs: selectedPacks, plates: selectedPlates); */
                 },
               ),
@@ -170,9 +167,8 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
 
   Section draftedOrderSection(TextStyle columnTitleStyle, ThemeData theme) {
     Widget draftedSection() {
-      if (menuOrderProvider.draftedOrder != null &&
-          menuOrderProvider.draftedOrder!.length >= 1) {
-        return DraftedOrder(order: menuOrderProvider.draftedOrder as MenuOrder);
+      if (draftedOrderProvider.length >= 1) {
+        return DraftedOrder(order: draftedOrderProvider);
       } else {
         return Container(
           decoration: BoxDecoration(
@@ -216,12 +212,10 @@ class _NewOrderState extends ConsumerState<NewOrderStep> with PlateMixin {
         children: [
           ...PlateList.packs.map(
             (PlatePack pack) {
-              PlatePack updatedPack = menuOrderProvider.draftedOrder != null
-                  ? menuOrderProvider.draftedOrder!.packs.firstWhere(
-                      (draftedPack) => draftedPack.code == pack.code,
-                      orElse: () => pack,
-                    )
-                  : pack;
+              PlatePack updatedPack = draftedOrderProvider.packs.firstWhere(
+                (draftedPack) => draftedPack.code == pack.code,
+                orElse: () => pack,
+              );
 
               return SwipeablePack(
                 key: Key(updatedPack.code),

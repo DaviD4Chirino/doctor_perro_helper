@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/mixins/time_mixin.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
@@ -9,6 +7,7 @@ import 'package:doctor_perro_helper/models/providers/streams/menu_order_stream.d
 import 'package:doctor_perro_helper/models/providers/streams/user_data_provider_stream.dart';
 import 'package:doctor_perro_helper/models/providers/user.dart';
 import 'package:doctor_perro_helper/models/routes.dart';
+import 'package:doctor_perro_helper/utils/extensions/order_list_extensions.dart';
 import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
 import 'package:doctor_perro_helper/widgets/reusables/Section.dart';
 import 'package:flutter/material.dart';
@@ -22,22 +21,22 @@ class Orders extends ConsumerStatefulWidget {
 }
 
 class _OrdersState extends ConsumerState<Orders> {
-  late Timer timer = Timer.periodic(
+  /* late Timer timer = Timer.periodic(
     Duration(seconds: 5),
     (timer) {},
-  );
+  ); */
 
   AsyncValue<UserData> get userDataStream => ref.watch(userDataProvider);
 
   AsyncValue<List<MenuOrder>> get menuOrdersStream =>
       ref.watch(menuOrderStreamProvider);
 
-  MenuOrderData get allOrders => menuOrdersStream.maybeWhen(
+  List<MenuOrder> get allOrders => menuOrdersStream.maybeWhen(
         data: (data) {
-          return MenuOrderData(history: data);
+          return data;
         },
         orElse: () {
-          return MenuOrderData(history: []);
+          return [MenuOrder(plates: [], packs: [])];
         },
       );
 
@@ -46,23 +45,23 @@ class _OrdersState extends ConsumerState<Orders> {
         orElse: () => "",
       );
   List<MenuOrder> get pendingOrders =>
-      allOrders.ordersWhere(OrderStatus.pending);
+      allOrders.whereStatus(OrderStatus.pending);
   List<MenuOrder> get servedOrders =>
-      allOrders.ordersWhere(OrderStatus.completed);
+      allOrders.whereStatus(OrderStatus.completed);
   List<MenuOrder> get cancelledOrders =>
-      allOrders.ordersWhere(OrderStatus.cancelled);
+      allOrders.whereStatus(OrderStatus.cancelled);
 
   @override
   void initState() {
     super.initState();
-    timer =
-        Timer.periodic(const Duration(seconds: 5), (timer) => setState(() {}));
+    /*  timer =
+        Timer.periodic(const Duration(seconds: 5), (timer) => setState(() {})); */
   }
 
   @override
   void dispose() {
     super.dispose();
-    timer.cancel();
+    // timer.cancel();
   }
 
   @override
@@ -197,8 +196,8 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ThemeData theme = Theme.of(context);
-    MenuOrderNotifier menuOrderNotifier =
-        ref.read(menuOrderNotifierProvider.notifier);
+    DraftedOrderNotifier menuOrderNotifier =
+        ref.read(draftedOrderNotifierProvider.notifier);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
