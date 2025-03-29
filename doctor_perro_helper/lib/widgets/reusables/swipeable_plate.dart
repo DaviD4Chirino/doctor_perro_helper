@@ -1,6 +1,4 @@
 import 'package:doctor_perro_helper/models/plate.dart';
-import 'package:doctor_perro_helper/models/plate_pack.dart';
-import 'package:doctor_perro_helper/utils/string_math.dart';
 import 'package:doctor_perro_helper/widgets/reusables/swipeable.dart';
 import 'package:doctor_perro_helper/widgets/reusables/swipeable_pack.dart';
 import 'package:flutter/foundation.dart';

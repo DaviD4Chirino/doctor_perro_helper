@@ -26,7 +26,7 @@ void notificationOnMenuOrderChanged() {
       UseSharedPreferences.preferences
           .setString("latest-menu-order-id", latestOrder.id);
 
-      NotificationServer().showOrderNotification(
+      NotificationServer.showOrderNotification(
         body: latestOrder.codeList,
         id: 0,
         title: "Hay Ordenes Pendientes",

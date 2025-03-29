@@ -66,7 +66,7 @@ class _MainAppState extends ConsumerState<MainApp> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       try {
         await silentSignInWithGoogle();
-        await NotificationServer().initialize();
+        await NotificationServer.initialize();
         notificationOnMenuOrderChanged();
       } catch (e) {
         if (kDebugMode) {

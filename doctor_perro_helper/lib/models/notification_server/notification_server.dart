@@ -1,14 +1,12 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-class NotificationServer {
-  final notificationPlugin = FlutterLocalNotificationsPlugin();
+abstract class NotificationServer {
+  static final notificationPlugin = FlutterLocalNotificationsPlugin();
 
-  bool _isInitialized = false;
+  static bool isInitialized = false;
 
-  bool get isInitialized => _isInitialized;
-
-  Future<void> initialize() async {
-    if (_isInitialized) return;
+  static Future<void> initialize() async {
+    if (isInitialized) return;
 
     const initSettingsAndroid =
         AndroidInitializationSettings("@mipmap/launcher_icon");
@@ -16,9 +14,10 @@ class NotificationServer {
     const initSettings = InitializationSettings(android: initSettingsAndroid);
 
     await notificationPlugin.initialize(initSettings);
+    isInitialized = true;
   }
 
-  Future<void> showNotification({
+  static Future<void> showNotification({
     int id = 0,
     String? title,
     String? body,
@@ -32,7 +31,7 @@ class NotificationServer {
     );
   }
 
-  Future<void> showOrderNotification({
+  static Future<void> showOrderNotification({
     int id = 0,
     String? title,
     String? body,

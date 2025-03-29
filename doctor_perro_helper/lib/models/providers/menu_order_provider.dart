@@ -1,7 +1,3 @@
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:doctor_perro_helper/models/abstracts/database_paths.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/order/menu_order_status.dart';
 import 'package:doctor_perro_helper/utils/database/orders_helper.dart';
