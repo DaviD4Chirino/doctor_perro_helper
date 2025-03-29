@@ -3,7 +3,7 @@ import 'package:doctor_perro_helper/models/abstracts/database_paths.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final StreamProvider<List<MenuOrder>> menuOrderStreamProvider = StreamProvider(
+final StreamProvider<List<MenuOrder>> menuOrdersStreamProvider = StreamProvider(
   (ref) {
     return FirebaseFirestore.instance
         .collection(CollectionsPaths.orders)
