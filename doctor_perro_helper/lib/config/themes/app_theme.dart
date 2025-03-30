@@ -22,10 +22,10 @@ abstract final class AppTheme {
   static ThemeData light = FlexThemeData.light(
     colors: const FlexSchemeColor(
       // Custom colors
-      primary: Color(0xFFFD9D43),
+      primary: Color(0xFFFF810B),
       primaryContainer: Color(0xFFFDCFAA),
       primaryLightRef: Color(0xFFFD9D43),
-      secondary: Color(0xFFFF5722),
+      secondary: Color(0xFFFF7951),
       secondaryContainer: Color(0xFFFFB88D),
       secondaryLightRef: Color(0xFFFF5722),
       tertiary: Color(0xFF35A0CB),

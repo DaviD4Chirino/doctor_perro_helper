@@ -156,7 +156,7 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
       activeStepIconColor: theme.colorScheme.primary,
 
       // activeStepBackgroundColor: theme.colorScheme.onSurface,
-      finishedStepTextColor: theme.colorScheme.primary,
+      finishedStepTextColor: theme.colorScheme.onSurface,
       defaultStepBorderType: BorderType.normal,
       fitWidth: false,
       stepRadius: 32,
