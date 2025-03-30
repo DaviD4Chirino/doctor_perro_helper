@@ -9,9 +9,13 @@ part "theme_mode_provider.g.dart";
 class ThemeModeNotifier extends _$ThemeModeNotifier {
   @override
   ThemeMode build() {
-    return UseSharedPreferences.preferences.getBool("theme-mode") ?? true
-        ? ThemeMode.light
-        : ThemeMode.dark;
+    if (UseSharedPreferences.preferences.getBool("theme-mode") == null) {
+      return ThemeMode.system;
+    } else {
+      return UseSharedPreferences.preferences.getBool("theme-mode")!
+          ? ThemeMode.light
+          : ThemeMode.dark;
+    }
   }
 
   void toggleDark() {
@@ -27,8 +31,10 @@ class ThemeModeNotifier extends _$ThemeModeNotifier {
   }
 
   void _setStatusBarColor() {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarIconBrightness:
-            state == ThemeMode.light ? Brightness.dark : Brightness.light));
+    SystemUiOverlayStyle brightness = state == ThemeMode.light
+        ? SystemUiOverlayStyle.dark
+        : SystemUiOverlayStyle.light;
+
+    SystemChrome.setSystemUIOverlayStyle(brightness);
   }
 }
