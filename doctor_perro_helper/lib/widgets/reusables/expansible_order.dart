@@ -67,25 +67,25 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
             ],
           ),
         ),
-        // if (order.status == OrderStatus.pending)
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Expanded(
-              child: OutlinedButton(
-                onPressed: order.madeBy == accountId &&
-                        order.status == OrderStatus.pending
-                    ? () {
-                        menuOrderNotifier.serveOrder(order);
-                      }
-                    : null,
-                child: const Text("Servir"),
+        if (order.status == OrderStatus.pending)
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: order.madeBy == accountId &&
+                          order.status == OrderStatus.pending
+                      ? () {
+                          menuOrderNotifier.serveOrder(order);
+                        }
+                      : null,
+                  child: const Text("Servir"),
+                ),
               ),
-            ),
-            PopupMenuButton(
-              enableFeedback: true,
-              itemBuilder: (BuildContext context) => [
-                /*  PopupMenuItem(
+              PopupMenuButton(
+                enableFeedback: true,
+                itemBuilder: (BuildContext context) => [
+                  /*  PopupMenuItem(
                     onTap: () {
                       menuOrderNotifier.editOrder(order);
                       Navigator.pushNamed(context, Paths.newOrder);
@@ -93,20 +93,20 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
                     child: Text("Editar orden"),
                   ), */
 
-                PopupMenuItem(
-                  enabled: order.madeBy == accountId,
-                  onTap: () {
-                    order.status = OrderStatus.cancelled;
-                    uploadOrder(order);
-                  },
-                  child: Text(
-                    "Cancelar orden",
+                  PopupMenuItem(
+                    enabled: order.madeBy == accountId,
+                    onTap: () {
+                      order.status = OrderStatus.cancelled;
+                      uploadOrder(order);
+                    },
+                    child: Text(
+                      "Cancelar orden",
+                    ),
                   ),
-                ),
-              ],
-            )
-          ],
-        ),
+                ],
+              )
+            ],
+          ),
       ],
     );
   }
