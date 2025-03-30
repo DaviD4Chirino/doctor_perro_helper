@@ -63,7 +63,7 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
                   color: theme.colorScheme.onSurface.withAlpha(200),
                 ),
               ),
-              Text(order.id),
+              // Text(order.id),
             ],
           ),
         ),

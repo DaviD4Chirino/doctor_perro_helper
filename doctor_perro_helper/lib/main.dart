@@ -63,10 +63,14 @@ class _MainAppState extends ConsumerState<MainApp> {
   /// this repo, and not from dependencies unless necessary.
 
   Future<void> initialization() async {
+    Future<void> awaitFunctions() async {
+      silentSignInWithGoogle();
+      NotificationServer.initialize();
+    }
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       try {
-        await silentSignInWithGoogle();
-        await NotificationServer.initialize();
+        await awaitFunctions();
         notificationOnMenuOrderChanged();
       } catch (e) {
         if (kDebugMode) {
