@@ -115,7 +115,6 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
             stepper(theme),
           ],
         ),
-        backgroundColor: theme.colorScheme.surface,
         centerTitle: true,
         toolbarHeight: 120,
         automaticallyImplyLeading: false,
