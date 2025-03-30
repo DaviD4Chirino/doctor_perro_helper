@@ -7,6 +7,7 @@ import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// ignore: must_be_immutable
 class ExpansibleOrder extends ConsumerWidget with TimeMixin {
   ExpansibleOrder({
     super.key,

@@ -24,9 +24,6 @@ class GlobalSettingsNotifier extends _$GlobalSettingsNotifier {
     DolarPriceInBsDoc dolarPriceInBsDoc =
         DolarPriceInBsDoc.fromJson(data as Map<String, dynamic>);
 
-    if (kDebugMode) {
-      print(dolarPriceInBsDoc);
-    }
     state = GlobalSettings(dolarPrice: dolarPriceInBsDoc);
   }
 

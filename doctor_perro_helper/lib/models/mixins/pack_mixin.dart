@@ -1,4 +1,3 @@
-import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
 
 mixin PackMixin {
@@ -6,8 +5,6 @@ mixin PackMixin {
   /// and makes a new pack on the array if it's different
   List<PlatePack> mergePack(List<PlatePack> packs) {
     Map<String, PlatePack> packMap = {};
-
-    print(PlateList.r1.amount(2).amount(3).ingredientsTitles);
 
     for (PlatePack pack in packs) {
       List<String> platesListTitles =

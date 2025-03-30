@@ -1,17 +1,12 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
-import 'package:doctor_perro_helper/models/mixins/time_mixin.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/order/menu_order_status.dart';
-import 'package:doctor_perro_helper/models/providers/menu_order_provider.dart';
 import 'package:doctor_perro_helper/models/providers/streams/menu_order_stream.dart';
 import 'package:doctor_perro_helper/models/providers/streams/user_data_provider_stream.dart';
 import 'package:doctor_perro_helper/models/providers/user.dart';
 import 'package:doctor_perro_helper/models/routes.dart';
-import 'package:doctor_perro_helper/utils/database/orders_helper.dart';
 import 'package:doctor_perro_helper/utils/extensions/order_list_extensions.dart';
-import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
 import 'package:doctor_perro_helper/widgets/orders/display_orders.dart';
-import 'package:doctor_perro_helper/widgets/reusables/Section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
