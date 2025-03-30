@@ -24,7 +24,7 @@ class DashBoard extends StatelessWidget {
           SizedBox(
             height: Sizes().xxl,
           ),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               TodaysEarnings(),

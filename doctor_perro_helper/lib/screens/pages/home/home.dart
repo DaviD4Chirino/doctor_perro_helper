@@ -80,7 +80,7 @@ class Home extends StatefulWidget {
   });
 
   final List<Widget> screens = [
-    const DashBoard(),
+    DashBoard(),
     const Orders(),
     const DolarCalculator(),
     const SettingsPage(),
