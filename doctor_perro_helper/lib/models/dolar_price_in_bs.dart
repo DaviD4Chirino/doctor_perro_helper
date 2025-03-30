@@ -57,4 +57,7 @@ class DolarPriceInBsDoc {
   double get latestValue => latestDolarPrice?.value ?? 0.0;
 
   DateTime? get latestUpdateTime => latestDolarPrice?.updateTime;
+
+  /// Multiplies the amount with the [latestValue]
+  double calculate(double amount) => amount * latestValue;
 }

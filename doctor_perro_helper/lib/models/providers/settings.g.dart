@@ -7,7 +7,7 @@ part of 'settings.dart';
 // **************************************************************************
 
 String _$dolarPriceNotifierHash() =>
-    r'115f53881ebe35d357ad0108a4588a7902bf0683';
+    r'27aee068359755d34cedc39486f3aa9e676b368b';
 
 /// See also [DolarPriceNotifier].
 @ProviderFor(DolarPriceNotifier)

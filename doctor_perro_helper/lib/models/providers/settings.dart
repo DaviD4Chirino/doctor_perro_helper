@@ -14,4 +14,10 @@ class DolarPriceNotifier extends _$DolarPriceNotifier {
     state = amount;
     UseSharedPreferences.preferences.setDouble("dolar_price", amount);
   }
+
+  /// Easy calculation of the price
+  double calculate(double amount) {
+    return amount *
+        (UseSharedPreferences.preferences.getDouble("dolar_price") ?? 60.0);
+  }
 }

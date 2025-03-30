@@ -2,6 +2,7 @@
 abstract class CollectionsPaths {
   static String users = "users";
   static String globalSettings = "global-settings";
+  static String orders = "orders";
 }
 
 /// Here all the document paths of [CollectionsPaths.globalSettings]

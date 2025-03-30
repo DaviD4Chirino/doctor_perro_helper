@@ -1,9 +1,13 @@
 import 'package:doctor_perro_helper/config/themes/app_theme.dart';
+import 'package:doctor_perro_helper/models/notification_server/notification_server.dart';
 import 'package:doctor_perro_helper/models/providers/theme_mode_provider.dart';
 
+import 'package:doctor_perro_helper/models/routes.dart';
 import 'package:doctor_perro_helper/models/use_shared_preferences.dart';
+import 'package:doctor_perro_helper/screens/orders/make_new_order.dart';
 import 'package:doctor_perro_helper/screens/pages/home/home.dart';
 import 'package:doctor_perro_helper/utils/google/google.dart';
+import 'package:doctor_perro_helper/utils/notifications_handlers/notification_on_menu_order_changed.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 
@@ -46,6 +50,12 @@ class _MainAppState extends ConsumerState<MainApp> {
   void initState() {
     super.initState();
     initialization();
+    /* if (kDebugMode) {
+      var pl1 = PlateList.r1.amount(1).spread();
+      var pl2 = PlateList.r4.amount(2).spread();
+      print(pl1);
+      print(pl2);
+    } */
   }
 
   /// Put here anything that you need to initialize in the app,
@@ -53,9 +63,15 @@ class _MainAppState extends ConsumerState<MainApp> {
   /// this repo, and not from dependencies unless necessary.
 
   Future<void> initialization() async {
+    Future<void> awaitFunctions() async {
+      silentSignInWithGoogle();
+      NotificationServer.initialize();
+    }
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       try {
-        await silentSignInWithGoogle();
+        await awaitFunctions();
+        notificationOnMenuOrderChanged();
       } catch (e) {
         if (kDebugMode) {
           print(e);
@@ -75,37 +91,12 @@ class _MainAppState extends ConsumerState<MainApp> {
         darkTheme: AppTheme.dark,
         themeMode: themeMode,
         title: "Dr.Perro Helper",
-        initialRoute: "",
+        initialRoute: Paths.home,
         routes: {
-          "": (BuildContext context) => Home(),
+          Paths.home: (BuildContext context) => Home(),
+          Paths.newOrder: (BuildContext context) => const MakeNewOrder(),
         },
       ),
     );
   }
 }
-
-// class NavBar extends StatefulWidget {
-//   const NavBar({super.key});
-
-//   @override
-//   // ignore: library_private_types_in_public_api
-//   _NavBarState createState() => _NavBarState();
-// }
-
-// class _NavBarState extends State<NavBar> {
-//   int currentIndex = 0;
-
-//   List routes = [
-//     "/",
-//     "/calculator"
-//   ];
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return NavigationBar(
-
-//       selectedIndex: currentIndex,
-//       onDestinationSelected: (int index) => Navigate.,
-//     );
-//   }
-// }

@@ -4,8 +4,8 @@ import 'package:doctor_perro_helper/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DolarPriceText extends ConsumerWidget {
-  const DolarPriceText({super.key, this.style, this.text});
+class CurrentDolarPriceText extends ConsumerWidget {
+  const CurrentDolarPriceText({super.key, this.style, this.text});
 
   final TextStyle? style;
 

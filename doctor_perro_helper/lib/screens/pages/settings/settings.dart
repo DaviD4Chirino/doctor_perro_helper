@@ -1,88 +1,51 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
-import 'package:doctor_perro_helper/models/consumers/dolar_price_text.dart';
-import 'package:doctor_perro_helper/models/providers/streams/user_data_provider_stream.dart';
-import 'package:doctor_perro_helper/models/providers/theme_mode_provider.dart';
-import 'package:doctor_perro_helper/models/providers/user.dart';
-import 'package:doctor_perro_helper/models/user_role.dart';
-import 'package:doctor_perro_helper/screens/pages/settings/change_dolar_price.dart';
+import 'package:doctor_perro_helper/screens/pages/settings/change_dolar_price_button.dart';
+import 'package:doctor_perro_helper/screens/pages/settings/change_theme_mode_button.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/manage_account.dart';
+import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
+    final ThemeData theme = Theme.of(context);
+    return SafeArea(
+      child: ListView(
         padding: EdgeInsets.symmetric(
           vertical: Sizes().xxl,
           horizontal: Sizes().large,
         ),
         children: [
-          Text(
-            "Cuenta",
-            style: TextStyle(
-              fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
-              fontWeight: FontWeight.bold,
+          Section(
+            title: Text(
+              "Cuenta",
+              style: TextStyle(
+                fontSize: theme.textTheme.titleMedium?.fontSize,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            child: Column(
+              children: const [ManageAccountButton()],
             ),
           ),
-          const ManageAccount(),
-          Text(
-            "Ajustes",
-            style: TextStyle(
-              fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
-              fontWeight: FontWeight.bold,
+          Section(
+            title: Text(
+              "Ajustes",
+              style: TextStyle(
+                fontSize: theme.textTheme.titleMedium?.fontSize,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            child: Column(
+              children: const [
+                ChangeDolarPriceButton(),
+                ChangeThemeModeButton(),
+              ],
             ),
           ),
-          const ChangeDolarPriceButton(),
-          const ChangeThemeMode(),
         ],
-      ),
-    );
-  }
-}
-
-class ChangeDolarPriceButton extends ConsumerWidget {
-  const ChangeDolarPriceButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<UserData> userDataStream = ref.watch(userDataProvider);
-    final ThemeData theme = Theme.of(context);
-
-    return ListTile(
-      title: const Text("Precio del dolar"),
-      leading: const Icon(Icons.attach_money),
-      trailing: DolarPriceText(
-        text: (String latestValue) => "${latestValue}bs",
-        style: TextStyle(
-          fontSize: theme.textTheme.labelLarge?.fontSize,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      // if the user is admin, do not show a waring
-      subtitle: userDataStream.maybeWhen(
-        data: (UserData data) => data.document?.role != UserRole.admin
-            ? const Text("Solo el admin puede cambiar el valor del dolar")
-            : null,
-        error: (error, stackTrace) => const Text("Debes iniciar sesión"),
-        orElse: () => null,
-      ),
-      // if the user is admin, let them go to the dialog
-      onTap: userDataStream.maybeWhen(
-        data: (data) => data.document?.role == UserRole.admin
-            ? () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) => const ChangeDolarPrice(),
-                );
-              }
-            : null,
-        orElse: () => null,
       ),
     );
   }
@@ -109,33 +72,6 @@ class SettingButton extends StatelessWidget {
                 Theme.of(context).colorScheme.onSurfaceVariant.withAlpha(100),
           )
         ],
-      ),
-    );
-  }
-}
-
-class ChangeThemeMode extends ConsumerWidget {
-  const ChangeThemeMode({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    bool lightMode = ref.watch(themeModeNotifierProvider) == ThemeMode.light;
-    switchTheme() {
-      if (lightMode) {
-        ref.read(themeModeNotifierProvider.notifier).toggleDark();
-      } else {
-        ref.read(themeModeNotifierProvider.notifier).toggleLight();
-      }
-    }
-
-    return ListTile(
-      title: Text("Cambiar a ${lightMode ? "Modo Oscuro" : "Modo Claro"}"),
-      leading: const Icon(Icons.color_lens_outlined),
-      onTap: switchTheme,
-      trailing: Switch(
-        value: lightMode,
-        onChanged: (_) => switchTheme(),
-        padding: const EdgeInsets.all(0.0),
       ),
     );
   }

@@ -1,82 +1,78 @@
-import 'package:doctor_perro_helper/config/border_size.dart';
-import 'package:doctor_perro_helper/models/plate.dart';
+import 'package:doctor_perro_helper/screens/dash_board.dart';
+import 'package:doctor_perro_helper/screens/orders/orders.dart';
 import 'package:doctor_perro_helper/screens/pages/calculator/calculator.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/settings.dart';
-import 'package:doctor_perro_helper/widgets/current_date.dart';
-import 'package:doctor_perro_helper/widgets/current_dolar_price.dart';
-import 'package:doctor_perro_helper/widgets/menu_list_item.dart';
-import 'package:doctor_perro_helper/widgets/todays_earnings.dart';
 import 'package:flutter/material.dart';
 
-final List<Plate> plates = [
-  Plate(
-    code: "R1",
-    title: "Perro Normal",
-    ingredients: [
-      "Ensalada",
-      "Papas",
-      "Queso de año",
-      "Salsa de ajo",
-      "Salsa de Tomate",
-    ],
-    price: 2.0,
-  ),
-  Plate(
-    code: "R2",
-    title: "Perro Especial",
-    ingredients: [
-      "Queso Kraft",
-      "Tocino",
-      "Ensalada",
-      "Papas",
-      "Queso de año",
-      "Salsa de ajo",
-      "Salsa de Tomate",
-    ],
-    price: 3.0,
-  ),
-  Plate(
-    code: "R3",
-    title: "Hamburguesa",
-    ingredients: [
-      "Carne",
-      "Salsa de la casa",
-      "Tocino",
-      "Queso Kraft",
-    ],
-    price: 3.5,
-  ),
-  Plate(
-    code: "R4",
-    title: "Hamburguesa Doble",
-    ingredients: [
-      "Doble Carne",
-      "Salsa de la casa",
-      "Tocino",
-      "Queso Kraft",
-    ],
-    price: 6.0,
-  ),
-  Plate(
-    code: "R5",
-    title: "Salchipapas",
-    ingredients: [
-      "Papas Fritas",
-      "Salchicha",
-      "Tocino",
-      "Maíz",
-      "Queso de res",
-      "Queso de Año",
-    ],
-    price: 3.0,
-  ),
-  Plate(
-    code: "R6",
-    title: "Servicio de Papas",
-    ingredients: ["Papas Fritas", "Salsa de Tomate"],
-    price: 3.0,
-  ),
-];
+// final List<Plate> plates = [
+//   Plate(
+//     code: "R1",
+//     title: "Perro Normal",
+//     ingredients: [
+//       "Ensalada",
+//       "Papas",
+//       "Queso de año",
+//       "Salsa de ajo",
+//       "Salsa de Tomate",
+//     ],
+//     price: 2.0,
+//   ),
+//   Plate(
+//     code: "R2",
+//     title: "Perro Especial",
+//     ingredients: [
+//       "Queso Kraft",
+//       "Tocino",
+//       "Ensalada",
+//       "Papas",
+//       "Queso de año",
+//       "Salsa de ajo",
+//       "Salsa de Tomate",
+//     ],
+//     price: 3.0,
+//   ),
+//   Plate(
+//     code: "R3",
+//     title: "Hamburguesa",
+//     ingredients: [
+//       "Carne",
+//       "Salsa de la casa",
+//       "Tocino",
+//       "Queso Kraft",
+//     ],
+//     price: 3.5,
+//   ),
+//   Plate(
+//     code: "R4",
+//     title: "Hamburguesa Doble",
+//     ingredients: [
+//       "Doble Carne",
+//       "Salsa de la casa",
+//       "Tocino",
+//       "Queso Kraft",
+//     ],
+//     price: 6.0,
+//   ),
+//   Plate(
+//     code: "R5",
+//     title: "Salchipapas",
+//     ingredients: [
+//       "Papas Fritas",
+//       "Salchicha",
+//       "Tocino",
+//       "Maíz",
+//       "Queso de res",
+//       "Queso de Año",
+//     ],
+//     price: 3.0,
+//   ),
+//   Plate(
+//     code: "R6",
+//     title: "Servicio de Papas",
+//     ingredients: ["Papas Fritas", "Salsa de Tomate"],
+//     price: 3.0,
+//   ),
+// ];
 
 class Home extends StatefulWidget {
   Home({
@@ -84,7 +80,8 @@ class Home extends StatefulWidget {
   });
 
   final List<Widget> screens = [
-    const DashBoard(),
+    DashBoard(),
+    const Orders(),
     const DolarCalculator(),
     const SettingsPage(),
   ];
@@ -146,60 +143,16 @@ class _HomeState extends State<Home> {
           label: "Principio",
         ),
         NavigationDestination(
+          icon: Icon(Icons.receipt),
+          label: "Pedidos",
+        ),
+        NavigationDestination(
           icon: Icon(Icons.calculate),
           label: "Calculadora",
         ),
         NavigationDestination(
           icon: Icon(Icons.settings),
           label: "Ajustes",
-        ),
-      ],
-    );
-  }
-}
-
-class DashBoard extends StatelessWidget {
-  const DashBoard({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(8.0),
-      physics: const BouncingScrollPhysics(),
-      children: [
-        CurrentDateText(),
-        SizedBox(
-          height: Sizes().xxl,
-        ),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            TodaysEarnings(),
-            CurrentDolarPrice(),
-          ],
-        ),
-        SizedBox(
-          height: Sizes().xxxl * 2,
-        ),
-        const Text(
-          "Menú",
-          style: TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(
-          height: Sizes().xl,
-        ),
-        ...plates.map(
-          (plate) => Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: MenuListItem(
-              plate: plate,
-            ),
-          ),
         ),
       ],
     );

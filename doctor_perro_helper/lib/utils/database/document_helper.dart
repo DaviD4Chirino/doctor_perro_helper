@@ -5,9 +5,9 @@ import 'shared.dart';
 Future<bool> hasDocument(String collectionPath, String docPath) async {
   final CollectionReference collection = db.collection(collectionPath);
   final DocumentReference doc = collection.doc(docPath);
-  final DocumentSnapshot user = await doc.get();
+  final DocumentSnapshot snapshot = await doc.get();
 
-  return user.exists;
+  return snapshot.exists;
 }
 
 DocumentReference getDocument(String collectionPath, String docPath) =>

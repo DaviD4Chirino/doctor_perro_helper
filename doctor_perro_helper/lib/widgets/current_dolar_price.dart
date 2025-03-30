@@ -16,7 +16,7 @@ class CurrentDolarPrice extends StatelessWidget {
           padding: EdgeInsets.all(Sizes().xxl),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Sizes().roundedSmall),
-            color: Theme.of(context).colorScheme.surfaceContainerHighest,
+            color: Theme.of(context).colorScheme.surfaceContainer,
           ),
           child: Column(
             children: [
@@ -24,7 +24,7 @@ class CurrentDolarPrice extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.baseline,
                 textBaseline: TextBaseline.alphabetic,
                 children: [
-                  DolarPriceText(
+                  CurrentDolarPriceText(
                     style: TextStyle(
                       fontSize: 60.0,
                       color: Theme.of(context).colorScheme.primary,

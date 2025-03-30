@@ -13,8 +13,8 @@ const ColorScheme darkColorScheme = ColorScheme(
   onSecondaryContainer: Color(0xFFF2F0E8),
   tertiary: Color(0xFFEE4845),
   onTertiary: Color(0xFFF2F0E8),
-  tertiaryContainer: Color(0xFF301921),
-  onTertiaryContainer: Color(0xFFF2F0E8),
+  tertiaryContainer: Color(0xFFF77E7C),
+  onTertiaryContainer: Color(0xFF140F0F),
   error: Color(0xFFF30F03),
   onError: Color(0xFF4C100D),
   errorContainer: Color(0xFF661511),
@@ -32,4 +32,11 @@ ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   colorScheme: darkColorScheme,
   appBarTheme: sharedThemeData.appBarTheme(darkColorScheme),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+      ),
+    ),
+  ),
 );
