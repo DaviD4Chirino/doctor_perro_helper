@@ -7,13 +7,16 @@ import 'package:doctor_perro_helper/utils/extensions/order_list_extensions.dart'
 
 void notificationOnMenuOrderChanged() {
   menuOrderSubscription.onData(
-    (data) {
+    (data) async {
       if (data.isEmpty) {
         return;
       }
       List<MenuOrder> pendingOrders = data.whereStatus(OrderStatus.pending);
 
       if (pendingOrders.isEmpty) return;
+
+      // String ordersIds = pendingOrders.getIdsAsString();
+
       MenuOrder latestOrder = pendingOrders.first;
 
       String? latestMenuOrderId =

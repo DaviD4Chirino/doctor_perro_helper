@@ -3,10 +3,9 @@ import 'package:doctor_perro_helper/models/order/menu_order_status.dart';
 import 'package:doctor_perro_helper/utils/database/orders_helper.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part "menu_order_provider.g.dart";
+part "drafted_order_provider.g.dart";
 
-// remove this and use a local drafted order
-@Riverpod(keepAlive: true)
+@riverpod
 class DraftedOrderNotifier extends _$DraftedOrderNotifier {
   @override
   MenuOrder build() {

@@ -1,7 +1,7 @@
 import 'package:doctor_perro_helper/models/mixins/time_mixin.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/order/menu_order_status.dart';
-import 'package:doctor_perro_helper/models/providers/menu_order_provider.dart';
+import 'package:doctor_perro_helper/models/providers/drafted_order_provider.dart';
 import 'package:doctor_perro_helper/utils/database/orders_helper.dart';
 import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
 import 'package:flutter/material.dart';

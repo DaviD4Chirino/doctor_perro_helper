@@ -13,4 +13,14 @@ extension OrderListExtensions on List<MenuOrder> {
     }
     return amt;
   }
+
+  /// Merge all their ids into a single string
+  String getIdsAsString() {
+    String builtIds = "";
+
+    for (MenuOrder order in this) {
+      builtIds = "$builtIds - ${order.id}";
+    }
+    return builtIds;
+  }
 }
