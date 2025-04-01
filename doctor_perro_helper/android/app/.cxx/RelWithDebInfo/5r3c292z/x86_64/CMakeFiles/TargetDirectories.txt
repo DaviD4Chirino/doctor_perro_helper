@@ -1,0 +1,2 @@
+E:/documentos/android projects/doctor_perro_helper/doctor_perro_helper/android/app/.cxx/RelWithDebInfo/5r3c292z/x86_64/CMakeFiles/edit_cache.dir
+E:/documentos/android projects/doctor_perro_helper/doctor_perro_helper/android/app/.cxx/RelWithDebInfo/5r3c292z/x86_64/CMakeFiles/rebuild_cache.dir
