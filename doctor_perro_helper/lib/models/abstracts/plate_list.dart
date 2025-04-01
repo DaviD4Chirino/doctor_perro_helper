@@ -195,7 +195,7 @@ abstract class PlateList {
     code: "E1",
     name: "Servicio de Papas Fritas",
     ingredients: [
-      SideDishList.frenchFries,
+      SideDishList.frenchFries.amount(6),
     ],
     cost: 0.0,
     quantity: PlateQuantity(),
