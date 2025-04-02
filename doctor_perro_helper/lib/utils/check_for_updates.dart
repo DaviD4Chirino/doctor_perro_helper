@@ -1,4 +1,3 @@
-
 import 'package:doctor_perro_helper/utils/get_latest_app_version.dart';
 import 'package:doctor_perro_helper/utils/update_app_dialog.dart';
 import 'package:doctor_perro_helper/utils/version_to_string.dart';
@@ -27,7 +26,7 @@ Future<void> checkForUpdates(BuildContext context) async {
       (e) => (e["label"] as String).endsWith(".apk"),
     ); */
 
-    if (kDebugMode) {
+    if (tag > currentVersion) {
       showDialog(
         // ignore: use_build_context_synchronously
         context: context,
@@ -38,7 +37,6 @@ Future<void> checkForUpdates(BuildContext context) async {
           localVersion: packageInfo.version,
           remoteVersion: map["tag_name"],
           body: map["body"],
-
         ),
       );
     }
