@@ -50,6 +50,7 @@ class _MainAppState extends ConsumerState<MainApp> {
   void initState() {
     super.initState();
     initialization();
+
     /* if (kDebugMode) {
       var pl1 = PlateList.r1.amount(1).spread();
       var pl2 = PlateList.r4.amount(2).spread();

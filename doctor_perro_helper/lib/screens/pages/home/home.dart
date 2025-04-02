@@ -100,6 +100,20 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     _pageController = PageController();
+    Future.delayed(
+      Duration.zero,
+      () {
+        showDialog(
+          // ignore: use_build_context_synchronously
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("Update available"),
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
