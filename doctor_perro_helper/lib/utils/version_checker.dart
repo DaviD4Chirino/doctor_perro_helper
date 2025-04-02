@@ -12,9 +12,6 @@ Future<bool> updateAvailable() async {
     int currentVersion = versionStringToInt(packageInfo.version);
     int tag = versionStringToInt(map["tag_name"]);
 
-    if (kDebugMode) {
-      print(currentVersion >= tag ? "up tp date" : "new version available");
-    }
     return currentVersion <= tag;
   } catch (e) {
     if (kDebugMode) {
