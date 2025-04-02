@@ -2,6 +2,7 @@ import 'package:doctor_perro_helper/screens/dash_board.dart';
 import 'package:doctor_perro_helper/screens/orders/orders.dart';
 import 'package:doctor_perro_helper/screens/pages/calculator/calculator.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/settings.dart';
+import 'package:doctor_perro_helper/utils/check_for_updates.dart';
 import 'package:doctor_perro_helper/utils/version_checker.dart';
 import 'package:flutter/material.dart';
 
@@ -103,15 +104,8 @@ class _HomeState extends State<Home> {
     Future.delayed(
       Duration.zero,
       () {
-        showDialog(
-          // ignore: use_build_context_synchronously
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text("Update available"),
-            );
-          },
-        );
+        // ignore: use_build_context_synchronously
+        checkForUpdates(context);
       },
     );
   }
