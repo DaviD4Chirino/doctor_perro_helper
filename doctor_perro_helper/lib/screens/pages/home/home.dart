@@ -2,6 +2,7 @@ import 'package:doctor_perro_helper/screens/dash_board.dart';
 import 'package:doctor_perro_helper/screens/orders/orders.dart';
 import 'package:doctor_perro_helper/screens/pages/calculator/calculator.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/settings.dart';
+import 'package:doctor_perro_helper/utils/version_checker.dart';
 import 'package:flutter/material.dart';
 
 // final List<Plate> plates = [
@@ -109,6 +110,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    updateAvailable();
     return Scaffold(
       body: SafeArea(
         child: PageView(
