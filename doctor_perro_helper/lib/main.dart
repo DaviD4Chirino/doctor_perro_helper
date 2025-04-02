@@ -26,11 +26,9 @@ Future main() async {
   await initializeDateFormatting('es_ES');
   await Firebase.initializeApp();
   await FlutterDownloader.initialize(
-      debug:
-          true, // optional: set to false to disable printing logs to console (default: true)
-      ignoreSsl:
-          true // option: set to false to disable working with http links (default: false)
-      );
+    debug:
+        true, // optional: set to false to disable printing logs to console (default: true)
+  );
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   SystemChrome.setPreferredOrientations([
