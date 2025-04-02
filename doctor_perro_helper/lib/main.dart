@@ -17,6 +17,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:toastification/toastification.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:doctor_perro_helper/utils/check_for_updates.dart';
 
 Future main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -80,6 +81,13 @@ class _MainAppState extends ConsumerState<MainApp> {
         }
       }
       FlutterNativeSplash.remove();
+      Future.delayed(
+        Duration.zero,
+        () {
+          // ignore: use_build_context_synchronously
+          checkForUpdates(context);
+        },
+      );
     });
   }
 
