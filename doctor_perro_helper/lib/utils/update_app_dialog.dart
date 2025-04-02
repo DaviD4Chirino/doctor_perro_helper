@@ -31,10 +31,6 @@ AlertDialog updateAlertDialog(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Change Log",
-          style: TextStyle(fontSize: 32.0),
-        ),
         Text(body),
       ],
     ),
