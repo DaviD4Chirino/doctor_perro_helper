@@ -1,6 +1,6 @@
+
 import 'package:doctor_perro_helper/utils/get_latest_app_version.dart';
 import 'package:doctor_perro_helper/utils/update_app_dialog.dart';
-import 'package:doctor_perro_helper/utils/version_checker.dart';
 import 'package:doctor_perro_helper/utils/version_to_string.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +11,7 @@ Future<void> checkForUpdates(BuildContext context) async {
     // done this way so we dont duplicate calls
     final map = await getLatestAppVersion();
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
     int currentVersion = versionStringToInt(packageInfo.version);
     int tag = versionStringToInt(map["tag_name"]);
 
@@ -27,7 +28,6 @@ Future<void> checkForUpdates(BuildContext context) async {
     ); */
 
     if (kDebugMode) {
-      print(map["body"]);
       showDialog(
         // ignore: use_build_context_synchronously
         context: context,
@@ -38,6 +38,7 @@ Future<void> checkForUpdates(BuildContext context) async {
           localVersion: packageInfo.version,
           remoteVersion: map["tag_name"],
           body: map["body"],
+
         ),
       );
     }
@@ -55,3 +56,23 @@ Future<void> checkForUpdates(BuildContext context) async {
     }
   }
 }
+
+
+// Future<Directory> getDownloadsDirectoryNonNullable() async {
+//   Directory? downloadsDirectory;
+
+//   if (Platform.isAndroid) {
+//     downloadsDirectory = await getExternalStorageDirectory();
+//     // Append the "Download" directory to get the correct path
+//     downloadsDirectory = Directory('${downloadsDirectory?.path}/Download');
+//   } else if (Platform.isIOS) {
+//     downloadsDirectory = await getApplicationDocumentsDirectory();
+//     // For iOS, manually append the "Downloads" directory (or any other desired directory)
+//     downloadsDirectory = Directory('${downloadsDirectory.path}/Downloads');
+//   } else {
+//     // Handle other platforms if necessary
+//     downloadsDirectory = await getApplicationDocumentsDirectory();
+//   }
+
+//   return downloadsDirectory ?? Directory.systemTemp.path;
+// }

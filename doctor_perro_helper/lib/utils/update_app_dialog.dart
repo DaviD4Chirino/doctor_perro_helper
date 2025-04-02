@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 AlertDialog updateAlertDialog(
   BuildContext context, {
@@ -9,6 +10,8 @@ AlertDialog updateAlertDialog(
   String remoteVersion = "",
   String body = "",
 }) {
+  final Uri _url = Uri.parse(downloadUrl);
+
   return AlertDialog(
     title: Text("Nueva Actualización Disponible ($remoteVersion)"),
     actions: [
@@ -23,6 +26,7 @@ AlertDialog updateAlertDialog(
           if (kDebugMode) {
             print(downloadUrl);
           }
+          openUrl(_url);
         },
         child: Text("Descargar"),
       ),
@@ -35,4 +39,10 @@ AlertDialog updateAlertDialog(
       ],
     ),
   );
+}
+
+Future<void> openUrl(Uri url) async {
+  if (!await launchUrl(url)) {
+    throw Exception('Could not launch $url');
+  }
 }
