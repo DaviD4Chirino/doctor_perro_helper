@@ -12,7 +12,16 @@ Future<void> checkForUpdates(BuildContext context) async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
     int currentVersion = versionStringToInt(packageInfo.version);
-    int tag = versionStringToInt(map["tag_name"]);
+    int remoteVersion = versionStringToInt(map["tag_name"]);
+
+    if (kDebugMode) {
+      print("<-----CHECK FOR UPDATES BEGIN------>");
+      print("packageInfo:\n$packageInfo");
+      print("currentVersion: $currentVersion");
+      print("remoteVersion: $remoteVersion");
+      print("Remote is higher?: ${remoteVersion > currentVersion}");
+      print("<-----CHECK FOR UPDATES ENDS------->");
+    }
 
     List<dynamic> assets = map["assets"];
 
@@ -26,7 +35,7 @@ Future<void> checkForUpdates(BuildContext context) async {
       (e) => (e["label"] as String).endsWith(".apk"),
     ); */
 
-    if (tag > currentVersion) {
+    if (remoteVersion > currentVersion) {
       showDialog(
         // ignore: use_build_context_synchronously
         context: context,
