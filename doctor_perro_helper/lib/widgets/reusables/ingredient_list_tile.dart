@@ -26,7 +26,7 @@ class IngredientListTile extends StatelessWidget {
         dense: dense,
         title: Text(
           ingredient.title,
-          style: textColor(theme),
+          style: ingredientTextColor(theme),
         ),
         trailing: DolarAndBolivarPriceText(
           price: ingredient.price,
@@ -36,7 +36,7 @@ class IngredientListTile extends StatelessWidget {
     );
   }
 
-  TextStyle? textColor(ThemeData theme) {
+  TextStyle? ingredientTextColor(ThemeData theme) {
     if (ingredient.isTheMaximum
         //  || ((ingredient.quantity?.amount ?? 1.0) > 1)
         ) {
@@ -46,9 +46,9 @@ class IngredientListTile extends StatelessWidget {
     }
     if (ingredient.isTheMinimum) {
       return TextStyle(
-        color: theme.colorScheme.error,
+        color: Colors.red,
         decoration: TextDecoration.lineThrough,
-        decorationColor: theme.colorScheme.error,
+        decorationColor: Colors.red,
       );
     }
 

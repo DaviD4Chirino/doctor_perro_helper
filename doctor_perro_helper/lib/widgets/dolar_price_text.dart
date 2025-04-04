@@ -12,6 +12,7 @@ class DolarPriceText extends StatelessWidget {
     return Text(
       "${price.removePaddingZero()}\$",
       style: textStyle ?? theme.textTheme.titleLarge,
+      textAlign: TextAlign.end,
     );
   }
 }
