@@ -234,6 +234,19 @@ class Plate {
     return list.join(", ");
   }
 
+  String get extrasTitles {
+    if (extras == null) {
+      return "";
+    }
+    List<String> list = [];
+
+    for (SideDish extra in extras!) {
+      list.add(extra.title);
+    }
+
+    return list.join(", ");
+  }
+
   Plate increaseAmount(double increment) {
     return copyWith(
       ingredients: ingredients

@@ -109,6 +109,8 @@ class Ingredient {
   bool get isTheMaximum =>
       quantity != null && quantity!.amount >= quantity!.max;
 
+  double initialAmount = 0.0;
+
   String name;
   double cost;
 

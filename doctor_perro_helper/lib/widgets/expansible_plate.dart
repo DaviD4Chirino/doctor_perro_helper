@@ -41,6 +41,7 @@ class ExpansiblePlate extends StatelessWidget {
   }
 
   Iterable<Widget> extrasSection() {
+    if (plate.extras == null) return [Container()];
     return plate.extras!.map(
       (SideDish sideDish) {
         return SwipeableIngredient(

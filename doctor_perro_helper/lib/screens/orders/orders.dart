@@ -140,7 +140,9 @@ class _OrdersState extends ConsumerState<Orders> {
         return FloatingActionButton(
           onPressed: null,
           tooltip: "Loading...",
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(
+            color: theme.colorScheme.onSecondary,
+          ),
         );
       },
     );

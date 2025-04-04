@@ -1,12 +1,15 @@
-import 'package:data_table_2/data_table_2.dart';
+import 'package:doctor_perro_helper/config/border_size.dart';
+import 'package:doctor_perro_helper/models/consumers/bolivar_price_text.dart';
+import 'package:doctor_perro_helper/models/mixins/ingredients_mixin.dart';
 import 'package:doctor_perro_helper/models/mixins/pack_mixin.dart';
 import 'package:doctor_perro_helper/models/mixins/plate_mixin.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
 import 'package:doctor_perro_helper/models/providers/drafted_order_provider.dart';
-import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
 import 'package:doctor_perro_helper/widgets/dolar_price_text.dart';
+import 'package:doctor_perro_helper/widgets/reusables/display_pack_diferencies.dart';
+import 'package:doctor_perro_helper/widgets/reusables/display_plate_diferencies.dart';
 import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,10 +27,10 @@ class CheckoutStep extends ConsumerStatefulWidget {
 }
 
 class _CheckoutStepState extends ConsumerState<CheckoutStep>
-    with PlateMixin, PackMixin {
+    with PlateMixin, PackMixin, IngredientsMixin {
   MenuOrder get draftedOrder => ref.watch(draftedOrderNotifierProvider);
 
-  late List<Plate> plates = mergePlates(draftedOrder.plates);
+  late List<Plate> plates = draftedOrder.platesSpread;
   late List<PlatePack> packs = draftedOrder.packSpread;
 
   @override
@@ -42,7 +45,93 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep>
         ),
       ),
       child: Expanded(
-        child: DataTable2(
+        child: ListView(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Costo en dólares:"),
+                DolarPriceText(
+                  price: draftedOrder.price,
+                  textStyle: theme.textTheme.bodyMedium,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Costo en Bolivares:"),
+                BolivarPriceText(
+                  price: draftedOrder.price,
+                  textStyle: theme.textTheme.bodyMedium,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Dirección:"),
+                Text(
+                  draftedOrder.direction,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+            ...divider(theme),
+            ...packs.map(
+              (pack) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    DisplayPackDiferencies(pack),
+                    ...divider(theme),
+                  ],
+                );
+              },
+            ),
+            ...plates.map(
+              (plate) {
+                return Column(
+                  children: [
+                    DisplayPlateDiferencies(plate),
+                    ...divider(theme),
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
+
+        /* LayoutGrid(
+          gridFit: GridFit.loose,
+          columnSizes: [1.fr, 0.2.fr],
+          rowSizes: [
+            auto,
+            auto,
+            ...plates.map(
+              (e) => auto,
+            )
+          ],
+          // autoPlacement: AutoPlacement.rowSparse,
+          children: [
+            Text("Costo en dólares:"),
+            DolarPriceText(price: draftedOrder.price),
+            Text("Costo en Bolivares:"),
+            BolivarPriceText(
+              price: draftedOrder.price,
+              textStyle: theme.textTheme.bodySmall,
+            ),
+            ...plates.map(
+              (plate) {
+                return Text(
+                  plate.title,
+                );
+              },
+            ),
+          ],
+        ), */
+
+        /* DataTable2(
           lmRatio: 1.0,
           columns: [
             DataColumn2(
@@ -77,7 +166,16 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep>
               (Plate plate) {
                 return DataRow2(
                   cells: [
-                    DataCell(Text(plate.title)),
+                    DataCell(
+                      Column(
+                        children: [
+                          Text(plate.title),
+                          Text(
+                            plate.getDifferences(plate.base).ingredientsTitles,
+                          ),
+                        ],
+                      ),
+                    ),
                     DataCell(
                       DolarPriceText(
                         price: plate.price,
@@ -88,7 +186,7 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep>
               },
             ),
           ],
-        ),
+        ), */
         /* child: DataTable2(
           dataTextStyle: theme.textTheme.titleSmall,
           headingTextStyle: theme.textTheme.titleMedium,
@@ -168,4 +266,17 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep>
       ),
     );
   }
+
+  List<Widget> divider(ThemeData theme) => [
+        SizedBox(
+          height: Sizes().xl,
+        ),
+        Container(
+          color: theme.colorScheme.primary,
+          height: Sizes().small,
+        ),
+        SizedBox(
+          height: Sizes().xxl,
+        ),
+      ];
 }

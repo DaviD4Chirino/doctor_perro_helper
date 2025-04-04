@@ -12,7 +12,9 @@ extension PlateExtensions on Plate {
     List<Plate> list = [];
 
     for (int i = 0; i < quantity.amount; i++) {
-      Plate plate = PlateList.getPlateByCode(code)!;
+      Plate plate = code.startsWith("E")
+          ? PlateList.getExtraByCode(code) as Plate
+          : PlateList.getPlateByCode(code) as Plate;
       // We know this is a real plate
       list.add(
         (withExtras ? plate : plate.withoutExtras()).amount(1).withUniqueId(),

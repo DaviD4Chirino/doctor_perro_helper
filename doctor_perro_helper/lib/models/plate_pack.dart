@@ -100,6 +100,73 @@ class PlatePack {
     }
   }
 
+  PlatePack getDifferences(PlatePack otherPack) {
+    List<Plate> plateDifferences = [];
+    List<SideDish>? extraDifferences;
+
+    // Map ingredients by title for quick lookup
+    /* Map<String, Ingredient> ingredientMap = {
+      for (var ingredient in ingredients) ingredient.title: ingredient
+    }; */
+    Map<String, Plate> otherIngredientMap = {
+      for (Plate plate in otherPack.plates) plate.title: plate
+    };
+
+    // Find ingredients that are in this plate but not in the other plate
+    for (var plate in plates) {
+      if (!otherIngredientMap.containsKey(plate.title) ||
+          plate.quantity.amount !=
+              otherIngredientMap[plate.title]?.quantity.amount) {
+        plateDifferences.add(plate);
+      }
+    }
+
+    // Find ingredients that are in the other plate but not in this plate
+    /* for (var ingredient in otherPlate.ingredients) {
+      if (!ingredientMap.containsKey(ingredient.title) ||
+          (ingredient.quantity?.amount ?? 1.0) !=
+              ingredientMap[ingredient.title]?.quantity?.amount) {
+        ingredientDifferences.add(ingredient);
+      }
+    } */
+
+    if (extras != null && otherPack.extras != null) {
+      extraDifferences = [];
+
+      // Map extras by name for quick lookup
+      /*  Map<String, SideDish> extraMap = {
+        for (var extra in extras!) extra.name: extra
+      }; */
+      Map<String, SideDish> otherExtraMap = {
+        for (var extra in otherPack.extras!) extra.name: extra
+      };
+
+      // Find extras that are in this plate but not in the other plate
+      for (var extra in extras!) {
+        if (!otherExtraMap.containsKey(extra.name) ||
+            (extra.quantity?.amount ?? 1.0) !=
+                otherExtraMap[extra.name]?.quantity?.amount) {
+          extraDifferences.add(extra);
+        }
+      }
+    } else if (extras != null) {
+      extraDifferences = List.from(extras!);
+    } else if (otherPack.extras != null) {
+      extraDifferences = List.from(otherPack.extras!);
+    }
+
+    return PlatePack(
+      id: otherPack.id,
+      code: otherPack.code,
+      name: otherPack.name,
+      plates: plateDifferences,
+      extras: extraDifferences,
+      cost:
+          0.0, // Cost can be set to 0.0 or calculated based on the differences
+      quantity: PlateQuantity(amount: 1), // Default quantity
+    );
+  }
+
   PlatePack get base {
     PlatePack? basePack = PlateList.getPackByCode(code);
 
@@ -166,6 +233,19 @@ class PlatePack {
     }
 
     return list;
+  }
+
+  String get extrasTitles {
+    if (extras == null) {
+      return "";
+    }
+    List<String> list = [];
+
+    for (SideDish extra in extras!) {
+      list.add(extra.title);
+    }
+
+    return list.join(", ");
   }
 
   /// [Plate] has it and [PlatePack] should too
