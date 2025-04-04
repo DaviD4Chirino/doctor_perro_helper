@@ -28,17 +28,9 @@ class _EditOrderStepState extends ConsumerState<EditOrderStep> {
 
   MenuOrder get draftedOrder => ref.watch(draftedOrderNotifierProvider);
 
-  late List<Plate> plates;
-  late List<PlatePack> packs;
+  late List<Plate> plates = draftedOrder.platesSpread;
+  late List<PlatePack> packs = draftedOrder.packSpread;
   // late MenuOrder draftedOrder;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    plates = draftedOrder.platesSpread;
-    packs = draftedOrder.packSpread;
-  }
 
   @override
   Widget build(BuildContext context) {

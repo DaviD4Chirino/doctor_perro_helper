@@ -27,30 +27,18 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
 
   MenuOrder get menuOrderProvider => ref.watch(draftedOrderNotifierProvider);
 
-  late PageController? _pageController;
+  final PageController _pageController = PageController();
 
-  // MenuOrder draftedOrder = MenuOrder(packs: [], plates: []);
-
-  List<Widget> get steps => [
-        NewOrderStep(
-          onOrderModified: onNewOrderStepModified,
-          // onStepCompleted: onNewOrderStepModified,
-        ),
-        EditOrderStep(
-          onStepCompleted: (MenuOrder modifiedOrder) {},
-        ),
-        CheckoutStep(),
-      ];
   int _index = 0;
 
-  bool newOrderStepCompleted = false;
+  bool get newOrderStepCompleted => menuOrderProvider.length > 0;
   bool editOrderStepCompleted = true;
   bool checkoutStepCompleted = true;
 
   bool get canAdvance =>
-      index == 0 && newOrderStepCompleted ||
-      index == 1 && editOrderStepCompleted ||
-      index == 2 && checkoutStepCompleted;
+      (index == 0 && newOrderStepCompleted) ||
+      (index == 1 && editOrderStepCompleted) ||
+      (index == 2 && checkoutStepCompleted);
 
   MenuOrder order = MenuOrder(plates: [], packs: []);
 
@@ -63,43 +51,30 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
       MenuOrder menuOrder = menuOrderProvider..madeBy = userId;
 
       draftedOrderNotifier.addOrder(menuOrder);
-      // uploadOrder(menuOrderProvider.draftedOrder!, userId: userId);
       Navigator.pop(context);
+    } else {
+      _index = idx.clamp(0, 2);
+      _pageController.animateToPage(
+        _index,
+        duration: const Duration(milliseconds: 150),
+        curve: Curves.easeOut,
+      );
     }
-    _index = idx.clamp(0, steps.length - 1);
-    _pageController!.animateToPage(
-      _index,
-      duration: const Duration(milliseconds: 150),
-      curve: Curves.easeOut,
-    );
   }
 
   int get index => _index;
 
   @override
-  void initState() {
-    super.initState();
-    _pageController = PageController();
-  }
-
-  @override
   void dispose() {
+    _pageController.dispose();
     super.dispose();
-    _pageController!.dispose();
   }
 
-  void onStepContinue() => nextStep;
+  void onStepContinue() => nextStep();
 
   void onStepCancel() => setState(() => index -= 1);
 
   void nextStep() => setState(() => index += 1);
-
-  void onNewOrderStepModified(MenuOrder modifiedOrder) {
-    setState(() {
-      // draftedOrder = modifiedOrder;
-      newOrderStepCompleted = modifiedOrder.length > 0;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,9 +84,7 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
       appBar: AppBar(
         title: Column(
           children: [
-            SizedBox(
-              height: 30,
-            ),
+            SizedBox(height: 30),
             stepper(theme),
           ],
         ),
@@ -120,7 +93,11 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
         automaticallyImplyLeading: false,
       ),
       bottomNavigationBar: FilledButton(
-        onPressed: canAdvance ? nextStep : null,
+        onPressed: canAdvance
+            ? () {
+                setState(() => index += 1);
+              }
+            : null,
         child: Text("Continue"),
       ),
       body: Padding(
@@ -132,7 +109,13 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
         child: PageView(
           controller: _pageController,
           physics: NeverScrollableScrollPhysics(),
-          children: steps,
+          children: [
+            NewOrderStep(),
+            EditOrderStep(
+              onStepCompleted: (MenuOrder modifiedOrder) {},
+            ),
+            CheckoutStep(),
+          ],
         ),
       ),
     );
@@ -147,15 +130,12 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
         lineLength: 45,
         lineSpace: 0,
         progress: 0.5,
-        // lineWidth: 15,
         defaultLineColor: theme.colorScheme.onSurface.withAlpha(150),
         finishedLineColor: theme.colorScheme.primary,
         activeLineColor: theme.colorScheme.onSurface,
       ),
       activeStepTextColor: theme.colorScheme.onSurface,
       activeStepIconColor: theme.colorScheme.primary,
-
-      // activeStepBackgroundColor: theme.colorScheme.onSurface,
       finishedStepTextColor: theme.colorScheme.onSurface,
       defaultStepBorderType: BorderType.normal,
       fitWidth: false,
@@ -163,7 +143,6 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
       internalPadding: 5,
       showTitle: true,
       showLoadingAnimation: false,
-
       steps: [
         EasyStep(
           enabled: index > 0,
@@ -199,7 +178,6 @@ class _MakeNewOrderState extends ConsumerState<MakeNewOrder> {
           : Container(
               color: theme.colorScheme.surfaceContainer,
               child: ListTile(
-                // enabled: false,
                 title: Text(
                     "Desliza hacia la derecha o izquierda en los platos para agregarlos"),
                 subtitle: Text("No has seleccionado ningún plato"),
