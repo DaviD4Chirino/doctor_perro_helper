@@ -3,6 +3,7 @@ import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
 import 'package:doctor_perro_helper/models/consumers/bolivar_price_text.dart';
 import 'package:doctor_perro_helper/models/ingredient.dart';
+import 'package:doctor_perro_helper/models/mixins/ingredients_mixin.dart';
 import 'package:doctor_perro_helper/models/mixins/pack_mixin.dart';
 import 'package:doctor_perro_helper/models/mixins/plate_mixin.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
@@ -31,7 +32,7 @@ class CheckoutStep extends ConsumerStatefulWidget {
 }
 
 class _CheckoutStepState extends ConsumerState<CheckoutStep>
-    with PlateMixin, PackMixin {
+    with PlateMixin, PackMixin, IngredientsMixin {
   MenuOrder get draftedOrder => ref.watch(draftedOrderNotifierProvider);
 
   late List<Plate> plates = draftedOrder.platesSpread;
@@ -87,7 +88,10 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep>
                         if (differencesInPlate.ingredientsTitles != "")
                           ...differencesInPlate.ingredients.map(
                             (ingredient) {
-                              return Text(ingredient.title);
+                              return Text(
+                                ingredient.title,
+                                style: ingredientTextColor(theme, ingredient),
+                              );
                             },
                           ),
                       ],

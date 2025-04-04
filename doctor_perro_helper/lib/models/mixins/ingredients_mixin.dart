@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 
 mixin IngredientsMixin {
   TextStyle? ingredientTextColor(ThemeData theme, Ingredient ingredient) {
-    if (ingredient.isTheMaximum
-        //  || ((ingredient.quantity?.amount ?? 1.0) > 1)
-        ) {
+    if ( //ingredient.isTheMaximum
+        ((ingredient.quantity?.amount ?? 1.0) > 1)) {
       return TextStyle(
         color: Colors.green,
       );
