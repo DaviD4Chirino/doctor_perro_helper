@@ -31,7 +31,10 @@ class DisplayPackDiferencies extends StatelessWidget {
                 if (differences.extrasTitles != "" ||
                     differences.ingredientsTitles != "") {
                   return Padding(
-                    padding: EdgeInsets.only(left: Sizes().large),
+                    padding: EdgeInsets.only(
+                      left: Sizes().xl,
+                      bottom: Sizes().medium,
+                    ),
                     child: DisplayPlateDiferencies(
                       plate,
                       displayPrice: false,
@@ -48,7 +51,10 @@ class DisplayPackDiferencies extends StatelessWidget {
               ...packDifferences.extras!.map(
                 (SideDish extra) {
                   return Padding(
-                    padding: EdgeInsets.only(left: Sizes().large),
+                    padding: EdgeInsets.only(
+                      left: Sizes().large,
+                      bottom: Sizes().large,
+                    ),
                     child: IngredientDisplay(extra),
                   );
                 },

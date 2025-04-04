@@ -1,9 +1,15 @@
+import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/mixins/time_mixin.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/order/menu_order_status.dart';
+import 'package:doctor_perro_helper/models/plate.dart';
+import 'package:doctor_perro_helper/models/plate_pack.dart';
 import 'package:doctor_perro_helper/models/providers/drafted_order_provider.dart';
 import 'package:doctor_perro_helper/utils/database/orders_helper.dart';
 import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
+import 'package:doctor_perro_helper/widgets/reusables/differences_in_plate.dart';
+import 'package:doctor_perro_helper/widgets/reusables/display_pack_diferencies.dart';
+import 'package:doctor_perro_helper/widgets/reusables/display_plate_diferencies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -44,7 +50,7 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.max,
       children: [
-        ListTile(
+        ExpansionTile(
           leading: DolarAndBolivarPriceText(price: order.price),
           title: Text(
             getRelativeTime(statusTime),
@@ -66,6 +72,51 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
               // Text(order.id),
             ],
           ),
+          children: [
+            ...order.packs.map(
+              (pack) {
+                PlatePack diff = pack.getDifferences(pack.base);
+                if (diff.plateTitleList != "" || diff.extrasTitles != "") {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: Sizes().large,
+                    ),
+                    child: DisplayPackDiferencies(pack),
+                  );
+                }
+
+                return Container();
+              },
+            ),
+            SizedBox(
+              height: Sizes().medium,
+            ),
+            Container(
+              color: theme.colorScheme.surfaceContainer,
+              height: Sizes().small,
+            ),
+            SizedBox(
+              height: Sizes().xl,
+            ),
+            ...order.plates.map(
+              (plate) {
+                Plate diff = plate.getDifferences(plate.base);
+                if (diff.ingredientsTitles != "" || diff.extrasTitles != "") {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: Sizes().large,
+                    ),
+                    child: DisplayPlateDiferencies(plate),
+                  );
+                }
+
+                return Container();
+              },
+            ),
+            SizedBox(
+              height: Sizes().xl,
+            ),
+          ],
         ),
         if (order.status == OrderStatus.pending)
           Row(

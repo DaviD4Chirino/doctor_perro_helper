@@ -33,7 +33,10 @@ class DisplayPlateDiferencies extends StatelessWidget {
                   ...differencesInPlate.ingredients.map(
                     (ingredient) {
                       return Padding(
-                        padding: EdgeInsets.only(left: Sizes().large),
+                        padding: EdgeInsets.only(
+                          left: Sizes().xl,
+                          bottom: Sizes().large,
+                        ),
                         child: IngredientDisplay(ingredient),
                       );
                     },
@@ -41,7 +44,13 @@ class DisplayPlateDiferencies extends StatelessWidget {
                 if (differencesInPlate.extrasTitles != "")
                   ...differencesInPlate.extras!.map(
                     (SideDish ingredient) {
-                      return IngredientDisplay(ingredient);
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          left: Sizes().xl,
+                          bottom: Sizes().large,
+                        ),
+                        child: IngredientDisplay(ingredient),
+                      );
                     },
                   ),
               ],
