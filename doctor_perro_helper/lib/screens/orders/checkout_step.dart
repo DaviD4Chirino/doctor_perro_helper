@@ -1,8 +1,5 @@
-import 'package:data_table_2/data_table_2.dart';
 import 'package:doctor_perro_helper/config/border_size.dart';
-import 'package:doctor_perro_helper/models/abstracts/plate_list.dart';
 import 'package:doctor_perro_helper/models/consumers/bolivar_price_text.dart';
-import 'package:doctor_perro_helper/models/ingredient.dart';
 import 'package:doctor_perro_helper/models/mixins/ingredients_mixin.dart';
 import 'package:doctor_perro_helper/models/mixins/pack_mixin.dart';
 import 'package:doctor_perro_helper/models/mixins/plate_mixin.dart';
@@ -10,17 +7,11 @@ import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
 import 'package:doctor_perro_helper/models/providers/drafted_order_provider.dart';
-import 'package:doctor_perro_helper/models/side_dish.dart';
-import 'package:doctor_perro_helper/utils/extensions/double_extensions.dart';
-import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
 import 'package:doctor_perro_helper/widgets/dolar_price_text.dart';
 import 'package:doctor_perro_helper/widgets/reusables/display_pack_diferencies.dart';
 import 'package:doctor_perro_helper/widgets/reusables/display_plate_diferencies.dart';
-import 'package:doctor_perro_helper/widgets/reusables/ingredient_display.dart';
 import 'package:doctor_perro_helper/widgets/reusables/section.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // ignore: must_be_immutable
