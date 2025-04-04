@@ -10,9 +10,11 @@ import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/plate.dart';
 import 'package:doctor_perro_helper/models/plate_pack.dart';
 import 'package:doctor_perro_helper/models/providers/drafted_order_provider.dart';
+import 'package:doctor_perro_helper/models/side_dish.dart';
 import 'package:doctor_perro_helper/utils/extensions/double_extensions.dart';
 import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
 import 'package:doctor_perro_helper/widgets/dolar_price_text.dart';
+import 'package:doctor_perro_helper/widgets/reusables/ingredient_display.dart';
 import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -69,37 +71,42 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep>
                 ),
               ],
             ),
-            Container(
-              color: theme.colorScheme.surfaceContainerHighest,
-              height: Sizes().small,
-            ),
-            SizedBox(
-              height: Sizes().large,
-            ),
+            ...divider(theme),
             ...plates.map(
               (plate) {
                 Plate differencesInPlate = plate.getDifferences(plate.base);
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(plate.title),
-                        if (differencesInPlate.ingredientsTitles != "")
-                          ...differencesInPlate.ingredients.map(
-                            (ingredient) {
-                              return Text(
-                                ingredient.title,
-                                style: ingredientTextColor(theme, ingredient),
-                              );
-                            },
-                          ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(plate.title),
+                            if (differencesInPlate.ingredientsTitles != "")
+                              ...differencesInPlate.ingredients.map(
+                                (ingredient) {
+                                  return IngredientDisplay(ingredient);
+                                },
+                              ),
+                            if (differencesInPlate.extrasTitles != "")
+                              ...differencesInPlate.extras!.map(
+                                (SideDish ingredient) {
+                                  return IngredientDisplay(ingredient);
+                                },
+                              ),
+                          ],
+                        ),
+                        DolarPriceText(
+                          price: plate.price,
+                          textStyle: theme.textTheme.bodyLarge,
+                        ),
                       ],
                     ),
-                    DolarPriceText(
-                      price: plate.cost,
-                      textStyle: theme.textTheme.bodyMedium,
-                    ),
+                    ...divider(theme),
                   ],
                 );
               },
@@ -271,4 +278,17 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep>
       ),
     );
   }
+
+  List<Widget> divider(ThemeData theme) => [
+        SizedBox(
+          height: Sizes().medium,
+        ),
+        Container(
+          color: theme.colorScheme.surfaceContainerHighest,
+          height: Sizes().small,
+        ),
+        SizedBox(
+          height: Sizes().large,
+        ),
+      ];
 }

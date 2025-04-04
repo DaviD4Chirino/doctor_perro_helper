@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 /// A widget that shows the [Ingredient] with colors
 class IngredientDisplay extends StatelessWidget with IngredientsMixin {
-  const IngredientDisplay({super.key, required this.ingredient});
+  const IngredientDisplay(this.ingredient, {super.key});
 
   final Ingredient ingredient;
 
