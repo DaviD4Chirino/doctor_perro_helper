@@ -14,6 +14,7 @@ import 'package:doctor_perro_helper/models/side_dish.dart';
 import 'package:doctor_perro_helper/utils/extensions/double_extensions.dart';
 import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
 import 'package:doctor_perro_helper/widgets/dolar_price_text.dart';
+import 'package:doctor_perro_helper/widgets/reusables/display_plate_diferencies.dart';
 import 'package:doctor_perro_helper/widgets/reusables/ingredient_display.dart';
 import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:flutter/foundation.dart';
@@ -72,40 +73,26 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep>
               ],
             ),
             ...divider(theme),
-            ...plates.map(
-              (plate) {
-                Plate differencesInPlate = plate.getDifferences(plate.base);
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+            ...packs.map(
+              (pack) {
+                return Row(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Column(
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(plate.title),
-                            if (differencesInPlate.ingredientsTitles != "")
-                              ...differencesInPlate.ingredients.map(
-                                (ingredient) {
-                                  return IngredientDisplay(ingredient);
-                                },
-                              ),
-                            if (differencesInPlate.extrasTitles != "")
-                              ...differencesInPlate.extras!.map(
-                                (SideDish ingredient) {
-                                  return IngredientDisplay(ingredient);
-                                },
-                              ),
-                          ],
-                        ),
-                        DolarPriceText(
-                          price: plate.price,
-                          textStyle: theme.textTheme.bodyLarge,
-                        ),
+                        Text(pack.title),
                       ],
                     ),
+                    Text(pack.price.removePaddingZero()),
+                  ],
+                );
+              },
+            ),
+            ...divider(theme),
+            ...plates.map(
+              (plate) {
+                return Column(
+                  children: [
+                    DisplayPlateDiferencies(plate),
                     ...divider(theme),
                   ],
                 );
