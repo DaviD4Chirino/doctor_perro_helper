@@ -14,6 +14,7 @@ import 'package:doctor_perro_helper/models/side_dish.dart';
 import 'package:doctor_perro_helper/utils/extensions/double_extensions.dart';
 import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
 import 'package:doctor_perro_helper/widgets/dolar_price_text.dart';
+import 'package:doctor_perro_helper/widgets/reusables/display_pack_diferencies.dart';
 import 'package:doctor_perro_helper/widgets/reusables/display_plate_diferencies.dart';
 import 'package:doctor_perro_helper/widgets/reusables/ingredient_display.dart';
 import 'package:doctor_perro_helper/widgets/reusables/section.dart';
@@ -75,19 +76,15 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep>
             ...divider(theme),
             ...packs.map(
               (pack) {
-                return Row(
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      children: [
-                        Text(pack.title),
-                      ],
-                    ),
-                    Text(pack.price.removePaddingZero()),
+                    DisplayPackDiferencies(pack),
+                    ...divider(theme),
                   ],
                 );
               },
             ),
-            ...divider(theme),
             ...plates.map(
               (plate) {
                 return Column(
@@ -268,14 +265,14 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep>
 
   List<Widget> divider(ThemeData theme) => [
         SizedBox(
-          height: Sizes().medium,
+          height: Sizes().xl,
         ),
         Container(
-          color: theme.colorScheme.surfaceContainerHighest,
+          color: theme.colorScheme.primary,
           height: Sizes().small,
         ),
         SizedBox(
-          height: Sizes().large,
+          height: Sizes().xxl,
         ),
       ];
 }
