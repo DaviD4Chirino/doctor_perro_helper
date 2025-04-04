@@ -60,7 +60,10 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Costo en dólares:"),
-                DolarPriceText(price: draftedOrder.price),
+                DolarPriceText(
+                  price: draftedOrder.price,
+                  textStyle: theme.textTheme.bodyMedium,
+                ),
               ],
             ),
             Row(
@@ -69,7 +72,17 @@ class _CheckoutStepState extends ConsumerState<CheckoutStep>
                 Text("Costo en Bolivares:"),
                 BolivarPriceText(
                   price: draftedOrder.price,
-                  textStyle: theme.textTheme.bodySmall,
+                  textStyle: theme.textTheme.bodyMedium,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Dirección:"),
+                Text(
+                  draftedOrder.direction,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
