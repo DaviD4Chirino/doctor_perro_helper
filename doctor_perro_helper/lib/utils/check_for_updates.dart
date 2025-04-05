@@ -5,7 +5,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-Future<void> checkForUpdates(BuildContext context) async {
+/// Returns true if query is successful regardless of
+/// whether or not there is a new version
+Future<bool> checkForUpdates(BuildContext context) async {
   try {
     // done this way so we dont duplicate calls
     final map = await getLatestAppVersion();
@@ -48,7 +50,9 @@ Future<void> checkForUpdates(BuildContext context) async {
           body: map["body"],
         ),
       );
+      return true;
     }
+    return false;
 
     /* if (currentVersion <= tag) {
       showDialog(
@@ -61,6 +65,7 @@ Future<void> checkForUpdates(BuildContext context) async {
     if (kDebugMode) {
       print(e);
     }
+    return false;
   }
 }
 

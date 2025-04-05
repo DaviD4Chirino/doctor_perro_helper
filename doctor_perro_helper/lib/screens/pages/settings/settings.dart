@@ -1,6 +1,7 @@
 import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/change_dolar_price_button.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/change_theme_mode_button.dart';
+import 'package:doctor_perro_helper/screens/pages/settings/check_for_updates_tile_button.dart';
 import 'package:doctor_perro_helper/screens/pages/settings/manage_account.dart';
 import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +27,8 @@ class SettingsPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            child: Column(
-              children: const [ManageAccountButton()],
+            child: const Column(
+              children: [ManageAccountButton()],
             ),
           ),
           Section(
@@ -38,12 +39,22 @@ class SettingsPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            child: Column(
-              children: const [
+            child: const Column(
+              children: [
                 ChangeDolarPriceButton(),
                 ChangeThemeModeButton(),
               ],
             ),
+          ),
+          Section(
+            title: Text(
+              "Misceláneo",
+              style: TextStyle(
+                fontSize: theme.textTheme.titleMedium?.fontSize,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            child: CheckForUpdatesTileButton(),
           ),
         ],
       ),
