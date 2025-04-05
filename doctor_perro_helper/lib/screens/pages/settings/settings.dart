@@ -5,6 +5,7 @@ import 'package:doctor_perro_helper/screens/pages/settings/check_for_updates_til
 import 'package:doctor_perro_helper/screens/pages/settings/manage_account.dart';
 import 'package:doctor_perro_helper/widgets/reusables/section.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -13,48 +14,64 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return SafeArea(
-      child: ListView(
-        padding: EdgeInsets.symmetric(
-          vertical: Sizes().xxl,
-          horizontal: Sizes().large,
-        ),
+      child: LayoutGrid(
+        columnSizes: [1.fr],
+        rowSizes: [1.fr, 0.04.fr],
         children: [
-          Section(
-            title: Text(
-              "Cuenta",
-              style: TextStyle(
-                fontSize: theme.textTheme.titleMedium?.fontSize,
-                fontWeight: FontWeight.bold,
+          ListView(
+            padding: EdgeInsets.symmetric(
+              vertical: Sizes().xxl,
+              horizontal: Sizes().large,
+            ),
+            children: [
+              Section(
+                title: Text(
+                  "Cuenta",
+                  style: TextStyle(
+                    fontSize: theme.textTheme.titleMedium?.fontSize,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                child: const Column(
+                  children: [ManageAccountButton()],
+                ),
               ),
-            ),
-            child: const Column(
-              children: [ManageAccountButton()],
-            ),
+              Section(
+                title: Text(
+                  "Ajustes",
+                  style: TextStyle(
+                    fontSize: theme.textTheme.titleMedium?.fontSize,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                child: const Column(
+                  children: [
+                    ChangeDolarPriceButton(),
+                    ChangeThemeModeButton(),
+                  ],
+                ),
+              ),
+              Section(
+                title: Text(
+                  "Misceláneo",
+                  style: TextStyle(
+                    fontSize: theme.textTheme.titleMedium?.fontSize,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                child: CheckForUpdatesTileButton(),
+              ),
+            ],
           ),
-          Section(
-            title: Text(
-              "Ajustes",
-              style: TextStyle(
-                fontSize: theme.textTheme.titleMedium?.fontSize,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            child: const Column(
-              children: [
-                ChangeDolarPriceButton(),
-                ChangeThemeModeButton(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: const [
+                Text("David Space - 2025"),
               ],
             ),
-          ),
-          Section(
-            title: Text(
-              "Misceláneo",
-              style: TextStyle(
-                fontSize: theme.textTheme.titleMedium?.fontSize,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            child: CheckForUpdatesTileButton(),
           ),
         ],
       ),
