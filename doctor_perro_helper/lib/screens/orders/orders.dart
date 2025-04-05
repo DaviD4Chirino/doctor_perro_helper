@@ -23,15 +23,23 @@ class _OrdersState extends ConsumerState<Orders> {
     (timer) {},
   ); */
 
+  bool _loadingOrders = true;
+  bool refreshing = false;
+
   AsyncValue<UserData> get userDataStream => ref.watch(userDataProvider);
 
   AsyncValue<List<MenuOrder>> get menuOrdersStream =>
       ref.watch(menuOrdersStreamProvider);
 
-  bool get loadingOrders => menuOrdersStream.maybeWhen(
-        data: (data) => false,
-        orElse: () => true,
-      );
+  bool get loadingOrders {
+    menuOrdersStream.maybeWhen(
+      data: (data) => _loadingOrders = false,
+      orElse: () => _loadingOrders = true,
+    );
+    return _loadingOrders;
+  }
+
+  set loadingOrders(bool val) => _loadingOrders = val;
 
   List<MenuOrder> get allOrders => menuOrdersStream.maybeWhen(
         data: (data) {
@@ -80,32 +88,51 @@ class _OrdersState extends ConsumerState<Orders> {
     return Scaffold(
       floatingActionButton:
           floatingActionButton(theme, context, userDataStream),
-      body: loadingOrders
-          ? LinearProgressIndicator()
-          : Padding(
-              padding: EdgeInsets.symmetric(horizontal: Sizes().large),
-              child: ListView(
-                children: [
-                  SizedBox(
-                    height: Sizes().xxxl,
-                  ),
-                  DisplayOrders(
-                    orders: pendingOrders,
-                    accountId: userId,
-                  ),
-                  DisplayOrders(
-                    title: "Ordenes Servidas",
-                    orders: servedOrders,
-                    accountId: userId,
-                  ),
-                  DisplayOrders(
-                    title: "Ordenes Canceladas",
-                    orders: cancelledOrders,
-                    accountId: userId,
-                  ),
-                ],
-              ),
-            ),
+      body: RefreshIndicator(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: Sizes().large),
+          child: ListView(
+            // look pal, i need the progress indicator to have
+            // a certain height and not hide the spinner
+            children: loadingOrders || refreshing
+                ? [
+                    LinearProgressIndicator(),
+                  ]
+                : [
+                    SizedBox(
+                      height: Sizes().xxxl,
+                    ),
+                    DisplayOrders(
+                      orders: pendingOrders,
+                      accountId: userId,
+                    ),
+                    DisplayOrders(
+                      title: "Ordenes Servidas",
+                      orders: servedOrders,
+                      accountId: userId,
+                    ),
+                    DisplayOrders(
+                      title: "Ordenes Canceladas",
+                      orders: cancelledOrders,
+                      accountId: userId,
+                    ),
+                  ],
+          ),
+        ),
+        onRefresh: () async {
+          setState(() {
+            refreshing = true;
+          });
+          await Future.delayed(
+            Duration(seconds: 3),
+            () {
+              setState(() {
+                refreshing = false;
+              });
+            },
+          );
+        },
+      ),
     );
   }
 
