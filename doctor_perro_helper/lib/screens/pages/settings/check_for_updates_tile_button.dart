@@ -30,13 +30,19 @@ class _CheckForUpdatesTileButtonState extends State<CheckForUpdatesTileButton> {
       setState(() {
         checking = true;
       });
-      await checkForUpdates(context);
+      bool query = await checkForUpdates(context);
+
+      if (!query) {
+        ToastMessage.info(
+          title: Text("No hay actualizaciones pendientes"),
+        );
+      }
       setState(() {
         checking = false;
       });
     } catch (e) {
-      ToastMessage.info(
-        title: Text("No hay actualizaciones pendientes"),
+      ToastMessage.error(
+        title: Text("Error buscando actualizaciones"),
       );
       setState(() {
         checking = false;
