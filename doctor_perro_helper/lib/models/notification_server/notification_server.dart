@@ -9,7 +9,7 @@ abstract class NotificationServer {
     if (isInitialized) return;
 
     const initSettingsAndroid =
-        AndroidInitializationSettings("@mipmap/launcher_icon");
+        AndroidInitializationSettings("@drawable/ic_stat_doctor_perro_head");
 
     const initSettings = InitializationSettings(android: initSettingsAndroid);
 
