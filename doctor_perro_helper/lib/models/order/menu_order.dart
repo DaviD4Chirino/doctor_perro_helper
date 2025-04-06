@@ -127,7 +127,7 @@ class MenuOrder with PlateMixin, PackMixin {
     return MenuOrder(plates: plates, packs: packs);
   }
 
-  MenuOrder get flatOrder => MenuOrder(
+  MenuOrder get flatOrder => copyWith(
         packs: flattenPacks(packs),
         plates: flattenPlates(plates),
       );

@@ -60,7 +60,7 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(order.codeList),
+              Text(order.flatOrder.codeList),
               Text(
                 order.direction,
                 style: TextStyle(
