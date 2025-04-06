@@ -72,7 +72,7 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
             ],
           ),
           children: [
-            ...order.packs.map(
+            ...order.packSpread.map(
               (pack) {
                 PlatePack diff = pack.getDifferences(pack.base);
                 if (diff.plateTitleList != "" || diff.extrasTitles != "") {
@@ -103,7 +103,7 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
             SizedBox(
               height: Sizes().xl,
             ),
-            ...order.plates.map(
+            ...order.platesSpread.map(
               (plate) {
                 Plate diff = plate.getDifferences(plate.base);
                 if (diff.ingredientsTitles != "" || diff.extrasTitles != "") {
