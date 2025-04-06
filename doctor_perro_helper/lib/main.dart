@@ -7,6 +7,7 @@ import 'package:doctor_perro_helper/models/use_shared_preferences.dart';
 import 'package:doctor_perro_helper/screens/orders/make_new_order.dart';
 import 'package:doctor_perro_helper/screens/pages/home/home.dart';
 import 'package:doctor_perro_helper/utils/google/google.dart';
+import 'package:doctor_perro_helper/utils/notifications_handlers/notification_on_dolar_price_changed.dart';
 import 'package:doctor_perro_helper/utils/notifications_handlers/notification_on_menu_order_changed.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -74,6 +75,7 @@ class _MainAppState extends ConsumerState<MainApp> {
       try {
         await awaitFunctions();
         notificationOnMenuOrderChanged();
+        notificationOnDolarPriceChanged();
       } catch (e) {
         if (kDebugMode) {
           print(e);

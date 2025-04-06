@@ -51,4 +51,25 @@ abstract class NotificationServer {
       ),
     );
   }
+
+  static Future<void> showDolarChangedNotification({
+    int id = 0,
+    String? title,
+    String? body,
+  }) async {
+    return notificationPlugin.show(
+      id,
+      title,
+      body,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          "dolar-price-change",
+          "dolar-price-change",
+          channelDescription: "Cambios en el precio del dolar",
+          importance: Importance.low,
+          priority: Priority.low,
+        ),
+      ),
+    );
+  }
 }

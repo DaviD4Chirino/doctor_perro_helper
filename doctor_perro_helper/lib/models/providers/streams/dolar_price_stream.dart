@@ -39,3 +39,18 @@ Future<DolarPriceInBsDoc?> getDolar() async {
   }
   return null;
 }
+
+final Stream<DolarPriceInBsDoc> dolarPriceStream = FirebaseFirestore.instance
+    .collection(CollectionsPaths.globalSettings)
+    .doc(GlobalSettingsPaths.dolarPriceInBs)
+    .snapshots()
+    .map(
+  (docSnap) {
+    var data = docSnap.data();
+    if (data != null) {
+      return DolarPriceInBsDoc.fromJson(data);
+    } else {
+      throw Exception("Document data is null");
+    }
+  },
+);
