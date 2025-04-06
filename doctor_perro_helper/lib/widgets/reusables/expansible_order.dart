@@ -2,6 +2,8 @@ import 'package:doctor_perro_helper/config/border_size.dart';
 import 'package:doctor_perro_helper/models/mixins/time_mixin.dart';
 import 'package:doctor_perro_helper/models/order/menu_order.dart';
 import 'package:doctor_perro_helper/models/order/menu_order_status.dart';
+import 'package:doctor_perro_helper/models/plate.dart';
+import 'package:doctor_perro_helper/models/plate_pack.dart';
 import 'package:doctor_perro_helper/models/providers/drafted_order_provider.dart';
 import 'package:doctor_perro_helper/utils/database/orders_helper.dart';
 import 'package:doctor_perro_helper/widgets/dolar_and_bolivar_price_text.dart';
@@ -72,7 +74,7 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
           children: [
             ...order.packs.map(
               (pack) {
-                /* PlatePack diff = pack.getDifferences(pack.base);
+                PlatePack diff = pack.getDifferences(pack.base);
                 if (diff.plateTitleList != "" || diff.extrasTitles != "") {
                   return Padding(
                     padding: EdgeInsets.symmetric(
@@ -80,7 +82,7 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
                     ),
                     child: DisplayPackDiferencies(pack),
                   );
-                } */
+                }
                 // * We dont need to show this but if needed
                 // return DisplayPackDiferencies(pack);
                 return Padding(
@@ -103,7 +105,7 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
             ),
             ...order.plates.map(
               (plate) {
-                /* Plate diff = plate.getDifferences(plate.base);
+                Plate diff = plate.getDifferences(plate.base);
                 if (diff.ingredientsTitles != "" || diff.extrasTitles != "") {
                   return Padding(
                     padding: EdgeInsets.symmetric(
@@ -111,7 +113,7 @@ class ExpansibleOrder extends ConsumerWidget with TimeMixin {
                     ),
                     child: DisplayPlateDiferencies(plate),
                   );
-                } */
+                }
 
                 return Padding(
                   padding: EdgeInsets.symmetric(
