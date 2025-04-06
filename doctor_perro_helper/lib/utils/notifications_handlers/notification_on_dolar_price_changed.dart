@@ -15,11 +15,11 @@ void notificationOnDolarPriceChanged() {
       double? savedLatestValue =
           UseSharedPreferences.preferences.getDouble("latest-dolar-price");
 
-      if (savedLatestValue != null && savedLatestValue == latestValue) {
+      if (savedLatestValue != null && savedLatestValue != latestValue) {
         NotificationServer.showDolarChangedNotification(
           id: 1,
           title: "Precio del dolar actualizado",
-          body: latestValue.removePaddingZero(),
+          body: "${latestValue.removePaddingZero()}bs",
         );
         return;
       }
