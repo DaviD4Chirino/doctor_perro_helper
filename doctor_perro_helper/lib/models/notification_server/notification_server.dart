@@ -64,7 +64,7 @@ abstract class NotificationServer {
       NotificationDetails(
         android: AndroidNotificationDetails(
           "dolar-price-change",
-          "dolar-price-change",
+          "Cambios en el precio del dolar",
           channelDescription: "Cambios en el precio del dolar",
           importance: Importance.low,
           priority: Priority.low,
