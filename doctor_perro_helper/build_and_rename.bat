@@ -1,5 +1,5 @@
 
-set VERSION=1.0.0
+set VERSION=1.1.0
 :: Build the APK
 
 rename .\build\app\outputs\flutter-apk\app-release.apk dr-perro-helper-%VERSION%.apk
