@@ -28,7 +28,9 @@ final Stream<List<MenuOrder>> menuOrderStream = FirebaseFirestore.instance
     .map(
       (snapshot) => snapshot.docs
           .map(
-            (doc) => MenuOrder.fromJson(doc.data()),
+            (doc) => MenuOrder.fromJson(
+              doc.data(),
+            ),
           )
           .toList(),
     );
