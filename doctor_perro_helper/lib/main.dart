@@ -44,7 +44,8 @@ class _MainAppState extends ConsumerState<MainApp> {
   @override
   void initState() {
     super.initState();
-    initialization();
+    //initialization();
+    FlutterNativeSplash.remove();
   }
 
   /// Put here anything that you need to initialize in the app,
